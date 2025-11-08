@@ -22,7 +22,7 @@ export type PlantationDraft = Omit<Plantation, "id" | "stage" | "updatedAt"> & {
 type PlantationState = {
   plantations: Plantation[];
   addPlantation: (payload: PlantationDraft) => Plantation;
-  updateStage: (id: string, nextStage: GrowthStage) => void;
+  updateStage: (id: string, nextStage: GrowthStage, note?: string) => void;
   getPlantationsByWallet: (walletAddress: string | undefined) => Plantation[];
   resetToSeedData: () => void;
 };
@@ -82,7 +82,7 @@ export const usePlantationsStore = create<PlantationState>()(
 
         return plantation;
       },
-      updateStage: (id, nextStage) => {
+      updateStage: (id, nextStage, note) => {
         if (!stageOrder.includes(nextStage)) {
           return;
         }
@@ -96,6 +96,7 @@ export const usePlantationsStore = create<PlantationState>()(
                   ...plantation,
                   stage: nextStage,
                   updatedAt: now,
+                  notes: note ?? plantation.notes,
                 }
               : plantation
           ),

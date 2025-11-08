@@ -40,14 +40,31 @@ Visit [http://localhost:3000](http://localhost:3000/) to see the dashboard.
 
 The default landing page becomes the Cocoa Chain experience once the UI components are scaffolded (see project plan).
 
+## Core Features
+
+- Wallet login via Reown AppKit + WalletConnect (wagmi)
+- Multi-wallet dashboard with watchlist, labels, and per-wallet filters
+- Growth analytics hub with charts (Chart.js) and regional insights
+- Plantation management: plant seeds, update stages, track notes
+- On-chain sync simulator to visualise transaction lifecycle
+- Social sharing panel for community updates
+
 ## Tech Stack
 
 - Next.js 16 (App Router)
-- Tailwind CSS v4
+- Tailwind CSS v4 + custom Cocoa Chain theme
 - Reown AppKit + wagmi + viem
 - Zustand for state management
 - Framer Motion for animated UI
 - TanStack Query for Wallet/Web3 caching
+- Chart.js + react-chartjs-2 for analytics visuals
+- Local JSON + localStorage hydration for prototype data persistence
+
+## Mock Data
+
+- Source plantations live in `src/data/plantations.json`.
+- State is persisted to `localStorage` via Zustand so dashboard changes survive reloads.
+- Reset behaviour: clearing browser storage reverts to seed data.
 
 ## Scripts
 

@@ -20,12 +20,12 @@ export const metadata: Metadata = {
     "Manage your digital cocoa plantations with wallet-linked tracking and vibrant visuals.",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const headersList = await headers();
+  const headersList = headers();
   const cookies = headersList.get("cookie");
 
   return (

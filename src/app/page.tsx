@@ -128,22 +128,25 @@ export default function DashboardPage() {
         />
 
         <main className="relative flex-1 overflow-y-auto px-6 py-8">
-          {showConnectOverlay ? (
-            <motion.section
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mx-auto flex max-w-3xl flex-col items-center gap-4 rounded-3xl bg-white/80 px-10 py-16 text-center shadow-lg shadow-cocoa-900/10 backdrop-blur"
-            >
-              <span className="text-5xl">🌴</span>
-              <h2 className="text-2xl font-semibold text-cocoa-900">
-                Connect your wallet to start planting
-              </h2>
-              <p className="text-sm text-cocoa-600">
-                Link your wallet to claim your plantations, plant new seeds, and
-                update growth progress in real time.
-              </p>
-            </motion.section>
-          ) : showEmptyState ? (
+          <div className="space-y-8">
+            {showConnectOverlay && (
+              <motion.section
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mx-auto flex max-w-3xl flex-col items-center gap-4 rounded-3xl bg-white/80 px-10 py-16 text-center shadow-lg shadow-cocoa-900/10 backdrop-blur"
+              >
+                <span className="text-5xl">🌴</span>
+                <h2 className="text-2xl font-semibold text-cocoa-900">
+                  Connect your wallet to start planting
+                </h2>
+                <p className="text-sm text-cocoa-600">
+                  Link your wallet to claim your plantations, plant new seeds,
+                  and update growth progress in real time.
+                </p>
+              </motion.section>
+            )}
+
+            {showEmptyState ? (
             <motion.section
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -168,51 +171,54 @@ export default function DashboardPage() {
               </motion.button>
             </motion.section>
           ) : (
-            <div className="space-y-8">
-              <AnalyticsPanel
-                plantations={filteredPlantations}
-                highlightedCount={filteredPlantations.length}
-              />
+              <>
+                <AnalyticsPanel
+                  plantations={filteredPlantations}
+                  highlightedCount={filteredPlantations.length}
+                />
 
-              <div className="grid gap-6 xl:grid-cols-[1.3fr,0.7fr]">
-                <section className="rounded-3xl border border-cream-200 bg-cream-50/80 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur">
-                  <header className="flex flex-col gap-2">
-                    <h2 className="text-lg font-semibold text-cocoa-900">
-                      {isConnected ? "Your plantations" : "Community plantations"}
-                    </h2>
-                    <p className="text-sm text-cocoa-500">
-                      Track each seed from planting to harvest with live
-                      progress updates and shared insights across wallets.
-                    </p>
-                  </header>
+                <div className="grid gap-6 xl:grid-cols-[1.3fr,0.7fr]">
+                  <section className="rounded-3xl border border-cream-200 bg-cream-50/80 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur">
+                    <header className="flex flex-col gap-2">
+                      <h2 className="text-lg font-semibold text-cocoa-900">
+                        {isConnected
+                          ? "Your plantations"
+                          : "Community plantations"}
+                      </h2>
+                      <p className="text-sm text-cocoa-500">
+                        Track each seed from planting to harvest with live
+                        progress updates and shared insights across wallets.
+                      </p>
+                    </header>
 
-                  <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                    <AnimatePresence mode="popLayout">
-                      {filteredPlantations.map((plantation) => (
-                        <PlantationCard
-                          key={plantation.id}
-                          plantation={plantation}
-                          onUpdate={handleUpdateRequest}
-                          onAdvanceStage={handleAdvanceStage}
-                        />
-                      ))}
-                    </AnimatePresence>
-                  </div>
-                </section>
+                    <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                      <AnimatePresence mode="popLayout">
+                        {filteredPlantations.map((plantation) => (
+                          <PlantationCard
+                            key={plantation.id}
+                            plantation={plantation}
+                            onUpdate={handleUpdateRequest}
+                            onAdvanceStage={handleAdvanceStage}
+                          />
+                        ))}
+                      </AnimatePresence>
+                    </div>
+                  </section>
 
-                <aside className="space-y-6">
-                  <WalletManager />
-                  <OnchainSyncPanel />
-                  <CommunitySharePanel
-                    plantations={filteredPlantations}
-                    activeWalletCount={
-                      normalizedFilters.length || (isConnected ? 1 : 0)
-                    }
-                  />
-                </aside>
-              </div>
-            </div>
-          )}
+                  <aside className="space-y-6">
+                    <WalletManager />
+                    <OnchainSyncPanel />
+                    <CommunitySharePanel
+                      plantations={filteredPlantations}
+                      activeWalletCount={
+                        normalizedFilters.length || (isConnected ? 1 : 0)
+                      }
+                    />
+                  </aside>
+                </div>
+              </>
+            )}
+          </div>
       </main>
       </div>
 

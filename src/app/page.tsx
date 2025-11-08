@@ -5,8 +5,12 @@ import TopBar from "@/components/top-bar";
 import PlantationCard from "@/components/plantation-card";
 import PlantSeedModal from "@/components/plant-seed-modal";
 import UpdateStatusModal from "@/components/update-status-modal";
+import AnalyticsPanel from "@/components/analytics-panel";
+import WalletManager from "@/components/wallet-manager";
+import OnchainSyncPanel from "@/components/onchain-sync-panel";
+import CommunitySharePanel from "@/components/community-share-panel";
 import { AnimatePresence, motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
 import {
   usePlantationsStore,
@@ -14,6 +18,7 @@ import {
   type GrowthStage,
   type PlantationDraft,
 } from "@/store/plantations";
+import { useWalletStore } from "@/store/wallets";
 
 export default function DashboardPage() {
   const { address, status } = useAccount();
@@ -23,6 +28,10 @@ export default function DashboardPage() {
   const getPlantationsByWallet = usePlantationsStore(
     (state) => state.getPlantationsByWallet
   );
+  const setConnectedWallet = useWalletStore(
+    (state) => state.setConnectedWallet
+  );
+  const activeAddresses = useWalletStore((state) => state.activeAddresses);
 
   const [isPlantModalOpen, setPlantModalOpen] = useState(false);
   const [updateTarget, setUpdateTarget] = useState<Plantation | null>(null);
@@ -38,16 +47,36 @@ export default function DashboardPage() {
     return ownPlantations.length ? ownPlantations : plantations;
   }, [address, getPlantationsByWallet, plantations]);
 
-  const visiblePlantations = isConnected ? walletPlantations : plantations;
+  useEffect(() => {
+    if (status === "connected" && address) {
+      setConnectedWallet(address);
+      return;
+    }
+    if (status !== "connecting") {
+      setConnectedWallet(undefined);
+    }
+  }, [status, address, setConnectedWallet]);
+
+  const normalizedFilters = activeAddresses;
+
+  const filteredPlantations = useMemo(() => {
+    if (!normalizedFilters.length) {
+      return isConnected ? walletPlantations : plantations;
+    }
+
+    return plantations.filter((plantation) =>
+      normalizedFilters.includes(plantation.walletAddress.toLowerCase())
+    );
+  }, [normalizedFilters, plantations, isConnected, walletPlantations]);
 
   const stats = useMemo(() => {
-    const totalSeeds = visiblePlantations.length;
-    const harvested = visiblePlantations.filter(
+    const totalSeeds = filteredPlantations.length;
+    const harvested = filteredPlantations.filter(
       (plantation) => plantation.stage === "harvested"
     ).length;
 
     return { totalSeeds, harvested };
-  }, [visiblePlantations]);
+  }, [filteredPlantations]);
 
   const handlePlantSeedClick = () => {
     setPlantModalOpen(true);
@@ -80,7 +109,11 @@ export default function DashboardPage() {
   };
 
   const showEmptyState =
-    isConnected && visiblePlantations.length === 0 && address !== undefined;
+    filteredPlantations.length === 0 &&
+    (isConnected || normalizedFilters.length > 0);
+
+  const showConnectOverlay =
+    !isConnected && normalizedFilters.length === 0 && status !== "connecting";
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-cream-100 via-cream-50 to-leaf-100 text-cocoa-900">
@@ -95,7 +128,7 @@ export default function DashboardPage() {
         />
 
         <main className="relative flex-1 overflow-y-auto px-6 py-8">
-          {!isConnected ? (
+          {showConnectOverlay ? (
             <motion.section
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -135,28 +168,50 @@ export default function DashboardPage() {
               </motion.button>
             </motion.section>
           ) : (
-            <section>
-              <h2 className="text-lg font-semibold text-cocoa-800">
-                {isConnected ? "Your plantations" : "Featured plantations"}
-              </h2>
-              <p className="text-sm text-cocoa-500">
-                Track each seed from planting to harvest with live progress
-                updates.
-              </p>
+            <div className="space-y-8">
+              <AnalyticsPanel
+                plantations={filteredPlantations}
+                highlightedCount={filteredPlantations.length}
+              />
 
-              <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                <AnimatePresence mode="popLayout">
-                  {visiblePlantations.map((plantation) => (
-                    <PlantationCard
-                      key={plantation.id}
-                      plantation={plantation}
-                      onUpdate={handleUpdateRequest}
-                      onAdvanceStage={handleAdvanceStage}
-                    />
-                  ))}
-                </AnimatePresence>
-        </div>
-            </section>
+              <div className="grid gap-6 xl:grid-cols-[1.3fr,0.7fr]">
+                <section className="rounded-3xl border border-cream-200 bg-cream-50/80 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur">
+                  <header className="flex flex-col gap-2">
+                    <h2 className="text-lg font-semibold text-cocoa-900">
+                      {isConnected ? "Your plantations" : "Community plantations"}
+                    </h2>
+                    <p className="text-sm text-cocoa-500">
+                      Track each seed from planting to harvest with live
+                      progress updates and shared insights across wallets.
+                    </p>
+                  </header>
+
+                  <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                    <AnimatePresence mode="popLayout">
+                      {filteredPlantations.map((plantation) => (
+                        <PlantationCard
+                          key={plantation.id}
+                          plantation={plantation}
+                          onUpdate={handleUpdateRequest}
+                          onAdvanceStage={handleAdvanceStage}
+                        />
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                </section>
+
+                <aside className="space-y-6">
+                  <WalletManager />
+                  <OnchainSyncPanel />
+                  <CommunitySharePanel
+                    plantations={filteredPlantations}
+                    activeWalletCount={
+                      normalizedFilters.length || (isConnected ? 1 : 0)
+                    }
+                  />
+                </aside>
+              </div>
+            </div>
           )}
       </main>
       </div>

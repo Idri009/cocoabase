@@ -427,6 +427,61 @@ export const usePlantationsStore = create<PlantationState>()(
           });
         }
       },
+      updateStages: (ids, nextStage, note) => {
+        if (!stageOrder.includes(nextStage) || !ids.length) {
+          return;
+        }
+
+        const setOfIds = new Set(ids);
+        const previousPlantations = get().plantations.filter((plantation) =>
+          setOfIds.has(plantation.id)
+        );
+
+        if (!previousPlantations.length) {
+          return;
+        }
+
+        const now = new Date().toISOString();
+
+        set((state) => ({
+          plantations: state.plantations.map((plantation) => {
+            if (!setOfIds.has(plantation.id)) {
+              return plantation;
+            }
+
+            if (plantation.stage === nextStage) {
+              return plantation;
+            }
+
+            return {
+              ...plantation,
+              stage: nextStage,
+              updatedAt: now,
+              notes: note ?? plantation.notes,
+            };
+          }),
+        }));
+
+        const updatedPlantations = get().plantations.filter((plantation) =>
+          setOfIds.has(plantation.id)
+        );
+
+        updatedPlantations.forEach((plantation) => {
+          const previous = previousPlantations.find(
+            (item) => item.id === plantation.id
+          );
+          if (previous && previous.stage !== plantation.stage) {
+            emitPlantationEvent({
+              type: "stage_change",
+              plantation,
+              previousStage: previous.stage,
+              nextStage: plantation.stage,
+              timestamp: now,
+              note,
+            });
+          }
+        });
+      },
       getPlantationsByWallet: (walletAddress) => {
         if (!walletAddress) {
           return [];

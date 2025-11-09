@@ -217,6 +217,11 @@ export default function DashboardPage() {
   const [showWeatherForecast, setShowWeatherForecast] = useState(false);
   const [showCarbonCalculator, setShowCarbonCalculator] = useState(false);
   const [showHarvestScheduler, setShowHarvestScheduler] = useState(false);
+  const [showFinancialPlanner, setShowFinancialPlanner] = useState(false);
+  const [showTaskTemplates, setShowTaskTemplates] = useState(false);
+  const [showDataSync, setShowDataSync] = useState(false);
+  const [showHealthMonitor, setShowHealthMonitor] = useState(false);
+  const [showCommunityHub, setShowCommunityHub] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;

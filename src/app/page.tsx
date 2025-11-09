@@ -5409,6 +5409,271 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
+                {/* Budget Planner */}
+                {showBudgetPlanner && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-green-50/80 to-emerald-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Budget Planner
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Plan and track your budget
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowBudgetPlanner(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close budget planner"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-3">
+                      <div className="rounded-2xl border border-green-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Budget
+                        </div>
+                        <div className="text-2xl font-bold text-green-700">
+                          $50,000
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">Annual</p>
+                      </div>
+                      <div className="rounded-2xl border border-emerald-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Spent
+                        </div>
+                        <div className="text-2xl font-bold text-emerald-700">
+                          {new Intl.NumberFormat(undefined, {
+                            style: "currency",
+                            currency: "USD",
+                          }).format(
+                            receipts.reduce((acc, r) => acc + r.amount, 0)
+                          )}
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">Total</p>
+                      </div>
+                      <div className="rounded-2xl border border-teal-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Remaining
+                        </div>
+                        <div className="text-2xl font-bold text-teal-700">
+                          {new Intl.NumberFormat(undefined, {
+                            style: "currency",
+                            currency: "USD",
+                          }).format(
+                            50000 - receipts.reduce((acc, r) => acc + r.amount, 0)
+                          )}
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">Available</p>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Inventory Alerts */}
+                {showInventoryAlerts && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-orange-50/80 to-red-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Inventory Alerts
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Low stock and expiry alerts
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowInventoryAlerts(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close inventory alerts"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {[
+                        {
+                          id: "1",
+                          item: "Fertilizer",
+                          status: "low_stock",
+                          message: "Stock below 20% threshold",
+                          action: "Reorder now",
+                        },
+                        {
+                          id: "2",
+                          item: "Seeds",
+                          status: "expiring",
+                          message: "Expires in 15 days",
+                          action: "Use soon",
+                        },
+                        {
+                          id: "3",
+                          item: "Pesticides",
+                          status: "low_stock",
+                          message: "Stock below 30% threshold",
+                          action: "Reorder now",
+                        },
+                      ].map((alert) => (
+                        <div
+                          key={alert.id}
+                          className={`rounded-2xl border p-4 ${
+                            alert.status === "low_stock"
+                              ? "border-orange-200 bg-orange-50/80"
+                              : "border-red-200 bg-red-50/80"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h3 className="font-semibold text-cocoa-900">
+                                {alert.item}
+                              </h3>
+                              <p className="mt-1 text-sm text-cocoa-600">
+                                {alert.message}
+                              </p>
+                            </div>
+                            <button
+                              type="button"
+                              className="rounded-full border border-orange-300 bg-white px-3 py-1 text-xs font-semibold text-orange-700 transition hover:bg-orange-50"
+                            >
+                              {alert.action}
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Performance Reports */}
+                {showPerformanceReports && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-indigo-50/80 to-purple-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Performance Reports
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Generate performance reports
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowPerformanceReports(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close performance reports"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {[
+                        {
+                          id: "monthly",
+                          name: "Monthly Report",
+                          description: "Plantation performance for the month",
+                          icon: "📅",
+                        },
+                        {
+                          id: "quarterly",
+                          name: "Quarterly Report",
+                          description: "Q1-Q4 performance summary",
+                          icon: "📊",
+                        },
+                        {
+                          id: "annual",
+                          name: "Annual Report",
+                          description: "Year-end comprehensive report",
+                          icon: "📈",
+                        },
+                        {
+                          id: "custom",
+                          name: "Custom Report",
+                          description: "Generate custom date range report",
+                          icon: "⚙️",
+                        },
+                      ].map((report) => (
+                        <button
+                          key={report.id}
+                          type="button"
+                          className="flex items-start gap-3 rounded-xl border border-indigo-200 bg-white/80 p-4 text-left transition hover:bg-indigo-50"
+                        >
+                          <span className="text-2xl">{report.icon}</span>
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-cocoa-900">
+                              {report.name}
+                            </h3>
+                            <p className="mt-1 text-xs text-cocoa-600">
+                              {report.description}
+                            </p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Export Manager */}
+                {showExportManager && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-blue-50/80 to-cyan-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Export Manager
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Export data in multiple formats
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowExportManager(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close export manager"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                      {[
+                        { format: "JSON", icon: "📄", color: "blue" },
+                        { format: "CSV", icon: "📊", color: "green" },
+                        { format: "Excel", icon: "📗", color: "emerald" },
+                        { format: "PDF", icon: "📕", color: "red" },
+                      ].map((exportOption) => (
+                        <button
+                          key={exportOption.format}
+                          type="button"
+                          className={`rounded-xl border border-${exportOption.color}-200 bg-white/80 p-4 text-center transition hover:bg-${exportOption.color}-50`}
+                        >
+                          <div className="text-3xl">{exportOption.icon}</div>
+                          <div className="mt-2 text-sm font-semibold text-cocoa-900">
+                            {exportOption.format}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </motion.section>
+                )}
+
                 {/* Notification Center */}
                 {showNotificationCenter && (
                   <motion.section
@@ -5946,14 +6211,6 @@ export default function DashboardPage() {
                   <ExpenseCategories />
                 </div>
                 <SupplierManagement />
-                <div className="grid gap-6 lg:grid-cols-2">
-                  <HarvestQualityTracker />
-                  <ContractManagement />
-                </div>
-                <div className="grid gap-6 lg:grid-cols-2">
-                  <TrainingRecords />
-                  <AuditTrail />
-                </div>
 
                 <div className="grid gap-6 xl:grid-cols-[1.3fr,0.7fr]">
                   <section className="rounded-3xl border border-cream-200 bg-cream-50/80 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur">

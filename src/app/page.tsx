@@ -9,6 +9,7 @@ import AnalyticsPanel from "@/components/analytics-panel";
 import WalletManager from "@/components/wallet-manager";
 import OnchainSyncPanel from "@/components/onchain-sync-panel";
 import CommunitySharePanel from "@/components/community-share-panel";
+import PlantationTaskPanel from "@/components/plantation-task-panel";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
@@ -25,6 +26,9 @@ export default function DashboardPage() {
   const plantations = usePlantationsStore((state) => state.plantations);
   const addPlantation = usePlantationsStore((state) => state.addPlantation);
   const updateStage = usePlantationsStore((state) => state.updateStage);
+  const updateTaskStatus = usePlantationsStore(
+    (state) => state.updateTaskStatus
+  );
   const getPlantationsByWallet = usePlantationsStore(
     (state) => state.getPlantationsByWallet
   );
@@ -206,6 +210,10 @@ export default function DashboardPage() {
                   </section>
 
                   <aside className="space-y-6">
+                    <PlantationTaskPanel
+                      plantations={filteredPlantations}
+                      onTaskStatusChange={updateTaskStatus}
+                    />
                     <WalletManager />
                     <OnchainSyncPanel />
                     <CommunitySharePanel

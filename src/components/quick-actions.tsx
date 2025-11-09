@@ -1,73 +1,126 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useState } from "react";
-import { cn } from "@/lib/cn";
+import { motion } from "framer-motion";
+import { usePlantationsStore } from "@/store/plantations";
+import { useAlertsStore } from "@/store/alerts";
 
-type QuickAction = {
-  id: string;
-  label: string;
-  icon: string;
-  description: string;
-  onClick: () => void;
-  variant?: "primary" | "secondary" | "danger";
-  disabled?: boolean;
-};
+export default function QuickActions() {
+  const plantations = usePlantationsStore((state) => state.plantations);
+  const alerts = useAlertsStore((state) => state.alerts);
+  const [activeAction, setActiveAction] = useState<string | null>(null);
 
-type QuickActionsProps = {
-  actions: QuickAction[];
-  className?: string;
-  maxVisible?: number;
-};
+  const unreadAlerts = alerts.filter((a) => !a.acknowledgedAt).length;
+  const activePlantations = plantations.filter(
+    (p) => p.stage === "growing" || p.stage === "planted"
+  ).length;
 
-export default function QuickActions({
-  actions,
-  className,
-  maxVisible = 4,
-}: QuickActionsProps) {
-  const [expanded, setExpanded] = useState(false);
-  const visibleActions = expanded ? actions : actions.slice(0, maxVisible);
-  const hasMore = actions.length > maxVisible;
+  const actions = [
+    {
+      id: "add-plantation",
+      label: "Add Plantation",
+      icon: "🌱",
+      color: "emerald",
+      count: null,
+    },
+    {
+      id: "view-alerts",
+      label: "View Alerts",
+      icon: "🔔",
+      color: "rose",
+      count: unreadAlerts,
+    },
+    {
+      id: "add-task",
+      label: "Add Task",
+      icon: "✅",
+      color: "blue",
+      count: null,
+    },
+    {
+      id: "view-plantations",
+      label: "Active Plantations",
+      icon: "🌿",
+      color: "amber",
+      count: activePlantations,
+    },
+    {
+      id: "add-expense",
+      label: "Add Expense",
+      icon: "💰",
+      color: "purple",
+      count: null,
+    },
+    {
+      id: "view-reports",
+      label: "View Reports",
+      icon: "📊",
+      color: "cyan",
+      count: null,
+    },
+  ];
+
+  const handleAction = (actionId: string) => {
+    setActiveAction(actionId);
+    setTimeout(() => setActiveAction(null), 300);
+  };
+
+  const getColorClasses = (color: string) => {
+    const colorMap: Record<string, string> = {
+      emerald: "border-emerald-200 bg-emerald-50/80 hover:bg-emerald-100/80",
+      rose: "border-rose-200 bg-rose-50/80 hover:bg-rose-100/80",
+      blue: "border-blue-200 bg-blue-50/80 hover:bg-blue-100/80",
+      amber: "border-amber-200 bg-amber-50/80 hover:bg-amber-100/80",
+      purple: "border-purple-200 bg-purple-50/80 hover:bg-purple-100/80",
+      cyan: "border-cyan-200 bg-cyan-50/80 hover:bg-cyan-100/80",
+    };
+    return colorMap[color] || "border-slate-200 bg-slate-50/80";
+  };
 
   return (
-    <div className={cn("space-y-3", className)}>
-      <div className="flex flex-wrap gap-2">
-        {visibleActions.map((action) => (
+    <motion.section
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-3xl border border-cream-200 bg-gradient-to-br from-green-50/80 to-emerald-50/80 p-6 shadow-sm backdrop-blur"
+    >
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-cocoa-900">Quick Actions</h2>
+        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+          Common operations
+        </p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        {actions.map((action) => (
           <motion.button
             key={action.id}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={action.onClick}
-            disabled={action.disabled}
-            className={cn(
-              "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-offset-2",
-              action.variant === "primary"
-                ? "bg-cocoa-900 text-cream-50 hover:bg-cocoa-800 focus:ring-cocoa-500"
-                : action.variant === "danger"
-                ? "bg-red-500 text-white hover:bg-red-600 focus:ring-red-500"
-                : "border border-cream-300 bg-white text-cocoa-700 hover:border-cocoa-300 hover:text-cocoa-900 focus:ring-cocoa-200",
-              action.disabled &&
-                "cursor-not-allowed opacity-50 hover:scale-100"
-            )}
-            title={action.description}
+            type="button"
+            onClick={() => handleAction(action.id)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`relative rounded-xl border p-3 text-left transition ${getColorClasses(action.color)} ${
+              activeAction === action.id ? "ring-2 ring-cocoa-400" : ""
+            }`}
           >
-            <span>{action.icon}</span>
-            <span>{action.label}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">{action.icon}</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold text-cocoa-900 truncate">
+                  {action.label}
+                </p>
+                {action.count !== null && (
+                  <p className="text-xs text-cocoa-600">{action.count}</p>
+                )}
+              </div>
+            </div>
+            {action.count !== null && action.count > 0 && (
+              <span className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-xs font-bold text-white">
+                {action.count}
+              </span>
+            )}
           </motion.button>
         ))}
-        {hasMore && (
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => setExpanded(!expanded)}
-            className="flex items-center gap-2 rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
-          >
-            <span>{expanded ? "▲" : "▼"}</span>
-            <span>{expanded ? "Show less" : `+${actions.length - maxVisible} more`}</span>
-          </motion.button>
-        )}
       </div>
-    </div>
+    </motion.section>
   );
 }
-

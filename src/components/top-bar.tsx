@@ -8,6 +8,9 @@ type TopBarProps = {
   totalSeeds: number;
   harvested: number;
   onPlantSeed: () => void;
+  onUploadReceipt: () => void;
+  onFileComplaint: () => void;
+  onRequestLoan: () => void;
 };
 
 const formatAddress = (address?: string) => {
@@ -20,6 +23,9 @@ export default function TopBar({
   totalSeeds,
   harvested,
   onPlantSeed,
+  onUploadReceipt,
+  onFileComplaint,
+  onRequestLoan,
 }: TopBarProps) {
   return (
     <header className="flex flex-col gap-4 border-b border-cream-200 bg-cream-50/80 px-6 py-4 backdrop-blur md:flex-row md:items-center md:justify-between">
@@ -49,15 +55,47 @@ export default function TopBar({
           </div>
         </dl>
 
-        <motion.button
-          type="button"
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={onPlantSeed}
-          className="flex items-center gap-2 rounded-full bg-leaf-500 px-5 py-2 text-sm font-semibold text-cream-50 shadow-lg transition hover:bg-leaf-600 focus:outline-none focus:ring-2 focus:ring-leaf-400 focus:ring-offset-2 focus:ring-offset-cream-50"
-        >
-          🌱 Plant New Seed
-        </motion.button>
+        <div className="flex flex-wrap items-center gap-2">
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={onPlantSeed}
+            className="flex items-center gap-2 rounded-full bg-leaf-500 px-5 py-2 text-sm font-semibold text-cream-50 shadow-lg transition hover:bg-leaf-600 focus:outline-none focus:ring-2 focus:ring-leaf-400 focus:ring-offset-2 focus:ring-offset-cream-50"
+          >
+            🌱 Plant new seed
+          </motion.button>
+
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={onUploadReceipt}
+            className="flex items-center gap-2 rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200 focus:ring-offset-2 focus:ring-offset-cream-50"
+          >
+            📄 Upload receipt
+          </motion.button>
+
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={onFileComplaint}
+            className="flex items-center gap-2 rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200 focus:ring-offset-2 focus:ring-offset-cream-50"
+          >
+            🛠️ File complaint
+          </motion.button>
+
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={onRequestLoan}
+            className="flex items-center gap-2 rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200 focus:ring-offset-2 focus:ring-offset-cream-50"
+          >
+            💰 Request loan
+          </motion.button>
+        </div>
 
         <ConnectButton />
       </div>

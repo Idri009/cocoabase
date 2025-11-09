@@ -1,111 +1,120 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { cn } from "@/lib/cn";
-import {
-  SevenDayForecast,
-  getWeatherIcon,
-  formatForecastDate,
-  assessWeatherImpact,
-  generateWeatherRecommendations,
-} from "@/lib/weather-forecast-utils";
+import { usePlantationsStore } from "@/store/plantations";
 
-type WeatherForecastProps = {
-  forecast: SevenDayForecast;
-  className?: string;
-};
+export default function WeatherForecast() {
+  const plantations = usePlantationsStore((state) => state.plantations);
 
-export default function WeatherForecast({
-  forecast,
-  className,
-}: WeatherForecastProps) {
-  const recommendations = generateWeatherRecommendations(forecast);
+  const forecast = [
+    {
+      date: new Date(Date.now() + 0 * 24 * 60 * 60 * 1000),
+      condition: "sunny",
+      high: 28,
+      low: 22,
+      rainfall: 0,
+      humidity: 65,
+    },
+    {
+      date: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+      condition: "cloudy",
+      high: 26,
+      low: 21,
+      rainfall: 5,
+      humidity: 70,
+    },
+    {
+      date: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+      condition: "rainy",
+      high: 24,
+      low: 20,
+      rainfall: 15,
+      humidity: 85,
+    },
+    {
+      date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      condition: "sunny",
+      high: 27,
+      low: 21,
+      rainfall: 0,
+      humidity: 68,
+    },
+    {
+      date: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000),
+      condition: "cloudy",
+      high: 25,
+      low: 20,
+      rainfall: 8,
+      humidity: 72,
+    },
+  ];
+
+  const getConditionEmoji = (condition: string) => {
+    const emojiMap: Record<string, string> = {
+      sunny: "☀️",
+      cloudy: "☁️",
+      rainy: "🌧️",
+      stormy: "⛈️",
+      windy: "💨",
+      foggy: "🌫️",
+      snowy: "❄️",
+    };
+    return emojiMap[condition] || "☀️";
+  };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
+    <motion.section
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className={cn("rounded-xl bg-white border border-cream-200 p-6", className)}
+      className="rounded-3xl border border-cream-200 bg-gradient-to-br from-blue-50/80 to-cyan-50/80 p-6 shadow-sm backdrop-blur"
     >
-      <h3 className="text-lg font-semibold text-cocoa-800 mb-4">7-Day Weather Forecast</h3>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-cocoa-900">
+          Weather Forecast
+        </h2>
+        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+          5-day forecast
+        </p>
+      </div>
 
-      <div className="mb-4 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200">
-        <div className="flex items-center gap-3 mb-2">
-          <span className="text-4xl">{getWeatherIcon(forecast.current.condition)}</span>
-          <div>
-            <div className="text-2xl font-bold text-cocoa-800">
-              {forecast.current.temperature.high}°C
+      <div className="space-y-2">
+        {forecast.map((day, index) => (
+          <div
+            key={index}
+            className="flex items-center justify-between rounded-xl border border-blue-200 bg-white/80 p-3"
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{getConditionEmoji(day.condition)}</span>
+              <div>
+                <p className="text-sm font-semibold text-cocoa-900">
+                  {day.date.toLocaleDateString("en-US", {
+                    weekday: index === 0 ? "long" : "short",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </p>
+                <p className="text-xs text-cocoa-600 capitalize">
+                  {day.condition}
+                </p>
+              </div>
             </div>
-            <div className="text-sm text-cocoa-600">
-              {forecast.current.temperature.low}°C low
+            <div className="flex items-center gap-4 text-right">
+              <div>
+                <p className="text-sm font-bold text-cocoa-900">
+                  {day.high}°C
+                </p>
+                <p className="text-xs text-cocoa-600">{day.low}°C</p>
+              </div>
+              {day.rainfall > 0 && (
+                <div>
+                  <p className="text-xs text-blue-600">💧 {day.rainfall}mm</p>
+                  <p className="text-xs text-cocoa-600">{day.humidity}%</p>
+                </div>
+              )}
             </div>
           </div>
-        </div>
-        <div className="text-xs text-cocoa-600">
-          {forecast.current.precipitation}mm • {forecast.current.humidity}% humidity •{" "}
-          {forecast.current.windSpeed} km/h
-        </div>
+        ))}
       </div>
-
-      <div className="space-y-2 mb-4">
-        {forecast.forecast.map((day, index) => {
-          const impact = assessWeatherImpact(day);
-
-          return (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex items-center justify-between p-3 rounded-lg border border-cream-200 hover:bg-cocoa-50 transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">{getWeatherIcon(day.condition)}</span>
-                <div>
-                  <div className="font-medium text-sm text-cocoa-800">
-                    {formatForecastDate(day.date)}
-                  </div>
-                  <div className="text-xs text-cocoa-600">
-                    {day.temperature.high}° / {day.temperature.low}°
-                  </div>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-xs text-cocoa-600">
-                  {day.precipitation > 0 ? `${day.precipitation}mm` : "No rain"}
-                </div>
-                <div
-                  className={cn(
-                    "text-xs mt-1",
-                    impact.impact === "positive"
-                      ? "text-green-600"
-                      : impact.impact === "negative"
-                      ? "text-red-600"
-                      : "text-cocoa-500"
-                  )}
-                >
-                  {impact.impact === "positive" ? "✓" : impact.impact === "negative" ? "⚠" : "○"}
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {recommendations.length > 0 && (
-        <div className="rounded-lg bg-blue-50 border border-blue-200 p-3">
-          <div className="text-xs font-medium text-blue-800 mb-2">Recommendations</div>
-          <ul className="space-y-1">
-            {recommendations.map((rec, index) => (
-              <li key={index} className="text-xs text-blue-700 flex items-start gap-1">
-                <span>•</span>
-                <span>{rec}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </motion.div>
+    </motion.section>
   );
 }
-

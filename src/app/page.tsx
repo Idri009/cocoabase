@@ -1501,6 +1501,60 @@ export default function DashboardPage() {
     };
   }, [analyticsSnapshot]);
 
+  const performanceMetrics = useMemo(() => {
+    const renderTime = performance.now();
+    const memoryUsage = typeof performance.memory !== "undefined" 
+      ? {
+          used: Math.round(performance.memory.usedJSHeapSize / 1048576),
+          total: Math.round(performance.memory.totalJSHeapSize / 1048576),
+          limit: Math.round(performance.memory.jsHeapSizeLimit / 1048576),
+        }
+      : null;
+
+    return {
+      renderTime: Math.round(renderTime),
+      memoryUsage,
+      plantationsLoaded: filteredPlantations.length,
+      componentsRendered: 1,
+      lastUpdate: new Date().toISOString(),
+    };
+  }, [filteredPlantations]);
+
+  const dataVisualizationMetrics = useMemo(() => {
+    const stageDistribution = {
+      planted: filteredPlantations.filter((p) => p.stage === "planted").length,
+      growing: filteredPlantations.filter((p) => p.stage === "growing").length,
+      harvested: filteredPlantations.filter((p) => p.stage === "harvested").length,
+    };
+
+    const locationDistribution = filteredPlantations.reduce((acc, p) => {
+      const location = p.location?.split(",")[1]?.trim() || "Unknown";
+      acc[location] = (acc[location] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    const taskStatusDistribution = {
+      pending: filteredPlantations.reduce(
+        (acc, p) => acc + p.tasks.filter((t) => t.status === "pending").length,
+        0
+      ),
+      in_progress: filteredPlantations.reduce(
+        (acc, p) => acc + p.tasks.filter((t) => t.status === "in_progress").length,
+        0
+      ),
+      completed: filteredPlantations.reduce(
+        (acc, p) => acc + p.tasks.filter((t) => t.status === "completed").length,
+        0
+      ),
+    };
+
+    return {
+      stageDistribution,
+      locationDistribution,
+      taskStatusDistribution,
+    };
+  }, [filteredPlantations]);
+
   const showEmptyState =
     filteredPlantations.length === 0 &&
     (isConnected || normalizedFilters.length > 0);

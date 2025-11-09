@@ -175,6 +175,15 @@ const stageOrder: GrowthStage[] = ["planted", "growing", "harvested"];
 const generateCollaboratorId = () =>
   `collab-${Math.random().toString(36).slice(2, 9)}`;
 
+const normalizeTask = (
+  task: PlantationTask | Omit<PlantationTask, "id">
+): PlantationTask => ({
+  id: "id" in task ? task.id : generateTaskId(),
+  status: task.status ?? "pending",
+  title: task.title,
+  dueDate: task.dueDate,
+});
+
 type SeedCollaborator = Omit<PlantationCollaborator, "id"> & { id?: string };
 type SeedPlantation = Omit<
   Plantation,
@@ -210,7 +219,9 @@ const normalizePlantation = (plantation: SeedPlantation): Plantation => {
           normalizeCollaborator(collaborator, updatedAt)
         )
       : [],
-    tasks: Array.isArray(plantation.tasks) ? plantation.tasks : [],
+    tasks: Array.isArray(plantation.tasks)
+      ? plantation.tasks.map((task) => normalizeTask(task))
+      : [],
   };
 };
 
@@ -267,7 +278,7 @@ export const usePlantationsStore = create<PlantationState>()(
           id: generateId(),
           stage: payload.stage ?? "planted",
           updatedAt: now,
-          tasks: payload.tasks ?? [],
+          tasks: payload.tasks?.map((task) => normalizeTask(task)) ?? [],
           yieldTimeline: payload.yieldTimeline ?? [],
           collaborators,
           ...payload,

@@ -32,9 +32,9 @@ npm install
 
 ## Run the App
 
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+```
 
 Visit [http://localhost:3000](http://localhost:3000/) to see the dashboard.
 
@@ -148,6 +148,10 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Soil Management**: Track soil tests, pH levels, and nutrient content (N, P, K)
 - **Compliance Tracker**: Monitor regulatory compliance requirements and deadlines
 - **Budget Planner**: Create and track budgets by category with spending analysis
+- **Labor Management**: Track labor hours, costs, and worker assignments
+- **Maintenance Scheduler**: Schedule and track maintenance tasks for equipment and infrastructure
+- **Risk Assessment**: Identify, assess, and mitigate risks to operations
+- **Performance Benchmark**: Key performance indicators and operational benchmarks
 
 ### Data Management
 - **Data Export**: Export plantations, tasks, and analytics data

@@ -149,9 +149,20 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Compliance Tracker**: Monitor regulatory compliance requirements and deadlines
 - **Budget Planner**: Create and track budgets by category with spending analysis
 - **Labor Management**: Track labor hours, costs, and worker assignments
+- **Worker Management**: Manage worker profiles, roles, skills, and availability
+- **Labor Cost Analysis**: Calculate labor costs by role, track utilization, and efficiency
 - **Maintenance Scheduler**: Schedule and track maintenance tasks for equipment and infrastructure
+- **Equipment Tracking**: Track equipment status, maintenance history, and uptime
+- **Preventive Maintenance**: Schedule preventive maintenance based on intervals
+- **Maintenance Cost Tracking**: Track maintenance costs including parts and labor
 - **Risk Assessment**: Identify, assess, and mitigate risks to operations
+- **Risk Scoring**: Calculate risk scores based on probability and impact
+- **Risk Mitigation Planning**: Generate mitigation recommendations by category
+- **Risk Monitoring**: Track risk status and trends over time
 - **Performance Benchmark**: Key performance indicators and operational benchmarks
+- **KPI Dashboard**: Calculate and display KPI scores across categories
+- **Benchmark Comparison**: Compare performance against industry averages and best-in-class
+- **Performance Trends**: Track performance trends (improving/declining/stable)
 
 ### Data Management
 - **Data Export**: Export plantations, tasks, and analytics data

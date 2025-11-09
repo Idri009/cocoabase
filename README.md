@@ -700,6 +700,14 @@ The codebase includes a comprehensive set of utility libraries for common operat
 - **`marketplace-utils.ts`**: Marketplace utilities (listing management, search, filtering, sorting, seller ratings)
 - **`weather-forecast-utils.ts`**: Weather forecast utilities (7-day forecast, impact assessment, recommendations, analysis)
 
+### AI & Planning
+- **`ai-assistant-utils.ts`**: AI assistant utilities (question answering, suggestion generation, insights, prioritization)
+- **`budget-utils.ts`**: Budget planning utilities (budget tracking, utilization, variance, forecasting)
+- **`loan-utils.ts`**: Loan management utilities (payment calculation, schedule generation, progress tracking)
+- **`seasonal-utils.ts`**: Seasonal planning utilities (season detection, activity recommendations, calendar)
+- **`farmer-network-utils.ts`**: Farmer network utilities (profiles, search, connections, groups, ratings)
+- **`expense-utils.ts`**: Expense tracking utilities (categorization, trends, monthly averages, summaries)
+
 ### Testing
 - **`testing-utils.ts`**: Testing utilities (mock data, delays, assertions, localStorage mocking)
 

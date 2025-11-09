@@ -4786,6 +4786,11 @@ export default function DashboardPage() {
                   <TrainingResources />
                   <MarketplacePanel />
                 </div>
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <SoilManagementPanel />
+                  <ComplianceTracker />
+                </div>
+                <BudgetPlanner />
 
                 <div className="grid gap-6 xl:grid-cols-[1.3fr,0.7fr]">
                   <section className="rounded-3xl border border-cream-200 bg-cream-50/80 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur">

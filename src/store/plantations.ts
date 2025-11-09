@@ -467,6 +467,24 @@ const normalizeTask = (
   attachments: Array.isArray(task.attachments) ? task.attachments : [],
 });
 
+const normalizeYieldCheckpoint = (
+  checkpoint: YieldCheckpoint | YieldCheckpointDraft
+): YieldCheckpoint => ({
+  id: "id" in checkpoint && checkpoint.id
+    ? checkpoint.id
+    : generateYieldCheckpointId(),
+  date: checkpoint.date ?? new Date().toISOString(),
+  event: checkpoint.event,
+  yieldKg: Number.isFinite(checkpoint.yieldKg)
+    ? Number(checkpoint.yieldKg)
+    : 0,
+  notes: "notes" in checkpoint ? checkpoint.notes : undefined,
+  photos:
+    "photos" in checkpoint && Array.isArray(checkpoint.photos)
+      ? checkpoint.photos
+      : [],
+});
+
 const buildPersistOptions = (): PersistOptions<PlantationState> => {
   const options: PersistOptions<PlantationState> = {
     name: "cocoa-chain-plantations",

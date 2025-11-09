@@ -193,6 +193,30 @@ export const buildAnalyticsSnapshot = (
     .sort((a, b) => b.carbonOffsetTons - a.carbonOffsetTons)
     .slice(0, 6);
 
+  const cohortPerformance = Array.from(cohortMap.values())
+    .sort((a, b) => a.date.getTime() - b.date.getTime())
+    .slice(-8)
+    .map((entry) => {
+      const harvestRate = entry.planted
+        ? Math.round((entry.harvested / entry.planted) * 100)
+        : 0;
+      const averageCohortDays = entry.harvestDurations.length
+        ? Math.round(
+            entry.harvestDurations.reduce((acc, days) => acc + days, 0) /
+              entry.harvestDurations.length
+          )
+        : null;
+
+      return {
+        key: `${entry.date.getFullYear()}-${entry.date.getMonth()}`,
+        label: monthFormatter.format(entry.date),
+        planted: entry.planted,
+        harvested: entry.harvested,
+        harvestRate,
+        averageDaysToHarvest: averageCohortDays,
+      };
+    });
+
   return {
     total,
     stageBreakdown,
@@ -208,6 +232,7 @@ export const buildAnalyticsSnapshot = (
       },
       perRegion,
     },
+    cohortPerformance,
   };
 };
 

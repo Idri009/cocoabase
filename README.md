@@ -32,9 +32,9 @@ npm install
 
 ## Run the App
 
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
 Visit [http://localhost:3000](http://localhost:3000/) to see the dashboard.
 
@@ -279,6 +279,42 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Nearest Location Finder**: Find nearest plantation or location
 - **Radius Search**: Find locations within a specified radius
 - **Coordinate Validation**: Validate and format GPS coordinates
+
+### Labor Management
+- **Worker Profiles**: Manage worker information including roles, skills, and contact details
+- **Labor Records**: Track work hours, tasks, and costs per worker
+- **Role-Based Tracking**: Track labor costs and hours by role (farmer, supervisor, harvester, maintenance, admin)
+- **Worker Availability**: Manage worker availability schedules and find available workers
+- **Labor Cost Analysis**: Calculate total labor costs, average hourly rates, and cost by role
+- **Worker Utilization**: Calculate worker utilization rates and efficiency
+- **Labor Efficiency**: Compare planned vs actual labor hours
+
+### Maintenance Management
+- **Equipment Tracking**: Track equipment details, status, and maintenance history
+- **Maintenance Scheduling**: Schedule preventive, corrective, emergency, and inspection tasks
+- **Maintenance Status**: Track maintenance status (scheduled, in-progress, completed, overdue, cancelled)
+- **Due Date Monitoring**: Identify equipment due for maintenance and overdue items
+- **Maintenance Cost Tracking**: Track maintenance costs including parts and labor
+- **Equipment Uptime**: Calculate equipment uptime and reliability metrics
+- **Maintenance Summary**: Comprehensive summary of maintenance tasks by status and type
+
+### Risk Management
+- **Risk Identification**: Identify risks across multiple categories (weather, pest-disease, market, financial, operational, compliance, equipment, labor)
+- **Risk Assessment**: Assess risks with probability and impact scoring
+- **Risk Scoring**: Calculate risk scores and determine risk levels (low, medium, high, critical)
+- **Risk Mitigation**: Generate mitigation plans and recommendations by category
+- **Risk Monitoring**: Track risk status (identified, assessed, mitigated, monitoring, resolved)
+- **Risk Exposure**: Calculate overall risk exposure and trends
+- **Critical Risk Alerts**: Identify and prioritize critical risks requiring immediate attention
+
+### Performance Benchmarking
+- **KPI Calculation**: Calculate Key Performance Indicator scores across multiple categories
+- **Performance Metrics**: Track performance metrics with targets and benchmarks
+- **Benchmark Comparison**: Compare performance against industry averages and best-in-class
+- **Performance Rating**: Rate performance as excellent, good, average, or poor
+- **Trend Analysis**: Track performance trends (improving, declining, stable)
+- **Improvement Areas**: Identify areas needing improvement based on targets and benchmarks
+- **Performance Reports**: Generate comprehensive performance benchmark reports
 
 ### Additional Features
 - **On-chain Sync**: Simulate and visualize blockchain transactions

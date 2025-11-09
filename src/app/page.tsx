@@ -245,7 +245,7 @@ export default function DashboardPage() {
           return a.seedName.localeCompare(b.seedName);
         case "stage":
           const stageOrder: GrowthStage[] = ["planted", "growing", "harvested"];
-          return (
+  return (
             stageOrder.indexOf(a.stage) - stageOrder.indexOf(b.stage)
           );
         case "date":
@@ -1004,7 +1004,7 @@ export default function DashboardPage() {
                     <span className="text-xs text-cocoa-500">
                       {stats.harvested} harvested • {stats.growing} growing
                     </span>
-                  </div>
+        </div>
                   <div className="flex flex-col gap-1">
                     <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
                       Active Tasks
@@ -1842,18 +1842,11 @@ export default function DashboardPage() {
             <label className="block text-sm text-cocoa-600">
               Notes
               <textarea
-                defaultValue={notes.get(notesTargetId) || ""}
+                value={notesInput}
+                onChange={(e) => setNotesInput(e.target.value)}
                 rows={6}
                 className="mt-1 w-full rounded-2xl border border-cream-300 bg-white px-3 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
                 placeholder="Add your notes here..."
-                ref={(textarea) => {
-                  if (textarea && notesTargetId) {
-                    const currentNote = notes.get(notesTargetId) || "";
-                    if (textarea.value !== currentNote) {
-                      textarea.value = currentNote;
-                    }
-                  }
-                }}
               />
             </label>
             <div className="flex justify-end gap-3">
@@ -1862,6 +1855,7 @@ export default function DashboardPage() {
                 onClick={() => {
                   setShowNotesModal(false);
                   setNotesTargetId(null);
+                  setNotesInput("");
                 }}
                 className="rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
               >
@@ -1870,11 +1864,9 @@ export default function DashboardPage() {
               <button
                 type="button"
                 onClick={() => {
-                  const textarea = document.querySelector(
-                    'textarea[placeholder="Add your notes here..."]'
-                  ) as HTMLTextAreaElement;
-                  if (textarea && notesTargetId) {
-                    handleSaveNote(notesTargetId, textarea.value);
+                  if (notesTargetId) {
+                    handleSaveNote(notesTargetId, notesInput);
+                    setNotesInput("");
                   }
                 }}
                 className="rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-cream-50 shadow-lg transition hover:bg-leaf-600 focus:outline-none focus:ring-2 focus:ring-leaf-400"

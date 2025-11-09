@@ -1,301 +1,187 @@
 "use client";
 
-import { useState, FormEvent, useMemo } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/cn";
-import {
-  usePaymentsStore,
-  type Payment,
-  type PaymentType,
-  type PaymentStatus,
-} from "@/store/payments";
-import { usePlantationsStore } from "@/store/plantations";
-import AnimatedCounter from "./animated-counter";
+import { useState } from "react";
+import { useEngagementStore } from "@/store/engagement";
 
 export default function PaymentTracker() {
-  const payments = usePaymentsStore((state) => state.payments);
-  const addPayment = usePaymentsStore((state) => state.addPayment);
-  const updatePayment = usePaymentsStore((state) => state.updatePayment);
-  const removePayment = usePaymentsStore((state) => state.removePayment);
-  const getPendingPayments = usePaymentsStore(
-    (state) => state.getPendingPayments
+  const loans = useEngagementStore((state) => state.loans);
+  const [selectedTab, setSelectedTab] = useState<"payments" | "loans">(
+    "payments"
   );
-  const getTotalByType = usePaymentsStore((state) => state.getTotalByType);
-  const plantations = usePlantationsStore((state) => state.plantations);
 
-  const [isAdding, setIsAdding] = useState(false);
-  const [form, setForm] = useState<Partial<Payment>>({
-    type: "expense",
-    method: "cash",
-    status: "pending",
-    currency: "USD",
-  });
-
-  const pendingPayments = getPendingPayments();
-  const totalIncome = getTotalByType("income");
-  const totalExpenses = getTotalByType("expense");
-  const netAmount = totalIncome - totalExpenses;
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!form.amount || !form.description) {
-      return;
-    }
-    addPayment({
-      type: form.type ?? "expense",
-      amount: form.amount,
-      currency: form.currency || "USD",
-      method: form.method ?? "cash",
-      status: form.status ?? "pending",
-      description: form.description,
-      recipient: form.recipient,
-      payer: form.payer,
-      dueDate: form.dueDate,
-      paidDate: form.paidDate,
-      invoiceNumber: form.invoiceNumber,
-      reference: form.reference,
-      plantationId: form.plantationId,
-      contractId: form.contractId,
-      notes: form.notes,
-    });
-    setForm({
-      type: "expense",
-      method: "cash",
-      status: "pending",
+  const payments = [
+    {
+      id: "1",
+      type: "loan_payment",
+      amount: 5000,
       currency: "USD",
-    });
-    setIsAdding(false);
-  };
-
-  const types: PaymentType[] = ["income", "expense", "refund"];
-  const methods: Payment["method"][] = [
-    "cash",
-    "bank_transfer",
-    "check",
-    "crypto",
-    "other",
+      date: "2024-01-15",
+      status: "completed",
+      description: "Monthly loan payment",
+    },
+    {
+      id: "2",
+      type: "supplier",
+      amount: 2500,
+      currency: "USD",
+      date: "2024-01-10",
+      status: "pending",
+      description: "Payment to AgriSupply Co.",
+    },
+    {
+      id: "3",
+      type: "equipment",
+      amount: 15000,
+      currency: "USD",
+      date: "2024-01-05",
+      status: "completed",
+      description: "Irrigation system purchase",
+    },
   ];
+
+  const totalPaid = payments
+    .filter((p) => p.status === "completed")
+    .reduce((acc, p) => acc + p.amount, 0);
+  const totalPending = payments
+    .filter((p) => p.status === "pending")
+    .reduce((acc, p) => acc + p.amount, 0);
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
-      className="rounded-3xl border border-cocoa-800/60 bg-[#101f3c]/80 p-6 text-slate-100 shadow-xl shadow-black/20 backdrop-blur"
+      className="rounded-3xl border border-cream-200 bg-gradient-to-br from-green-50/80 to-emerald-50/80 p-6 shadow-sm backdrop-blur"
     >
-      <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Payment tracker</h2>
-          <p className="text-sm text-slate-300/80">
-            Track payments, invoices, and financial transactions.
-          </p>
-        </div>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-cocoa-900">
+          Payment Tracker
+        </h2>
+        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+          Track payments and loans
+        </p>
+      </div>
+
+      <div className="mb-4 flex gap-2">
         <button
           type="button"
-          onClick={() => setIsAdding(!isAdding)}
-          className="rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg transition hover:bg-leaf-400"
+          onClick={() => setSelectedTab("payments")}
+          className={`flex-1 rounded-xl border px-4 py-2 text-sm font-semibold transition ${
+            selectedTab === "payments"
+              ? "border-green-600 bg-green-600 text-white"
+              : "border-cream-300 bg-white text-cocoa-700 hover:border-green-300"
+          }`}
         >
-          {isAdding ? "Cancel" : "+ Add payment"}
+          Payments
         </button>
-      </header>
-
-      <div className="mt-6 grid gap-4 md:grid-cols-3">
-        <div className="rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-emerald-300/70">
-            Total income
-          </p>
-          <p className="mt-2 text-2xl font-bold text-emerald-300">
-            $<AnimatedCounter value={totalIncome} />
-          </p>
-        </div>
-        <div className="rounded-2xl border border-rose-500/40 bg-rose-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-rose-300/70">
-            Total expenses
-          </p>
-          <p className="mt-2 text-2xl font-bold text-rose-300">
-            $<AnimatedCounter value={totalExpenses} />
-          </p>
-        </div>
-        <div
-          className={cn(
-            "rounded-2xl border p-4",
-            netAmount >= 0
-              ? "border-emerald-500/40 bg-emerald-500/10"
-              : "border-rose-500/40 bg-rose-500/10"
-          )}
+        <button
+          type="button"
+          onClick={() => setSelectedTab("loans")}
+          className={`flex-1 rounded-xl border px-4 py-2 text-sm font-semibold transition ${
+            selectedTab === "loans"
+              ? "border-green-600 bg-green-600 text-white"
+              : "border-cream-300 bg-white text-cocoa-700 hover:border-green-300"
+          }`}
         >
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-300/70">
-            Net amount
-          </p>
-          <p
-            className={cn(
-              "mt-2 text-2xl font-bold",
-              netAmount >= 0 ? "text-emerald-300" : "text-rose-300"
-            )}
-          >
-            $<AnimatedCounter value={netAmount} />
-          </p>
-        </div>
+          Loans ({loans.length})
+        </button>
       </div>
 
-      {pendingPayments.length > 0 && (
-        <div className="mt-4 rounded-xl border border-amber-500/40 bg-amber-500/10 p-3">
-          <p className="text-sm font-semibold text-amber-300">
-            ⚠️ {pendingPayments.length} pending payment(s)
-          </p>
-        </div>
-      )}
-
-      {isAdding && (
-        <motion.form
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          onSubmit={handleSubmit}
-          className="mt-4 space-y-3 rounded-2xl border border-slate-700/40 bg-slate-900/50 p-4"
-        >
+      {selectedTab === "payments" ? (
+        <div className="space-y-3">
           <div className="grid gap-3 sm:grid-cols-2">
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Type
-              <select
-                value={form.type}
-                onChange={(e) =>
-                  setForm({ ...form, type: e.target.value as PaymentType })
-                }
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              >
-                {types.map((type) => (
-                  <option key={type} value={type}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Amount
-              <input
-                type="number"
-                step="0.01"
-                value={form.amount || ""}
-                onChange={(e) =>
-                  setForm({ ...form, amount: Number(e.target.value) })
-                }
-                required
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Description
-              <input
-                type="text"
-                value={form.description || ""}
-                onChange={(e) =>
-                  setForm({ ...form, description: e.target.value })
-                }
-                required
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Payment method
-              <select
-                value={form.method}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    method: e.target.value as Payment["method"],
-                  })
-                }
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              >
-                {methods.map((method) => (
-                  <option key={method} value={method}>
-                    {method.replace("_", " ").replace(/\b\w/g, (l) =>
-                      l.toUpperCase()
-                    )}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <div className="rounded-xl border border-green-200 bg-white/90 p-3">
+              <div className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                Paid
+              </div>
+              <div className="mt-1 text-xl font-bold text-green-700">
+                {new Intl.NumberFormat(undefined, {
+                  style: "currency",
+                  currency: "USD",
+                }).format(totalPaid)}
+              </div>
+            </div>
+            <div className="rounded-xl border border-amber-200 bg-white/90 p-3">
+              <div className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                Pending
+              </div>
+              <div className="mt-1 text-xl font-bold text-amber-700">
+                {new Intl.NumberFormat(undefined, {
+                  style: "currency",
+                  currency: "USD",
+                }).format(totalPending)}
+              </div>
+            </div>
           </div>
-          <button
-            type="submit"
-            className="w-full rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg transition hover:bg-leaf-400"
-          >
-            Add payment
-          </button>
-        </motion.form>
-      )}
-
-      <div className="mt-6 space-y-2">
-        {payments.length === 0 ? (
-          <div className="rounded-2xl border border-slate-700/40 bg-slate-900/50 p-8 text-center">
-            <p className="text-sm text-slate-300/80">
-              No payments yet. Add your first payment to get started.
-            </p>
-          </div>
-        ) : (
-          payments.slice(0, 10).map((payment) => {
-            const plantation = plantations.find(
-              (p) => p.id === payment.plantationId
-            );
-            return (
-              <div
-                key={payment.id}
-                className={cn(
-                  "rounded-xl border p-3",
-                  payment.type === "income"
-                    ? "border-emerald-500/40 bg-emerald-500/10"
-                    : "border-rose-500/40 bg-rose-500/10"
-                )}
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-white">
-                        {payment.description}
-                      </span>
-                      <span className="rounded-full bg-slate-800/80 px-2 py-0.5 text-xs text-slate-300/70">
-                        {payment.status}
-                      </span>
-                    </div>
-                    <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-300/70">
-                      <span className="font-semibold">
-                        {payment.type === "income" ? "+" : "-"}
-                        {payment.currency} {payment.amount.toLocaleString()}
-                      </span>
-                      <span>{payment.method.replace("_", " ")}</span>
-                      {payment.dueDate && (
-                        <span>
-                          Due: {new Date(payment.dueDate).toLocaleDateString()}
-                        </span>
-                      )}
-                    </div>
+          {payments.map((payment) => (
+            <div
+              key={payment.id}
+              className={`rounded-xl border p-3 ${
+                payment.status === "completed"
+                  ? "border-green-200 bg-white/80"
+                  : "border-amber-200 bg-amber-50/80"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-semibold text-cocoa-900">
+                    {payment.description}
+                  </p>
+                  <p className="mt-1 text-xs text-cocoa-500">
+                    {new Date(payment.date).toLocaleDateString()}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <div className="font-bold text-cocoa-900">
+                    {new Intl.NumberFormat(undefined, {
+                      style: "currency",
+                      currency: payment.currency,
+                    }).format(payment.amount)}
                   </div>
-                  {payment.status === "pending" && (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        updatePayment(payment.id, { status: "completed" })
-                      }
-                      className="ml-2 rounded-full bg-slate-800/70 px-3 py-1 text-xs font-semibold text-slate-200/90 transition hover:bg-slate-700/80"
-                    >
-                      Mark paid
-                    </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => removePayment(payment.id)}
-                    className="ml-2 rounded-full bg-slate-800/70 p-2 text-slate-200/90 transition hover:bg-slate-700/80"
+                  <span
+                    className={`mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                      payment.status === "completed"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-amber-100 text-amber-700"
+                    }`}
                   >
-                    ✕
-                  </button>
+                    {payment.status}
+                  </span>
                 </div>
               </div>
-            );
-          })
-        )}
-      </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {loans.length === 0 ? (
+            <div className="rounded-xl border border-cream-200 bg-cream-50/70 p-6 text-center">
+              <p className="text-sm text-cocoa-600">No active loans</p>
+            </div>
+          ) : (
+            loans.map((loan) => (
+              <div
+                key={loan.id}
+                className="rounded-xl border border-green-200 bg-white/80 p-3"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold text-cocoa-900">
+                      {loan.amount.toLocaleString()} {loan.currency}
+                    </p>
+                    <p className="mt-1 text-xs text-cocoa-500">
+                      Status: {loan.status}
+                    </p>
+                  </div>
+                  <span className="rounded-full bg-green-100 px-2 py-1 text-[10px] font-semibold text-green-700">
+                    {loan.status}
+                  </span>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      )}
     </motion.section>
   );
 }
-

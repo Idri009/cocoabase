@@ -526,6 +526,11 @@ export const usePlantationsStore = create<PlantationState>()(
         }
 
         const now = new Date().toISOString();
+        const stageTemplates = get().stageTemplates;
+        const newStageTaskRefs: Array<{
+          plantationId: string;
+          task: PlantationTask;
+        }> = [];
 
         set((state) => ({
           plantations: state.plantations.map((plantation) =>
@@ -535,6 +540,20 @@ export const usePlantationsStore = create<PlantationState>()(
                   stage: nextStage,
                   updatedAt: now,
                   notes: note ?? plantation.notes,
+                  ...(() => {
+                    const { tasks, created } = generateStageTemplateTasks(
+                      { ...plantation, stage: nextStage },
+                      nextStage,
+                      stageTemplates
+                    );
+                    created.forEach((task) =>
+                      newStageTaskRefs.push({
+                        plantationId: plantation.id,
+                        task,
+                      })
+                    );
+                    return { tasks };
+                  })(),
                 }
               : plantation
           ),
@@ -552,6 +571,26 @@ export const usePlantationsStore = create<PlantationState>()(
             nextStage,
             timestamp: now,
             note,
+          });
+        }
+
+        if (newStageTaskRefs.length) {
+          const latest = get();
+          newStageTaskRefs.forEach(({ plantationId, task }) => {
+            const plantation = latest.plantations.find(
+              (item) => item.id === plantationId
+            );
+            const currentTask = plantation?.tasks.find(
+              (item) => item.id === task.id
+            );
+            if (plantation && currentTask) {
+              emitPlantationEvent({
+                type: "task_added",
+                plantation,
+                task: currentTask,
+                timestamp: now,
+              });
+            }
           });
         }
       },

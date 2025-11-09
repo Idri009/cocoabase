@@ -896,8 +896,9 @@ export const usePlantationsStore = create<PlantationState>()(
           });
         }
       },
-      addYieldCheckpoint: (plantationId, checkpoint) => {
+      addYieldCheckpoint: (plantationId, checkpointDraft) => {
         const timestamp = new Date().toISOString();
+        const checkpoint = normalizeYieldCheckpoint(checkpointDraft);
         set((state) => ({
           plantations: state.plantations.map((plantation) =>
             plantation.id === plantationId
@@ -916,15 +917,88 @@ export const usePlantationsStore = create<PlantationState>()(
         const updated = get().plantations.find(
           (plantation) => plantation.id === plantationId
         );
+        const created = updated?.yieldTimeline.find(
+          (entry) => entry.id === checkpoint.id
+        );
 
-        if (updated) {
+        if (updated && created) {
           emitPlantationEvent({
             type: "yield_checkpoint_added",
             plantation: updated,
-            checkpoint,
+            checkpoint: created,
             timestamp,
           });
         }
+
+        return checkpoint;
+      },
+      updateYieldCheckpoint: (plantationId, checkpointId, updates) => {
+        const timestamp = new Date().toISOString();
+        set((state) => ({
+          plantations: state.plantations.map((plantation) => {
+            if (plantation.id !== plantationId) {
+              return plantation;
+            }
+            const updatedTimeline = plantation.yieldTimeline
+              .map((checkpoint) =>
+                checkpoint.id === checkpointId
+                  ? {
+                      ...checkpoint,
+                      event: updates.event ?? checkpoint.event,
+                      date: updates.date ?? checkpoint.date,
+                      yieldKg:
+                        updates.yieldKg !== undefined
+                          ? Number(updates.yieldKg)
+                          : checkpoint.yieldKg,
+                      notes:
+                        updates.notes !== undefined
+                          ? updates.notes
+                          : checkpoint.notes,
+                      photos:
+                        updates.photos !== undefined
+                          ? [...updates.photos]
+                          : checkpoint.photos,
+                    }
+                  : checkpoint
+              )
+              .sort(
+                (a, b) =>
+                  new Date(a.date).getTime() - new Date(b.date).getTime()
+              );
+            return {
+              ...plantation,
+              updatedAt: timestamp,
+              yieldTimeline: updatedTimeline,
+            };
+          }),
+        }));
+      },
+      addYieldCheckpointPhoto: (plantationId, checkpointId, photoUrl) => {
+        const trimmed = photoUrl.trim();
+        if (!trimmed) {
+          return;
+        }
+        const timestamp = new Date().toISOString();
+        set((state) => ({
+          plantations: state.plantations.map((plantation) =>
+            plantation.id === plantationId
+              ? {
+                  ...plantation,
+                  updatedAt: timestamp,
+                  yieldTimeline: plantation.yieldTimeline.map((checkpoint) =>
+                    checkpoint.id === checkpointId
+                      ? {
+                          ...checkpoint,
+                          photos: checkpoint.photos.includes(trimmed)
+                            ? checkpoint.photos
+                            : [...checkpoint.photos, trimmed],
+                        }
+                      : checkpoint
+                  ),
+                }
+              : plantation
+          ),
+        }));
       },
       recordCollaboratorNote: (plantationId, collaboratorId, note) => {
         const timestamp = new Date().toISOString();

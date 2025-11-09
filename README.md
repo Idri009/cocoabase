@@ -32,9 +32,9 @@ npm install
 
 ## Run the App
 
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
 Visit [http://localhost:3000](http://localhost:3000/) to see the dashboard.
 
@@ -132,7 +132,15 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Yield Journal**: Document and track yield data over time
 - **Quality Control**: Track quality tests and grading for harvests
 - **Pest & Disease Management**: Monitor and manage pests, diseases, and weeds
+- **Pest/Disease Tracking**: Record pest and disease incidents with severity levels
+- **Treatment Recommendations**: Automatic treatment recommendations based on type and severity
+- **Treatment Success Tracking**: Monitor treatment success rates and resolution times
+- **Urgent Alert System**: Automatic alerts for critical pest/disease issues
 - **Irrigation Tracker**: Monitor water usage and soil moisture levels
+- **Irrigation Scheduling**: Optimal irrigation schedule calculation based on soil moisture and weather
+- **Water Usage Tracking**: Track water consumption and efficiency
+- **Soil Moisture Monitoring**: Real-time soil moisture level assessment
+- **Watering Recommendations**: Smart watering recommendations based on current conditions
 - **Reporting Dashboard**: Generate comprehensive reports and analytics
 - **Mobile Features**: GPS tracking, offline mode, photo capture, barcode scanning
 - **Training Resources**: Educational content and guides for farmers

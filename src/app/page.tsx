@@ -221,6 +221,10 @@ export default function DashboardPage() {
   const [showWeatherForecast, setShowWeatherForecast] = useState(false);
   const [showCarbonCalculator, setShowCarbonCalculator] = useState(false);
   const [showHarvestScheduler, setShowHarvestScheduler] = useState(false);
+  const [showExpenseTracker, setShowExpenseTracker] = useState(false);
+  const [showCropRotation, setShowCropRotation] = useState(false);
+  const [showSoilAnalysis, setShowSoilAnalysis] = useState(false);
+  const [showEquipmentMaintenance, setShowEquipmentMaintenance] = useState(false);
   const [showFinancialPlanner, setShowFinancialPlanner] = useState(false);
   const [showTaskTemplates, setShowTaskTemplates] = useState(false);
   const [showDataSync, setShowDataSync] = useState(false);

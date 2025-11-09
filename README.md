@@ -784,6 +784,17 @@ The codebase includes a comprehensive set of utility libraries for common operat
 - **`farmer-network-utils.ts`**: Farmer network utilities (profiles, search, connections, groups, ratings)
 - **`expense-utils.ts`**: Expense tracking utilities (categorization, trends, monthly averages, summaries)
 
+### Crop & Equipment Management
+- **`crop-rotation-utils.ts`**: Crop rotation planning utilities (recommendations, benefits, multi-year planning)
+- **`equipment-utils.ts`**: Equipment management utilities (tracking, maintenance, depreciation, uptime)
+- **`weather-history-utils.ts`**: Weather history utilities (trends, comparisons, monthly summaries, extreme detection)
+
+### Mobile & Media
+- **`mobile-utils.ts`**: Mobile device utilities (camera, notifications, vibration, sharing, battery, offline mode)
+- **`voice-utils.ts`**: Voice recording utilities (recording, transcription, playback, note management)
+- **`barcode-utils.ts`**: Barcode and QR code utilities (scanning, generation, parsing, validation)
+- **`achievement-utils.ts`**: Achievement system utilities (checking, unlocking, progress tracking, summaries)
+
 ### Testing
 - **`testing-utils.ts`**: Testing utilities (mock data, delays, assertions, localStorage mocking)
 

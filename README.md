@@ -52,6 +52,7 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - Sustainability analytics tracking tree coverage, land use, and carbon offsets
 - Wallet performance table with carbon + task exposure per address
 - Collaboration hub for logging agronomist updates and adding new collaborators
+- Security hub with session guardrails, risk monitoring, and activity log
 - Activity timeline weaving stages, tasks, yield checkpoints, and field notes
 - Alerting engine for task deadlines, stage changes, and wallet activity (in-app, email, SMS stubs)
 - On-chain sync simulator to visualise transaction lifecycle
@@ -68,6 +69,7 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - Chart.js + react-chartjs-2 for analytics visuals
 - d3-geo + world-atlas + topojson-client for geospatial rendering
 - date-fns for timeline formatting and scheduling utilities
+- Local security store for guardrails, risk detection, and audit events
 - Local JSON + localStorage hydration for prototype data persistence
 
 ## Analytics Snapshot Overview

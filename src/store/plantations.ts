@@ -253,6 +253,9 @@ const generateCollaboratorId = () =>
 const generateRecurringTemplateId = () =>
   `recur-${Math.random().toString(36).slice(2, 9)}`;
 
+const generateStageTemplateId = () =>
+  `stage-${Math.random().toString(36).slice(2, 9)}`;
+
 const clampInterval = (interval?: number) => Math.max(1, interval ?? 1);
 
 const addIntervalToDate = (

@@ -28,17 +28,6 @@ export default function NotificationPreferences() {
     sms: "💬",
   };
 
-  const typeLabels: Record<AlertType, string> = {
-    task_deadline: "Task deadlines",
-    stage_change: "Stage changes",
-    wallet_activity: "Wallet activity",
-  };
-
-  const typeDescriptions: Record<AlertType, string> = {
-    task_deadline: "Get notified when tasks are due soon or overdue",
-    stage_change: "Receive alerts when plantations advance stages",
-    wallet_activity: "Stay informed about wallet connections and activity",
-  };
 
   return (
     <>

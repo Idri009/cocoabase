@@ -12,6 +12,7 @@ import OnchainSyncPanel from "@/components/onchain-sync-panel";
 import CommunitySharePanel from "@/components/community-share-panel";
 import PlantationTaskPanel from "@/components/plantation-task-panel";
 import AlertManager from "@/components/alert-manager";
+import AlertToaster from "@/components/alert-toaster";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
@@ -127,6 +128,7 @@ export default function DashboardPage() {
 
       <div className="relative flex flex-1 flex-col">
         <AlertManager />
+        <AlertToaster />
         <TopBar
           walletAddress={address}
           totalSeeds={stats.totalSeeds}

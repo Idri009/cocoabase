@@ -1126,6 +1126,83 @@ export default function DashboardPage() {
                   </div>
                 </motion.section>
 
+                {favoriteSummary && (
+                  <motion.section
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex flex-col gap-4 rounded-3xl border border-cream-200 bg-white/85 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur"
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Favorites spotlight
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          {favoriteSummary.count} starred plantations
+                        </p>
+                      </div>
+                      <span className="rounded-full bg-leaf-50 px-3 py-1 text-xs font-semibold text-leaf-700">
+                        {favoriteSummary.distribution.harvested} harvested •{" "}
+                        {favoriteSummary.distribution.growing} growing •{" "}
+                        {favoriteSummary.distribution.planted} planted
+                      </span>
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-3">
+                      <div className="rounded-2xl border border-cream-200 bg-white/80 p-4 shadow-sm">
+                        <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Carbon offset
+                        </span>
+                        <p className="mt-1 text-2xl font-bold text-leaf-600">
+                          {favoriteSummary.carbon.toLocaleString(undefined, {
+                            maximumFractionDigits: 1,
+                          })}{" "}
+                          tCO₂
+                        </p>
+                        <p className="text-xs text-cocoa-500">
+                          {favoriteSummary.trees.toLocaleString()} trees •{" "}
+                          {favoriteSummary.area.toLocaleString(undefined, {
+                            maximumFractionDigits: 1,
+                          })}{" "}
+                          ha protected
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-white/80 p-4 shadow-sm">
+                        <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Engagement outlook
+                        </span>
+                        <p className="mt-1 text-sm text-cocoa-600">
+                          Keep an eye on these favorite plantations to prioritise
+                          harvest readiness and collaboration touch points.
+                        </p>
+                        <p className="mt-3 text-xs text-cocoa-500">
+                          Tip: use the comparison mode to benchmark star performers.
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-white/80 p-4 shadow-sm">
+                        <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Recently updated
+                        </span>
+                        <ul className="mt-2 space-y-2 text-sm text-cocoa-700">
+                          {favoriteSummary.recentlyUpdated.map((plantation) => (
+                            <li key={plantation.id} className="flex flex-col">
+                              <span className="font-semibold">
+                                {plantation.seedName}
+                              </span>
+                              <span className="text-[11px] text-cocoa-500">
+                                {plantation.stage} •{" "}
+                                {new Date(
+                                  plantation.updatedAt
+                                ).toLocaleString()}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
                 <div className="flex justify-end">
                   <motion.button
                     type="button"

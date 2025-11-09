@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, FormEvent } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/cn";
 import type {

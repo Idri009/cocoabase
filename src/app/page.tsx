@@ -1503,11 +1503,12 @@ export default function DashboardPage() {
 
   const performanceMetrics = useMemo(() => {
     const renderTime = performance.now();
-    const memoryUsage = typeof performance.memory !== "undefined" 
+    const memoryInfo = (performance as any).memory;
+    const memoryUsage = memoryInfo
       ? {
-          used: Math.round(performance.memory.usedJSHeapSize / 1048576),
-          total: Math.round(performance.memory.totalJSHeapSize / 1048576),
-          limit: Math.round(performance.memory.jsHeapSizeLimit / 1048576),
+          used: Math.round(memoryInfo.usedJSHeapSize / 1048576),
+          total: Math.round(memoryInfo.totalJSHeapSize / 1048576),
+          limit: Math.round(memoryInfo.jsHeapSizeLimit / 1048576),
         }
       : null;
 

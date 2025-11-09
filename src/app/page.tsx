@@ -2859,6 +2859,258 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
+                {/* Quick Actions Panel */}
+                {showQuickActionsPanel && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-yellow-50/80 to-amber-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Quick Actions
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          One-click shortcuts
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowQuickActionsPanel(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close quick actions"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                      {quickActions.map((action) => (
+                        <motion.button
+                          key={action.id}
+                          type="button"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => {
+                            action.action();
+                            setShowQuickActionsPanel(false);
+                          }}
+                          className={`flex flex-col items-center gap-2 rounded-2xl border p-4 text-center transition ${
+                            action.color === "leaf"
+                              ? "border-leaf-300 bg-leaf-50/80 hover:bg-leaf-100"
+                              : action.color === "blue"
+                              ? "border-blue-300 bg-blue-50/80 hover:bg-blue-100"
+                              : action.color === "orange"
+                              ? "border-orange-300 bg-orange-50/80 hover:bg-orange-100"
+                              : action.color === "green"
+                              ? "border-green-300 bg-green-50/80 hover:bg-green-100"
+                              : action.color === "purple"
+                              ? "border-purple-300 bg-purple-50/80 hover:bg-purple-100"
+                              : "border-indigo-300 bg-indigo-50/80 hover:bg-indigo-100"
+                          }`}
+                        >
+                          <span className="text-3xl">{action.icon}</span>
+                          <span className="text-sm font-semibold text-cocoa-900">
+                            {action.label}
+                          </span>
+                        </motion.button>
+                      ))}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Analytics Dashboard */}
+                {showAnalyticsDashboard && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-cyan-50/80 to-blue-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Analytics Dashboard
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Comprehensive analytics overview
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowAnalyticsDashboard(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close analytics"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                      <div className="rounded-2xl border border-cyan-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Total Yield
+                        </div>
+                        <div className="text-2xl font-bold text-cyan-700">
+                          {analyticsSummary.totalYield.toLocaleString()} kg
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          Projected across all plantations
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-blue-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Avg Yield
+                        </div>
+                        <div className="text-2xl font-bold text-blue-700">
+                          {Math.round(analyticsSummary.avgYield).toLocaleString()} kg
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          Per plantation average
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-indigo-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Active Regions
+                        </div>
+                        <div className="text-2xl font-bold text-indigo-700">
+                          {analyticsSummary.activeRegions}
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          Geographic coverage
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-purple-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Avg Harvest Time
+                        </div>
+                        <div className="text-2xl font-bold text-purple-700">
+                          {Math.round(analyticsSummary.avgDaysToHarvest)} days
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          Time to harvest
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-4 rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                      <p className="text-sm font-semibold text-cocoa-900">
+                        Analytics Insights:
+                      </p>
+                      <ul className="mt-2 space-y-1 text-xs text-cocoa-600">
+                        <li>
+                          • {analyticsSummary.cohortCount} active cohorts tracked
+                        </li>
+                        <li>
+                          • {analyticsSnapshot.yieldForecasts.length} yield forecasts
+                          available
+                        </li>
+                        <li>
+                          • Average growth efficiency:{" "}
+                          {analyticsSummary.avgDaysToHarvest > 0
+                            ? `${Math.round(180 / analyticsSummary.avgDaysToHarvest * 100)}%`
+                            : "N/A"}
+                        </li>
+                      </ul>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Help Center */}
+                {showHelpCenter && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-lg"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Help Center
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Guides and shortcuts
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowHelpCenter(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-cream-100"
+                        aria-label="Close help"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                          <h3 className="mb-2 font-semibold text-cocoa-900">
+                            Keyboard Shortcuts
+                          </h3>
+                          <ul className="space-y-1 text-xs text-cocoa-600">
+                            <li>
+                              <kbd className="rounded bg-white px-1.5 py-0.5 font-mono text-xs shadow">
+                                ⌘K
+                              </kbd>{" "}
+                              Focus search
+                            </li>
+                            <li>
+                              <kbd className="rounded bg-white px-1.5 py-0.5 font-mono text-xs shadow">
+                                ⌘N
+                              </kbd>{" "}
+                              Plant new seed
+                            </li>
+                            <li>
+                              <kbd className="rounded bg-white px-1.5 py-0.5 font-mono text-xs shadow">
+                                Esc
+                              </kbd>{" "}
+                              Close modals
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                          <h3 className="mb-2 font-semibold text-cocoa-900">
+                            Quick Tips
+                          </h3>
+                          <ul className="space-y-1 text-xs text-cocoa-600">
+                            <li>• Use filters to find specific plantations</li>
+                            <li>• Star favorites for quick access</li>
+                            <li>• Compare up to 3 plantations at once</li>
+                            <li>• Export data for backup or analysis</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                        <h3 className="mb-2 font-semibold text-cocoa-900">
+                          Feature Guide
+                        </h3>
+                        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                          {[
+                            { icon: "🌱", name: "Plant Seeds", desc: "Track new plantations" },
+                            { icon: "📊", name: "Analytics", desc: "View performance metrics" },
+                            { icon: "📅", name: "Timeline", desc: "See activity history" },
+                            { icon: "⭐", name: "Favorites", desc: "Star important items" },
+                            { icon: "🔍", name: "Search", desc: "Find plantations quickly" },
+                            { icon: "📤", name: "Export", desc: "Download your data" },
+                          ].map((feature) => (
+                            <div
+                              key={feature.name}
+                              className="flex items-start gap-2 rounded-xl border border-cream-200 bg-white p-2"
+                            >
+                              <span className="text-lg">{feature.icon}</span>
+                              <div>
+                                <p className="text-xs font-semibold text-cocoa-900">
+                                  {feature.name}
+                                </p>
+                                <p className="text-[10px] text-cocoa-500">
+                                  {feature.desc}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
                 {/* Notification Center */}
                 {showNotificationCenter && (
                   <motion.section

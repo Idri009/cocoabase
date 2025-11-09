@@ -84,6 +84,29 @@ export default function SessionGuard() {
       return;
     }
 
+    const scheduleCountdown = (initialMs: number) => {
+      const initialSeconds = Math.max(0, Math.ceil(initialMs / 1000));
+      setShowCountdown(true);
+      setCountdownSeconds(initialSeconds);
+      if (countdownRef.current) {
+        window.clearInterval(countdownRef.current);
+      }
+      countdownRef.current = window.setInterval(() => {
+        setCountdownSeconds((prev) => {
+          if (prev === null) {
+            return prev;
+          }
+          if (prev <= 1) {
+            window.clearInterval(countdownRef.current!);
+            countdownRef.current = null;
+            lockSession();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    };
+
     const lastActivityTime = new Date(lastActivityAt).getTime();
     const now = Date.now();
     const timeSinceActivity = now - lastActivityTime;
@@ -95,30 +118,13 @@ export default function SessionGuard() {
     }
 
     if (remainingMs <= warningThresholdMs) {
-      setShowCountdown(true);
-      setCountdownSeconds(Math.ceil(remainingMs / 1000));
+      scheduleCountdown(remainingMs);
     } else {
       const warningDelay = remainingMs - warningThresholdMs;
       timerRef.current = window.setTimeout(() => {
-        setShowCountdown(true);
-        setCountdownSeconds(Math.ceil(warningThresholdMs / 1000));
+        scheduleCountdown(warningThresholdMs);
       }, warningDelay);
     }
-
-    countdownRef.current = window.setInterval(() => {
-      setCountdownSeconds((prev) => {
-        if (prev === null) {
-          return prev;
-        }
-        if (prev <= 1) {
-          window.clearInterval(countdownRef.current!);
-          countdownRef.current = null;
-          lockSession();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
 
     return () => {
       if (timerRef.current) {

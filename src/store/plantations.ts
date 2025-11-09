@@ -17,6 +17,27 @@ export type PlantationTask = {
   status: TaskStatus;
 };
 
+export type PlantationCoordinates = {
+  latitude: number;
+  longitude: number;
+};
+
+export type YieldCheckpoint = {
+  date: string;
+  event: string;
+  yieldKg: number;
+};
+
+export type PlantationCollaborator = {
+  id: string;
+  name: string;
+  role: string;
+  contact?: string;
+  avatarUrl?: string;
+  lastNote?: string;
+  lastUpdated?: string;
+};
+
 export type Plantation = {
   id: string;
   seedName: string;
@@ -29,15 +50,20 @@ export type Plantation = {
   treeCount: number;
   areaHectares: number;
   carbonOffsetTons: number;
+  coordinates?: PlantationCoordinates;
+  yieldTimeline: YieldCheckpoint[];
+  collaborators: PlantationCollaborator[];
   tasks: PlantationTask[];
 };
 
 export type PlantationDraft = Omit<
   Plantation,
-  "id" | "stage" | "updatedAt" | "tasks"
+  "id" | "stage" | "updatedAt" | "tasks" | "yieldTimeline" | "collaborators"
 > & {
   stage?: GrowthStage;
   tasks?: PlantationTask[];
+  yieldTimeline?: YieldCheckpoint[];
+  collaborators?: Omit<PlantationCollaborator, "id">[];
 };
 
 type PlantationState = {
@@ -76,7 +102,25 @@ export type PlantationEvent =
     previousStatus: TaskStatus;
     nextStatus: TaskStatus;
     timestamp: string;
-  };
+  }
+  | {
+      type: "yield_checkpoint_added";
+      plantation: Plantation;
+      checkpoint: YieldCheckpoint;
+      timestamp: string;
+    }
+  | {
+      type: "collaborator_added";
+      plantation: Plantation;
+      collaborator: PlantationCollaborator;
+      timestamp: string;
+    }
+  | {
+      type: "coordinates_updated";
+      plantation: Plantation;
+      coordinates: PlantationCoordinates;
+      timestamp: string;
+    };
 
 export type PlantationEventListener = (event: PlantationEvent) => void;
 

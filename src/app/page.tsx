@@ -1591,18 +1591,44 @@ export default function DashboardPage() {
                                   className="h-4 w-4 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
                                 />
                               </label>
-                              <button
-                                type="button"
-                                onClick={() => handleToggleFavorite(plantation.id)}
-                                className="text-lg"
-                                aria-label={
-                                  favorites.has(plantation.id)
-                                    ? "Remove from favorites"
-                                    : "Add to favorites"
-                                }
-                              >
-                                {favorites.has(plantation.id) ? "⭐" : "☆"}
-                              </button>
+                              <div className="flex items-center gap-2">
+                                {comparisonMode && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleComparison(plantation.id)}
+                                    className={`rounded-full p-1.5 text-sm transition ${
+                                      comparisonPlantations.has(plantation.id)
+                                        ? "bg-amber-200 text-amber-900 ring-2 ring-amber-500"
+                                        : "bg-cream-100 text-cocoa-600 hover:bg-cream-200"
+                                    }`}
+                                    aria-label={
+                                      comparisonPlantations.has(plantation.id)
+                                        ? "Remove from comparison"
+                                        : "Add to comparison"
+                                    }
+                                    disabled={
+                                      !comparisonPlantations.has(plantation.id) &&
+                                      comparisonPlantations.size >= 3
+                                    }
+                                  >
+                                    {comparisonPlantations.has(plantation.id)
+                                      ? "✓"
+                                      : "🔍"}
+                                  </button>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={() => handleToggleFavorite(plantation.id)}
+                                  className="text-lg"
+                                  aria-label={
+                                    favorites.has(plantation.id)
+                                      ? "Remove from favorites"
+                                      : "Add to favorites"
+                                  }
+                                >
+                                  {favorites.has(plantation.id) ? "⭐" : "☆"}
+                                </button>
+                              </div>
                               <div className="flex-1">
                                 <h3 className="font-semibold text-cocoa-900">
                                   {plantation.seedName}

@@ -6,6 +6,9 @@
     "description": "Verify canopy health, nutrient levels, and irrigation coverage after entering growing stage.",
     "dueOffsetDays": 5,
     "assigneeRole": "Agronomist",
+    "attachments": [
+      "https://example.com/docs/field-inspection-checklist.pdf"
+    ],
     "enabled": true
   },
   {
@@ -15,6 +18,7 @@
     "description": "Ensure IoT moisture probes are aligned with current soil conditions.",
     "dueOffsetDays": 2,
     "assigneeRole": "Technician",
+    "attachments": [],
     "enabled": true
   },
   {
@@ -24,6 +28,9 @@
     "description": "Capture bean quality metrics and submit the QA report for this harvest.",
     "dueOffsetDays": 3,
     "assigneeRole": "Quality Lead",
+    "attachments": [
+      "https://example.com/docs/quality-report-template.xlsx"
+    ],
     "enabled": true
   }
 ]

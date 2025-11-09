@@ -429,7 +429,11 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Harvest Scheduler**: Upcoming harvest schedule with readiness status (ready/soon/planned) and estimated dates
 - **Reporting Dashboard**: Comprehensive reporting with plantation, sustainability, and financial metrics
 - **Mobile Features**: GPS tracking, offline mode, photo capture, barcode scanning, push notifications, voice notes
-- **Training Resources**: Educational content and guides categorized by topic (planting, pests, harvest, soil, irrigation, certification)
+- **Training Resources**: Educational content and guides categorized by topic (planting, pests, harvest, soil, irrigation, certification, business, sustainability)
+- **Training Progress Tracking**: Track learning progress with completion rates and notes
+- **Resource Recommendations**: Get personalized training recommendations based on skill level and interests
+- **Training Categories**: Resources organized by category and difficulty level (beginner, intermediate, advanced)
+- **Resource Search**: Search training resources by title, description, category, and tags
 - **Marketplace**: Buy and sell agricultural products with seller ratings, pricing, and location information
 - **Loan Calculator**: Calculate loan payments with principal, interest rate, and term inputs (monthly payment, total payment, total interest)
 - **Seasonal Planner**: Plan activities by season (Planting, Growing, Harvest, Maintenance) with current season highlighting

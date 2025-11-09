@@ -1205,6 +1205,39 @@ export default function DashboardPage() {
                         >
                           {showAdvancedFilters ? "▼" : "▶"} Advanced
                         </motion.button>
+                        <motion.button
+                          type="button"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => {
+                            if (!comparisonMode) {
+                              setComparisonMode(true);
+                            } else {
+                              setComparisonMode(false);
+                              setComparisonPlantations(new Set());
+                            }
+                          }}
+                          className={`rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                            comparisonMode
+                              ? "border-amber-500 bg-amber-500 text-white"
+                              : "border-cream-300 bg-white text-cocoa-700 hover:border-cocoa-300"
+                          }`}
+                        >
+                          {comparisonMode ? "🔍 Exit Compare" : "🔍 Compare"}
+                        </motion.button>
+                        <motion.button
+                          type="button"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => setShowQuickActions(!showQuickActions)}
+                          className={`rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                            showQuickActions
+                              ? "border-cocoa-900 bg-cocoa-900 text-white"
+                              : "border-cream-300 bg-white text-cocoa-700 hover:border-cocoa-300"
+                          }`}
+                        >
+                          ⚡ Quick Actions
+                        </motion.button>
                       </div>
 
                       {showAdvancedFilters && (

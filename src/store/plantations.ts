@@ -433,15 +433,19 @@ export const usePlantationsStore = create<PlantationState>()(
         }
 
         const setOfIds = new Set(ids);
-        const previousPlantations = get().plantations.filter((plantation) =>
-          setOfIds.has(plantation.id)
-        );
+        const previousMap = new Map<string, Plantation>();
 
-        if (!previousPlantations.length) {
+        get().plantations.forEach((plantation) => {
+          if (setOfIds.has(plantation.id)) {
+            previousMap.set(plantation.id, plantation);
+          }
+        });
+
+        if (!previousMap.size) {
           return;
         }
 
-        const now = new Date().toISOString();
+        const nowIso = new Date().toISOString();
 
         set((state) => ({
           plantations: state.plantations.map((plantation) => {
@@ -456,27 +460,25 @@ export const usePlantationsStore = create<PlantationState>()(
             return {
               ...plantation,
               stage: nextStage,
-              updatedAt: now,
+              updatedAt: nowIso,
               notes: note ?? plantation.notes,
             };
           }),
         }));
 
-        const updatedPlantations = get().plantations.filter((plantation) =>
-          setOfIds.has(plantation.id)
-        );
-
-        updatedPlantations.forEach((plantation) => {
-          const previous = previousPlantations.find(
-            (item) => item.id === plantation.id
-          );
+        const latestState = get();
+        latestState.plantations.forEach((plantation) => {
+          if (!setOfIds.has(plantation.id)) {
+            return;
+          }
+          const previous = previousMap.get(plantation.id);
           if (previous && previous.stage !== plantation.stage) {
             emitPlantationEvent({
               type: "stage_change",
               plantation,
               previousStage: previous.stage,
               nextStage: plantation.stage,
-              timestamp: now,
+              timestamp: nowIso,
               note,
             });
           }

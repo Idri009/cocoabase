@@ -3215,3 +3215,1459 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
+                {/* Performance Monitor */}
+                {showPerformanceMonitor && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-emerald-50/80 to-teal-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Performance Monitor
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          System performance metrics
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowPerformanceMonitor(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close performance monitor"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                      <div className="rounded-2xl border border-emerald-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Render Time
+                        </div>
+                        <div className="text-2xl font-bold text-emerald-700">
+                          {performanceMetrics.renderTime}ms
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          Page load performance
+                        </p>
+                      </div>
+                      {performanceMetrics.memoryUsage && (
+                        <>
+                          <div className="rounded-2xl border border-teal-200 bg-white/90 p-4 shadow-sm">
+                            <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                              Memory Used
+                            </div>
+                            <div className="text-2xl font-bold text-teal-700">
+                              {performanceMetrics.memoryUsage.used} MB
+                            </div>
+                            <p className="mt-1 text-xs text-cocoa-500">
+                              of {performanceMetrics.memoryUsage.total} MB
+                            </p>
+                          </div>
+                          <div className="rounded-2xl border border-cyan-200 bg-white/90 p-4 shadow-sm">
+                            <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                              Memory Limit
+                            </div>
+                            <div className="text-2xl font-bold text-cyan-700">
+                              {performanceMetrics.memoryUsage.limit} MB
+                            </div>
+                            <p className="mt-1 text-xs text-cocoa-500">
+                              Maximum available
+                            </p>
+                          </div>
+                        </>
+                      )}
+                      <div className="rounded-2xl border border-green-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Data Loaded
+                        </div>
+                        <div className="text-2xl font-bold text-green-700">
+                          {performanceMetrics.plantationsLoaded}
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          Plantations in view
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-4 rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                      <p className="text-sm font-semibold text-cocoa-900">
+                        Performance Status:
+                      </p>
+                      <p className="mt-1 text-xs text-cocoa-600">
+                        {performanceMetrics.renderTime < 100
+                          ? "✅ Excellent performance"
+                          : performanceMetrics.renderTime < 500
+                          ? "⚡ Good performance"
+                          : "⚠️ Performance may be slow"}
+                      </p>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Data Visualization */}
+                {showDataVisualization && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-rose-50/80 to-pink-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Data Visualizations
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Interactive data charts
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowDataVisualization(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close visualizations"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-6">
+                      {/* Stage Distribution */}
+                      <div className="rounded-2xl border border-rose-200 bg-white/90 p-4 shadow-sm">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Stage Distribution
+                        </h3>
+                        <div className="space-y-2">
+                          {Object.entries(dataVisualizationMetrics.stageDistribution).map(
+                            ([stage, count]) => {
+                              const total =
+                                dataVisualizationMetrics.stageDistribution.planted +
+                                dataVisualizationMetrics.stageDistribution.growing +
+                                dataVisualizationMetrics.stageDistribution.harvested;
+                              const percentage = total > 0 ? (count / total) * 100 : 0;
+                              return (
+                                <div key={stage}>
+                                  <div className="mb-1 flex items-center justify-between text-xs">
+                                    <span className="font-semibold text-cocoa-700 capitalize">
+                                      {stage}
+                                    </span>
+                                    <span className="text-cocoa-600">
+                                      {count} ({Math.round(percentage)}%)
+                                    </span>
+                                  </div>
+                                  <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                                    <motion.div
+                                      initial={{ width: 0 }}
+                                      animate={{ width: `${percentage}%` }}
+                                      transition={{ duration: 0.5 }}
+                                      className={`h-full ${
+                                        stage === "planted"
+                                          ? "bg-blue-500"
+                                          : stage === "growing"
+                                          ? "bg-leaf-500"
+                                          : "bg-gold-500"
+                                      }`}
+                                    />
+                                  </div>
+                                </div>
+                              );
+                            }
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Task Status Distribution */}
+                      <div className="rounded-2xl border border-pink-200 bg-white/90 p-4 shadow-sm">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Task Status Distribution
+                        </h3>
+                        <div className="space-y-2">
+                          {Object.entries(
+                            dataVisualizationMetrics.taskStatusDistribution
+                          ).map(([status, count]) => {
+                            const total =
+                              dataVisualizationMetrics.taskStatusDistribution.pending +
+                              dataVisualizationMetrics.taskStatusDistribution.in_progress +
+                              dataVisualizationMetrics.taskStatusDistribution.completed;
+                            const percentage = total > 0 ? (count / total) * 100 : 0;
+                            return (
+                              <div key={status}>
+                                <div className="mb-1 flex items-center justify-between text-xs">
+                                  <span className="font-semibold text-cocoa-700 capitalize">
+                                    {status.replace("_", " ")}
+                                  </span>
+                                  <span className="text-cocoa-600">
+                                    {count} ({Math.round(percentage)}%)
+                                  </span>
+                                </div>
+                                <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                                  <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${percentage}%` }}
+                                    transition={{ duration: 0.5 }}
+                                    className={`h-full ${
+                                      status === "pending"
+                                        ? "bg-amber-500"
+                                        : status === "in_progress"
+                                        ? "bg-blue-500"
+                                        : "bg-green-500"
+                                    }`}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Location Distribution */}
+                      <div className="rounded-2xl border border-rose-200 bg-white/90 p-4 shadow-sm">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Location Distribution
+                        </h3>
+                        <div className="grid gap-2 sm:grid-cols-2">
+                          {Object.entries(
+                            dataVisualizationMetrics.locationDistribution
+                          )
+                            .sort(([, a], [, b]) => b - a)
+                            .slice(0, 6)
+                            .map(([location, count]) => (
+                              <div
+                                key={location}
+                                className="flex items-center justify-between rounded-xl border border-cream-200 bg-cream-50/70 px-3 py-2"
+                              >
+                                <span className="text-xs font-semibold text-cocoa-700">
+                                  {location}
+                                </span>
+                                <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-semibold text-rose-700">
+                                  {count}
+                                </span>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Dashboard Settings */}
+                {showDashboardSettings && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-lg"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Dashboard Settings
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Customize your experience
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowDashboardSettings(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-cream-100"
+                        aria-label="Close settings"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-6">
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Display Preferences
+                        </h3>
+                        <div className="space-y-3">
+                          <label className="flex items-center justify-between">
+                            <span className="text-sm text-cocoa-700">
+                              Default view mode
+                            </span>
+                            <select
+                              value={viewMode}
+                              onChange={(e) =>
+                                setViewMode(e.target.value as "grid" | "list")
+                              }
+                              className="rounded-xl border border-cream-300 bg-white px-3 py-1.5 text-xs focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                            >
+                              <option value="grid">Grid</option>
+                              <option value="list">List</option>
+                            </select>
+                          </label>
+                          <label className="flex items-center justify-between">
+                            <span className="text-sm text-cocoa-700">
+                              Dashboard layout
+                            </span>
+                            <select
+                              value={dashboardLayout}
+                              onChange={(e) =>
+                                setDashboardLayout(
+                                  e.target.value as "default" | "compact" | "spacious"
+                                )
+                              }
+                              className="rounded-xl border border-cream-300 bg-white px-3 py-1.5 text-xs focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                            >
+                              <option value="default">Default</option>
+                              <option value="compact">Compact</option>
+                              <option value="spacious">Spacious</option>
+                            </select>
+                          </label>
+                          <label className="flex items-center justify-between">
+                            <span className="text-sm text-cocoa-700">
+                              Default sort order
+                            </span>
+                            <select
+                              value={sortBy}
+                              onChange={(e) =>
+                                setSortBy(e.target.value as "date" | "name" | "stage")
+                              }
+                              className="rounded-xl border border-cream-300 bg-white px-3 py-1.5 text-xs focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                            >
+                              <option value="date">Date</option>
+                              <option value="name">Name</option>
+                              <option value="stage">Stage</option>
+                            </select>
+                          </label>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Data Management
+                        </h3>
+                        <div className="space-y-3">
+                          <button
+                            type="button"
+                            onClick={handleExportData}
+                            className="w-full rounded-xl border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 transition hover:border-cocoa-300 hover:bg-cream-50"
+                          >
+                            📤 Export All Data
+                          </button>
+                          <label className="flex cursor-pointer items-center justify-between rounded-xl border border-cream-300 bg-white px-4 py-2 transition hover:border-cocoa-300 hover:bg-cream-50">
+                            <span className="text-sm font-semibold text-cocoa-700">
+                              📥 Import Data
+                            </span>
+                            <input
+                              type="file"
+                              accept=".json"
+                              onChange={handleImportData}
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Reset Options
+                        </h3>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            handleClearFilters();
+                            setFavorites(new Set());
+                            setNotes(new Map());
+                            alert("Dashboard preferences reset!");
+                          }}
+                          className="w-full rounded-xl border border-rose-300 bg-rose-50 px-4 py-2 text-sm font-semibold text-rose-700 transition hover:bg-rose-100"
+                        >
+                          🔄 Reset All Preferences
+                        </button>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Notification Center */}
+                {showNotificationCenter && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-lg"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <h2 className="text-lg font-semibold text-cocoa-900">
+                        Notification Center
+                      </h2>
+                      <button
+                        type="button"
+                        onClick={() => setShowNotificationCenter(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-cream-100"
+                        aria-label="Close notifications"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {taskSummary.overdue > 0 && (
+                        <div className="rounded-2xl border border-rose-200 bg-rose-50/80 p-4">
+                          <div className="flex items-start gap-3">
+                            <span className="text-2xl">⏰</span>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-rose-900">
+                                Overdue Tasks Alert
+                              </h3>
+                              <p className="mt-1 text-sm text-rose-700">
+                                {taskSummary.overdue} task
+                                {taskSummary.overdue > 1 ? "s are" : " is"} overdue and
+                                requires immediate attention.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {taskSummary.dueSoon > 0 && (
+                        <div className="rounded-2xl border border-amber-200 bg-amber-50/80 p-4">
+                          <div className="flex items-start gap-3">
+                            <span className="text-2xl">📅</span>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-amber-900">
+                                Tasks Due Soon
+                              </h3>
+                              <p className="mt-1 text-sm text-amber-700">
+                                {taskSummary.dueSoon} task
+                                {taskSummary.dueSoon > 1 ? "s are" : " is"} due within the
+                                next 3 days.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {stats.growing > 0 && (
+                        <div className="rounded-2xl border border-blue-200 bg-blue-50/80 p-4">
+                          <div className="flex items-start gap-3">
+                            <span className="text-2xl">🌱</span>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-blue-900">
+                                Active Growth Phase
+                              </h3>
+                              <p className="mt-1 text-sm text-blue-700">
+                                {stats.growing} plantation
+                                {stats.growing > 1 ? "s are" : " is"} in active growth and
+                                may need attention soon.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {complaintStats.highPriorityOpen > 0 && (
+                        <div className="rounded-2xl border border-orange-200 bg-orange-50/80 p-4">
+                          <div className="flex items-start gap-3">
+                            <span className="text-2xl">🛠️</span>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-orange-900">
+                                High Priority Complaints
+                              </h3>
+                              <p className="mt-1 text-sm text-orange-700">
+                                {complaintStats.highPriorityOpen} high priority complaint
+                                {complaintStats.highPriorityOpen > 1 ? "s" : ""} awaiting
+                                resolution.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {taskSummary.overdue === 0 &&
+                        taskSummary.dueSoon === 0 &&
+                        complaintStats.highPriorityOpen === 0 && (
+                          <div className="rounded-2xl border border-green-200 bg-green-50/80 p-4 text-center">
+                            <span className="text-2xl">✅</span>
+                            <p className="mt-2 text-sm font-semibold text-green-900">
+                              All caught up! No urgent notifications.
+                            </p>
+                          </div>
+                        )}
+                    </div>
+                  </motion.section>
+                )}
+
+                    {/* Widget Customization */}
+                    <motion.section
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="rounded-3xl border border-cream-200 bg-white/90 p-4 shadow-sm"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                          <h3 className="text-sm font-semibold text-cocoa-900">
+                            Customize Dashboard
+                          </h3>
+                          <p className="text-xs text-cocoa-500">
+                            Show or hide widgets to personalize your view
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {Object.entries(widgetVisibility).map(([key, visible]) => (
+                            <label
+                              key={key}
+                              className="flex cursor-pointer items-center gap-2 rounded-full border border-cream-300 bg-white px-3 py-1.5 text-xs transition hover:border-cocoa-300"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={visible}
+                                onChange={(e) =>
+                                  setWidgetVisibility((prev) => ({
+                                    ...prev,
+                                    [key]: e.target.checked,
+                                  }))
+                                }
+                                className="h-3 w-3 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
+                              />
+                              <span className="text-xs font-semibold text-cocoa-700">
+                                {key
+                                  .replace(/([A-Z])/g, " $1")
+                                  .replace(/^./, (str) => str.toUpperCase())}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.section>
+
+                    {/* Theme Selector */}
+                    <motion.section
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="rounded-3xl border border-cream-200 bg-white/90 p-4 shadow-sm"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                          <h3 className="text-sm font-semibold text-cocoa-900">
+                            Dashboard Theme
+                          </h3>
+                          <p className="text-xs text-cocoa-500">
+                            Choose your preferred color scheme
+                          </p>
+                        </div>
+                        <div className="flex gap-2">
+                          {(["light", "dark", "auto"] as const).map((theme) => (
+                            <button
+                              key={theme}
+                              type="button"
+                              onClick={() => setDashboardTheme(theme)}
+                              className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition ${
+                                dashboardTheme === theme
+                                  ? "border-cocoa-900 bg-cocoa-900 text-white"
+                                  : "border-cream-300 bg-white text-cocoa-700 hover:border-cocoa-300"
+                              }`}
+                            >
+                              {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.section>
+
+                    {/* Collaboration Tools */}
+                    {showCollaborationTools && (
+                      <motion.section
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="rounded-3xl border border-cream-200 bg-gradient-to-br from-rose-50/80 to-pink-50/80 p-6 shadow-lg backdrop-blur"
+                      >
+                        <div className="mb-4 flex items-center justify-between">
+                          <div>
+                            <h2 className="text-lg font-semibold text-cocoa-900">
+                              Collaboration Tools
+                            </h2>
+                            <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                              Team collaboration features
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setShowCollaborationTools(false)}
+                            className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                            aria-label="Close collaboration tools"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                          <div className="rounded-2xl border border-rose-200 bg-white/90 p-4 shadow-sm">
+                            <div className="mb-2 flex items-center gap-2">
+                              <span className="text-xl">👥</span>
+                              <h3 className="font-semibold text-cocoa-900">
+                                Team Members
+                              </h3>
+                            </div>
+                            <p className="text-sm text-cocoa-600">
+                              {filteredPlantations.reduce(
+                                (acc, p) => acc + p.collaborators.length,
+                                0
+                              )}{" "}
+                              active collaborators
+                            </p>
+                          </div>
+                          <div className="rounded-2xl border border-pink-200 bg-white/90 p-4 shadow-sm">
+                            <div className="mb-2 flex items-center gap-2">
+                              <span className="text-xl">💬</span>
+                              <h3 className="font-semibold text-cocoa-900">
+                                Shared Notes
+                              </h3>
+                            </div>
+                            <p className="text-sm text-cocoa-600">
+                              {filteredPlantations.reduce(
+                                (acc, p) =>
+                                  acc +
+                                  p.collaborators.filter((c) => c.lastNote).length,
+                                0
+                              )}{" "}
+                              collaboration notes
+                            </p>
+                          </div>
+                          <div className="rounded-2xl border border-rose-200 bg-white/90 p-4 shadow-sm">
+                            <div className="mb-2 flex items-center gap-2">
+                              <span className="text-xl">📊</span>
+                              <h3 className="font-semibold text-cocoa-900">
+                                Shared Tasks
+                              </h3>
+                            </div>
+                            <p className="text-sm text-cocoa-600">
+                              {filteredPlantations.reduce(
+                                (acc, p) =>
+                                  acc +
+                                  p.tasks.filter((t) => t.assigneeId).length,
+                                0
+                              )}{" "}
+                              assigned tasks
+                            </p>
+                          </div>
+                        </div>
+                        <div className="mt-4 rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                          <p className="text-sm font-semibold text-cocoa-900">
+                            Collaboration Features:
+                          </p>
+                          <ul className="mt-2 space-y-1 text-xs text-cocoa-600">
+                            <li>• Add collaborators to plantations</li>
+                            <li>• Share notes and observations</li>
+                            <li>• Assign tasks to team members</li>
+                            <li>• Track collaborative activities</li>
+                          </ul>
+                        </div>
+                      </motion.section>
+                    )}
+
+                {/* Data Insights Panel */}
+                {showDataInsights && widgetVisibility.dataInsights && dataInsights.length > 0 && (
+                  <motion.section
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-r from-blue-50/80 via-purple-50/80 to-pink-50/80 p-6 shadow-sm backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Data Insights
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          AI-powered recommendations
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowDataInsights(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close insights"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                      {dataInsights.map((insight, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className={`rounded-2xl border p-4 ${
+                            insight.type === "success"
+                              ? "border-green-200 bg-green-50/80"
+                              : insight.type === "warning"
+                              ? "border-amber-200 bg-amber-50/80"
+                              : "border-blue-200 bg-blue-50/80"
+                          }`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <span className="text-2xl">{insight.icon}</span>
+                            <div className="flex-1">
+                              <h3 className="text-sm font-semibold text-cocoa-900">
+                                {insight.title}
+                              </h3>
+                              <p className="mt-1 text-xs text-cocoa-600">
+                                {insight.message}
+                              </p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Quick Filter Presets */}
+                <motion.section
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex flex-wrap items-center gap-3 rounded-3xl border border-cream-200 bg-white/90 p-4 shadow-sm"
+                >
+                  <span className="text-sm font-semibold text-cocoa-600">
+                    Quick filters:
+                  </span>
+                  {[
+                    { id: "recent", label: "📅 Recent (30 days)", icon: "📅" },
+                    { id: "growing", label: "🌱 Growing", icon: "🌱" },
+                    { id: "harvest-ready", label: "🚚 Harvest ready", icon: "🚚" },
+                    { id: "favorites", label: "⭐ Favorites", icon: "⭐" },
+                    { id: "needs-attention", label: "⚠️ Needs attention", icon: "⚠️" },
+                  ].map((preset) => (
+                    <button
+                      key={preset.id}
+                      type="button"
+                      onClick={() => handleQuickFilterPreset(preset.id)}
+                      className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                        quickFilterPreset === preset.id
+                          ? "border-cocoa-900 bg-cocoa-900 text-white"
+                          : "border-cream-300 bg-white text-cocoa-700 hover:border-cocoa-300"
+                      }`}
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                  {quickFilterPreset && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setQuickFilterPreset(null);
+                        handleClearFilters();
+                      }}
+                      className="rounded-full border border-rose-300 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-700 transition hover:bg-rose-100"
+                    >
+                      Clear preset
+                    </button>
+                  )}
+                </motion.section>
+
+                <GeoInsightsPanel
+                  metrics={analyticsSnapshot.regionGeoMetrics}
+                  clusters={analyticsSnapshot.geoClusters}
+                />
+                <div className="grid gap-6 xl:grid-cols-[1.4fr,0.6fr]">
+                  <ReceiptHistoryPanel />
+                  <div className="space-y-6">
+                    <LoanTrackerPanel />
+                    {/* Recent Activity Feed */}
+                    <motion.section
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="rounded-3xl border border-cream-200 bg-white/85 p-5 shadow-sm shadow-cocoa-900/5 backdrop-blur"
+                    >
+                      <header className="mb-4">
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Recent Activity
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Latest updates
+                        </p>
+                      </header>
+                      <div className="space-y-3">
+                        {recentActivity.length === 0 ? (
+                          <p className="text-sm text-cocoa-500">
+                            No recent activity
+                          </p>
+                        ) : (
+                          recentActivity.map((activity) => (
+                            <div
+                              key={activity.id}
+                              className="flex items-start gap-3 rounded-2xl border border-cream-200 bg-cream-50/70 p-3 text-sm"
+                            >
+                              <span className="text-lg">
+                                {activity.type === "update" ? "🔄" : "📝"}
+                              </span>
+                              <div className="flex-1">
+                                <p className="font-semibold text-cocoa-900">
+                                  {activity.message}
+                                </p>
+                                <p className="text-xs text-cocoa-500">
+                                  {new Date(activity.timestamp).toLocaleString()}
+                                </p>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </motion.section>
+                  </div>
+                </div>
+                <AnalyticsPanel
+                  plantations={filteredPlantations}
+                  highlightedCount={filteredPlantations.length}
+                  snapshot={analyticsSnapshot}
+                />
+                <ForecastWorkspace
+                  plantations={filteredPlantations}
+                  snapshot={analyticsSnapshot}
+                />
+                <SustainabilityPanel
+                  plantations={filteredPlantations}
+                  snapshot={analyticsSnapshot}
+                />
+                <AlertInsightsPanel />
+                <CohortChart cohorts={analyticsSnapshot.cohortPerformance} />
+                <ForecastPanel
+                  plantations={filteredPlantations}
+                  snapshot={analyticsSnapshot}
+                />
+                <GeoMapPanel
+                  plantations={filteredPlantations}
+                  snapshot={analyticsSnapshot}
+                />
+                <TaskKanbanBoard
+                  plantations={filteredPlantations}
+                  onStatusChange={handleTaskStatusChange}
+                  onAssign={handleTaskAssign}
+                />
+                <StageTemplatePanel />
+                <BulkStagePanel
+                  plantations={filteredPlantations}
+                  onBulkUpdate={handleBulkStageUpdate}
+                />
+                <div className="grid gap-6 xl:grid-cols-[1.35fr,0.65fr]">
+                  <div className="space-y-6">
+                    <CollaborationHub
+                      plantations={filteredPlantations}
+                      snapshot={analyticsSnapshot}
+                      onLogNote={recordCollaboratorNote}
+                      onAddCollaborator={addCollaborator}
+                    />
+                    <CommunitySupportPanel />
+                  </div>
+                  <div className="space-y-6">
+                    <SecurityPanel />
+                    <WalletPerformancePanel
+                      snapshot={analyticsSnapshot}
+                    />
+                    <SecurityEventsPanel />
+                  </div>
+                </div>
+                <PlantationActivityTimeline
+                  plantations={filteredPlantations}
+                />
+
+                <div className="grid gap-6 xl:grid-cols-[1.3fr,0.7fr]">
+                  <section className="rounded-3xl border border-cream-200 bg-cream-50/80 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur">
+                    <header className="mb-6 flex flex-col gap-4">
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                          <h2 className="text-lg font-semibold text-cocoa-900">
+                            {isConnected
+                              ? "Your plantations"
+                              : "Community plantations"}
+                          </h2>
+                          <p className="text-sm text-cocoa-500">
+                            Track each seed from planting to harvest with live
+                            progress updates and shared insights across wallets.
+          </p>
+        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1 rounded-full border border-cream-300 bg-white p-1 shadow-sm">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setViewMode("grid");
+                                  setShowCalendarView(false);
+                                }}
+                                className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
+                                  viewMode === "grid" && !showCalendarView
+                                    ? "bg-cocoa-900 text-white"
+                                    : "text-cocoa-600 hover:bg-cream-100"
+                                }`}
+                              >
+                                Grid
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setViewMode("list");
+                                  setShowCalendarView(false);
+                                }}
+                                className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
+                                  viewMode === "list" && !showCalendarView
+                                    ? "bg-cocoa-900 text-white"
+                                    : "text-cocoa-600 hover:bg-cream-100"
+                                }`}
+                              >
+                                List
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setShowCalendarView(true);
+                                  setViewMode("grid");
+                                }}
+                                className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
+                                  showCalendarView
+                                    ? "bg-cocoa-900 text-white"
+                                    : "text-cocoa-600 hover:bg-cream-100"
+                                }`}
+                              >
+                                📅 Calendar
+                              </button>
+                            </div>
+                            <select
+                              value={dashboardLayout}
+                              onChange={(e) =>
+                                setDashboardLayout(
+                                  e.target.value as "default" | "compact" | "spacious"
+                                )
+                              }
+                              aria-label="Dashboard layout"
+                              className="rounded-full border border-cream-300 bg-white px-3 py-1 text-xs font-semibold text-cocoa-700 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                            >
+                              <option value="default">Default</option>
+                              <option value="compact">Compact</option>
+                              <option value="spacious">Spacious</option>
+                            </select>
+                          </div>
+                          <motion.button
+                            type="button"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={handleRefresh}
+                            disabled={isRefreshing}
+                            className="flex items-center gap-2 rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200 focus:ring-offset-2 disabled:opacity-50"
+                          >
+                            {isRefreshing ? "🔄 Refreshing..." : "🔄 Refresh"}
+                          </motion.button>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-3">
+                        <div className="flex-1 min-w-[200px]">
+                          <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            placeholder="Search plantations..."
+                            className="w-full rounded-2xl border border-cream-300 bg-white px-4 py-2 text-sm text-cocoa-800 shadow-sm placeholder:text-cocoa-400 focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                          />
+                        </div>
+                        <select
+                          value={stageFilter}
+                          onChange={(e) =>
+                            setStageFilter(e.target.value as GrowthStage | "all")
+                          }
+                          aria-label="Filter by growth stage"
+                          className="rounded-2xl border border-cream-300 bg-white px-4 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                        >
+                          <option value="all">All stages</option>
+                          <option value="planted">Planted</option>
+                          <option value="growing">Growing</option>
+                          <option value="harvested">Harvested</option>
+                        </select>
+                        <select
+                          value={sortBy}
+                          onChange={(e) =>
+                            setSortBy(e.target.value as "date" | "name" | "stage")
+                          }
+                          aria-label="Sort plantations"
+                          className="rounded-2xl border border-cream-300 bg-white px-4 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                        >
+                          <option value="date">Sort by date</option>
+                          <option value="name">Sort by name</option>
+                          <option value="stage">Sort by stage</option>
+                        </select>
+                        {(searchQuery || stageFilter !== "all" || locationFilter || dateRangeFilter.start || dateRangeFilter.end) && (
+                          <motion.button
+                            type="button"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={handleClearFilters}
+                            className="rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                          >
+                            Clear filters
+                          </motion.button>
+                        )}
+                        <motion.button
+                          type="button"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+                          className={`rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                            showAdvancedFilters
+                              ? "border-cocoa-900 bg-cocoa-900 text-white"
+                              : "border-cream-300 bg-white text-cocoa-700 hover:border-cocoa-300"
+                          }`}
+                        >
+                          {showAdvancedFilters ? "▼" : "▶"} Advanced
+                        </motion.button>
+                      </div>
+
+                      {showAdvancedFilters && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="mt-4 space-y-3 rounded-2xl border border-cream-200 bg-cream-50/70 p-4"
+                        >
+                          <div className="grid gap-4 sm:grid-cols-2">
+                            <label className="text-sm text-cocoa-600">
+                              Location filter
+                              <input
+                                type="text"
+                                value={locationFilter}
+                                onChange={(e) => setLocationFilter(e.target.value)}
+                                placeholder="Filter by location..."
+                                className="mt-1 w-full rounded-2xl border border-cream-300 bg-white px-3 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                              />
+                            </label>
+                            <div className="grid gap-2 sm:grid-cols-2">
+                              <label className="text-sm text-cocoa-600">
+                                Start date
+                                <input
+                                  type="date"
+                                  value={dateRangeFilter.start || ""}
+                                  onChange={(e) =>
+                                    setDateRangeFilter((prev) => ({
+                                      ...prev,
+                                      start: e.target.value || undefined,
+                                    }))
+                                  }
+                                  className="mt-1 w-full rounded-2xl border border-cream-300 bg-white px-3 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                                />
+                              </label>
+                              <label className="text-sm text-cocoa-600">
+                                End date
+                                <input
+                                  type="date"
+                                  value={dateRangeFilter.end || ""}
+                                  onChange={(e) =>
+                                    setDateRangeFilter((prev) => ({
+                                      ...prev,
+                                      end: e.target.value || undefined,
+                                    }))
+                                  }
+                                  className="mt-1 w-full rounded-2xl border border-cream-300 bg-white px-3 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                                />
+                              </label>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+
+                      {(searchQuery || stageFilter !== "all" || locationFilter || dateRangeFilter.start || dateRangeFilter.end) && (
+                        <p className="text-xs text-cocoa-500">
+                          Showing {filteredPlantations.length} of{" "}
+                          {plantations.length} plantations
+                        </p>
+                      )}
+
+                      {selectedPlantations.size > 0 && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl border border-leaf-300 bg-leaf-50/80 p-4"
+                        >
+                          <span className="text-sm font-semibold text-leaf-900">
+                            {selectedPlantations.size} selected
+                          </span>
+                          <div className="flex flex-wrap gap-2">
+                            <button
+                              type="button"
+                              onClick={() => handleBulkAdvanceStage("growing")}
+                              className="rounded-full border border-leaf-400 bg-leaf-500 px-3 py-1 text-xs font-semibold text-white shadow-sm transition hover:bg-leaf-600"
+                            >
+                              Mark Growing
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleBulkAdvanceStage("harvested")}
+                              className="rounded-full border border-leaf-400 bg-leaf-500 px-3 py-1 text-xs font-semibold text-white shadow-sm transition hover:bg-leaf-600"
+                            >
+                              Mark Harvested
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setSelectedPlantations(new Set())}
+                              className="rounded-full border border-cream-300 bg-white px-3 py-1 text-xs font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300"
+                            >
+                              Clear selection
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </header>
+
+                    {filteredPlantations.length > 0 && (
+                      <div className="mb-4 flex items-center gap-3">
+                        <label className="flex items-center gap-2 text-sm text-cocoa-600">
+                          <input
+                            type="checkbox"
+                            checked={
+                              selectedPlantations.size === filteredPlantations.length &&
+                              filteredPlantations.length > 0
+                            }
+                            onChange={handleSelectAll}
+                            className="h-4 w-4 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
+                          />
+                          Select all ({selectedPlantations.size} selected)
+                        </label>
+                      </div>
+                    )}
+
+                    {showCalendarView ? (
+                      <div className="mt-6">
+                        <div className="rounded-2xl border border-cream-200 bg-white/80 p-6">
+                          <h3 className="mb-4 text-lg font-semibold text-cocoa-900">
+                            Calendar View
+                          </h3>
+                          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                            {calendarEvents.slice(0, 12).map((event) => (
+                              <div
+                                key={event.date}
+                                className="rounded-xl border border-cream-200 bg-cream-50/70 p-4"
+                              >
+                                <div className="mb-2 text-sm font-semibold text-cocoa-900">
+                                  {new Date(event.date).toLocaleDateString(undefined, {
+                                    month: "short",
+                                    day: "numeric",
+                                    year: "numeric",
+                                  })}
+                                </div>
+                                {event.plantations.length > 0 && (
+                                  <div className="mb-2">
+                                    <span className="text-xs font-semibold text-cocoa-600">
+                                      Plantations:
+                                    </span>
+                                    <ul className="mt-1 space-y-1 text-xs text-cocoa-700">
+                                      {event.plantations.map((p) => (
+                                        <li key={p.id}>🌱 {p.seedName}</li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+                                {event.tasks.length > 0 && (
+                                  <div>
+                                    <span className="text-xs font-semibold text-cocoa-600">
+                                      Tasks:
+                                    </span>
+                                    <ul className="mt-1 space-y-1 text-xs text-cocoa-700">
+                                      {event.tasks.map((t, idx) => (
+                                        <li key={idx}>
+                                          📋 {t.task.title} ({t.task.status})
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                          {calendarEvents.length === 0 && (
+                            <p className="py-8 text-center text-sm text-cocoa-500">
+                              No calendar events found
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ) : viewMode === "grid" ? (
+                      <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                        <AnimatePresence mode="popLayout">
+                          {filteredPlantations.map((plantation) => (
+                            <div key={plantation.id} className="relative">
+                              <label className="absolute left-3 top-3 z-10">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedPlantations.has(plantation.id)}
+                                  onChange={() => handleToggleSelection(plantation.id)}
+                                  aria-label={`Select ${plantation.seedName}`}
+                                  className="h-5 w-5 rounded border-cream-300 text-leaf-500 shadow-lg focus:ring-2 focus:ring-leaf-400"
+                                />
+                              </label>
+                              <div className="absolute right-3 top-3 z-10 flex flex-col gap-2">
+                                {comparisonMode && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleComparison(plantation.id)}
+                                    className={`rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white ${
+                                      comparisonPlantations.has(plantation.id)
+                                        ? "ring-2 ring-amber-500"
+                                        : ""
+                                    }`}
+                                    aria-label={
+                                      comparisonPlantations.has(plantation.id)
+                                        ? "Remove from comparison"
+                                        : "Add to comparison"
+                                    }
+                                    disabled={
+                                      !comparisonPlantations.has(plantation.id) &&
+                                      comparisonPlantations.size >= 3
+                                    }
+                                  >
+                                    {comparisonPlantations.has(plantation.id)
+                                      ? "✓"
+                                      : "🔍"}
+                                  </button>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={() => handleToggleFavorite(plantation.id)}
+                                  className="rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white"
+                                  aria-label={
+                                    favorites.has(plantation.id)
+                                      ? "Remove from favorites"
+                                      : "Add to favorites"
+                                  }
+                                >
+                                  {favorites.has(plantation.id) ? "⭐" : "☆"}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleOpenNotes(plantation.id)}
+                                  className={`rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white ${
+                                    notes.has(plantation.id) ? "ring-2 ring-blue-400" : ""
+                                  }`}
+                                  aria-label="Add or view notes"
+                                >
+                                  {notes.has(plantation.id) ? "📝" : "📄"}
+                                </button>
+                              </div>
+                              <PlantationCard
+                                plantation={plantation}
+                                onUpdate={handleUpdateRequest}
+                                onAdvanceStage={handleAdvanceStage}
+                              />
+                            </div>
+                          ))}
+                        </AnimatePresence>
+                      </div>
+                    ) : (
+                      <div className="mt-6 space-y-3">
+                        <AnimatePresence mode="popLayout">
+                          {filteredPlantations.map((plantation) => (
+                            <motion.div
+                              key={plantation.id}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              exit={{ opacity: 0, x: 20 }}
+                              className="relative flex items-center gap-4 rounded-2xl border border-cream-200 bg-white/80 p-4 shadow-sm"
+                            >
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  checked={selectedPlantations.has(plantation.id)}
+                                  onChange={() => handleToggleSelection(plantation.id)}
+                                  aria-label={`Select ${plantation.seedName}`}
+                                  className="h-4 w-4 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
+                                />
+                              </label>
+                              <div className="flex items-center gap-2">
+                                {comparisonMode && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleComparison(plantation.id)}
+                                    className={`rounded-full p-1.5 text-sm transition ${
+                                      comparisonPlantations.has(plantation.id)
+                                        ? "bg-amber-200 text-amber-900 ring-2 ring-amber-500"
+                                        : "bg-cream-100 text-cocoa-600 hover:bg-cream-200"
+                                    }`}
+                                    aria-label={
+                                      comparisonPlantations.has(plantation.id)
+                                        ? "Remove from comparison"
+                                        : "Add to comparison"
+                                    }
+                                    disabled={
+                                      !comparisonPlantations.has(plantation.id) &&
+                                      comparisonPlantations.size >= 3
+                                    }
+                                  >
+                                    {comparisonPlantations.has(plantation.id)
+                                      ? "✓"
+                                      : "🔍"}
+                                  </button>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={() => handleToggleFavorite(plantation.id)}
+                                  className="text-lg"
+                                  aria-label={
+                                    favorites.has(plantation.id)
+                                      ? "Remove from favorites"
+                                      : "Add to favorites"
+                                  }
+                                >
+                                  {favorites.has(plantation.id) ? "⭐" : "☆"}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleOpenNotes(plantation.id)}
+                                  className={`text-lg ${
+                                    notes.has(plantation.id) ? "text-blue-600" : ""
+                                  }`}
+                                  aria-label="Add or view notes"
+                                >
+                                  {notes.has(plantation.id) ? "📝" : "📄"}
+                                </button>
+                              </div>
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-cocoa-900">
+                                  {plantation.seedName}
+                                </h3>
+                                <p className="text-sm text-cocoa-500">
+                                  {plantation.location} • {plantation.stage} •{" "}
+                                  {new Date(plantation.startDate).toLocaleDateString()}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => handleUpdateRequest(plantation)}
+                                  className="rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300"
+                                >
+                                  Update
+                                </button>
+                                {plantation.stage !== "harvested" && (
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleAdvanceStage(
+                                        plantation,
+                                        plantation.stage === "planted"
+                                          ? "growing"
+                                          : "harvested"
+                                      )
+                                    }
+                                    className="rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-leaf-600"
+                                  >
+                                    Advance
+                                  </button>
+                                )}
+                              </div>
+                            </motion.div>
+                          ))}
+                        </AnimatePresence>
+                      </div>
+                    )}
+                  </section>
+
+                  <aside className="space-y-6">
+                    <AlertsPanel />
+                    <PlantationTaskPanel
+                      plantations={filteredPlantations}
+                      onTaskStatusChange={updateTaskStatus}
+                      recurringTemplates={recurringTemplates}
+                      onManageRecurring={() => setRecurringModalOpen(true)}
+                    />
+                    <WalletManager />
+                    <OnchainSyncPanel />
+                    <CommunitySharePanel
+                      plantations={filteredPlantations}
+                      activeWalletCount={
+                        normalizedFilters.length || (isConnected ? 1 : 0)
+                      }
+                    />
+                  </aside>
+                </div>
+              </>
+            )}
+        </div>
+      </main>
+      </div>
+
+      <PlantSeedModal
+        open={isPlantModalOpen}
+        onClose={handleCloseModals}
+        onSubmit={handlePlantSeedSubmit}
+        walletAddress={address}
+      />
+
+      <UpdateStatusModal
+        open={Boolean(updateTarget)}
+        onClose={handleCloseModals}
+        plantation={updateTarget ?? undefined}
+        onSubmit={handleUpdateSubmit}
+      />
+
+      <ReceiptUploadModal
+        open={isReceiptModalOpen}
+        onClose={() => setReceiptModalOpen(false)}
+        defaultPlantationId={primaryPlantationId}
+      />
+
+      <ComplaintModal
+        open={isComplaintModalOpen}
+        onClose={() => setComplaintModalOpen(false)}
+        defaultPlantationId={primaryPlantationId}
+      />
+
+      <LoanRequestModal
+        open={isLoanModalOpen}
+        onClose={() => setLoanModalOpen(false)}
+        defaultPlantationId={primaryPlantationId}
+      />
+
+      <RecurringTaskModal
+        open={isRecurringModalOpen}
+        onClose={() => setRecurringModalOpen(false)}
+        plantations={plantations}
+      />
+
+      <ExportSummaryModal
+        open={isExportModalOpen}
+        onClose={() => setExportModalOpen(false)}
+        snapshot={analyticsSnapshot}
+      />
+
+      {/* Notes Modal */}
+      {showNotesModal && notesTargetId && (
+        <Modal
+          open={showNotesModal}
+          onClose={() => {
+            setShowNotesModal(false);
+            setNotesTargetId(null);
+          }}
+          title="Plantation Notes"
+          description="Add personal notes and observations for this plantation"
+        >
+          <div className="space-y-4">
+            <label className="block text-sm text-cocoa-600">
+              Notes
+              <textarea
+                value={notesInput}
+                onChange={(e) => setNotesInput(e.target.value)}
+                rows={6}
+                className="mt-1 w-full rounded-2xl border border-cream-300 bg-white px-3 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                placeholder="Add your notes here..."
+              />
+            </label>
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowNotesModal(false);
+                  setNotesTargetId(null);
+                  setNotesInput("");
+                }}
+                className="rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (notesTargetId) {
+                    handleSaveNote(notesTargetId, notesInput);
+                    setNotesInput("");
+                  }
+                }}
+                className="rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-cream-50 shadow-lg transition hover:bg-leaf-600 focus:outline-none focus:ring-2 focus:ring-leaf-400"
+              >
+                Save Notes
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
+}

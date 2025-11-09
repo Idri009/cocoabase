@@ -218,11 +218,14 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 
 ### Weather Integration
 - **Weather Widget**: Real-time weather display with conditions, temperature, humidity, precipitation, and wind speed
+- **7-Day Weather Forecast**: Extended weather forecast with daily conditions and temperatures
 - **Weather Impact Assessment**: Automatic assessment of weather impact on plantations (positive/neutral/negative)
 - **Weather Score**: Calculated weather score (0-100) based on multiple factors
-- **Weather Recommendations**: Actionable recommendations based on current weather conditions
+- **Weather Recommendations**: Actionable recommendations based on current and forecasted weather conditions
 - **Weather Alerts**: Alerts for rain, storms, drought, frost, and high winds
 - **Watering Recommendations**: Smart watering suggestions based on weather and last watered date
+- **Forecast Analysis**: Analyze precipitation totals, rainy days, and optimal weather days
+- **Weather Trends**: Track weather patterns and trends over time
 
 ### Market Price Tracking
 - **Market Price Cards**: Display current commodity prices with trends and changes

@@ -39,9 +39,6 @@ export default function StageTemplatePanel() {
   const addStageTemplate = usePlantationsStore(
     (state) => state.addStageTaskTemplate
   );
-  const addAttachment = usePlantationsStore(
-    (state) => state.addTaskAttachment
-  );
   const updateStageTemplate = usePlantationsStore(
     (state) => state.updateStageTaskTemplate
   );

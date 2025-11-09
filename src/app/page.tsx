@@ -286,7 +286,7 @@ export default function DashboardPage() {
       }
       if ((e.metaKey || e.ctrlKey) && e.key === "n") {
         e.preventDefault();
-        handlePlantSeedClick();
+        setPlantModalOpen(true);
       }
     };
 

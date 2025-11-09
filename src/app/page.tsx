@@ -22,6 +22,7 @@ import DashboardMetrics, {
   type DashboardMetric,
 } from "@/components/dashboard-metrics";
 import ForecastPanel from "@/components/forecast-panel";
+import ForecastWorkspace from "@/components/forecast-workspace";
 import GeoMapPanel from "@/components/geo-map-panel";
 import GeoInsightsPanel from "@/components/geo-insights-panel";
 import ReceiptHistoryPanel from "@/components/receipt-history-panel";
@@ -37,6 +38,7 @@ import SecurityPanel from "@/components/security-panel";
 import SecurityEventsPanel from "@/components/security-events-panel";
 import SecurityMonitor from "@/components/security-monitor";
 import SessionGuard from "@/components/session-guard";
+import ExportSummaryModal from "@/components/export-summary-modal";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";

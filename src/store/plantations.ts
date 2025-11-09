@@ -64,6 +64,7 @@ export type PlantationDraft = Omit<
   tasks?: PlantationTask[];
   yieldTimeline?: YieldCheckpoint[];
   collaborators?: Omit<PlantationCollaborator, "id">[];
+  coordinates?: PlantationCoordinates;
 };
 
 type PlantationState = {

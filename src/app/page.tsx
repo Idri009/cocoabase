@@ -536,6 +536,10 @@ export default function DashboardPage() {
           growing={stats.growing}
           carbonOffsetTons={carbonTotals.carbonOffsetTons}
           treeCount={carbonTotals.treeCount}
+          carbonEfficiency={{
+            perTreeKg: carbonPerTree != null ? carbonPerTree * 1000 : null,
+            perHectareTons: carbonPerHectare,
+          }}
           onPlantSeed={handlePlantSeedClick}
           onUploadReceipt={() => setReceiptModalOpen(true)}
           onFileComplaint={() => setComplaintModalOpen(true)}

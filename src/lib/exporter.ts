@@ -2,6 +2,7 @@
 
 import { jsPDF } from "jspdf";
 import type { AnalyticsSnapshot } from "@/lib/analytics";
+import type { AlertInsightSummary } from "@/lib/alerts";
 
 export type ExportSectionOptions = {
   overview: boolean;
@@ -17,6 +18,12 @@ const defaultSections: ExportSectionOptions = {
   wallet: true,
   sustainability: true,
   alerts: true,
+};
+
+export type ExportAnalyticsOptions = {
+  sections?: Partial<ExportSectionOptions>;
+  filename?: string;
+  alertSummary?: AlertInsightSummary;
 };
 
 const formatNumber = (value: number, fractionDigits = 0) =>
@@ -41,9 +48,13 @@ const createDownload = (blob: Blob, filename: string) => {
 
 export const exportAnalyticsToCsv = (
   snapshot: AnalyticsSnapshot,
-  sections: Partial<ExportSectionOptions> = {},
-  filename = `cocoa-analytics-${timestampLabel()}.csv`
+  options: ExportAnalyticsOptions = {}
 ) => {
+  const {
+    sections = {},
+    filename = `cocoa-analytics-${timestampLabel()}.csv`,
+    alertSummary,
+  } = options;
   const resolvedSections = { ...defaultSections, ...sections };
   const lines: string[] = [];
 
@@ -155,21 +166,70 @@ export const exportAnalyticsToCsv = (
   }
 
   if (resolvedSections.alerts) {
-    lines.push("Recent Alerts");
-    lines.push("Type,Severity,Source,Created");
-    snapshot.collaboratorInsights
-      .slice(0, 5)
-      .forEach((insight) => {
-        lines.push(
-          [
-            `Collaborator ${insight.name}`,
-            insight.role,
-            `${insight.plantations} plantations`,
-            insight.lastUpdated ?? "—",
-          ].join(",")
-        );
-      });
+    lines.push("Alert intelligence");
+    lines.push("Metric,Value");
+    lines.push(`Total alerts,${alertSummary?.total ?? 0}`);
+    lines.push(`Open alerts,${alertSummary?.open ?? 0}`);
+    lines.push(`Acknowledged alerts,${alertSummary?.acknowledged ?? 0}`);
+    lines.push(
+      `Average response (mins),${
+        alertSummary?.averageResponseMinutes ?? "—"
+      }`
+    );
+    lines.push(
+      `Critical overdue,${alertSummary?.criticalOverdue ?? 0}`
+    );
+    lines.push(
+      `Channel failures,${alertSummary?.channelFailureCount ?? 0}`
+    );
+    lines.push(
+      `Channel failure rate,${
+        alertSummary
+          ? `${(alertSummary.channelFailureRate * 100).toFixed(1)}%`
+          : "—"
+      }`
+    );
     lines.push("");
+
+    if (alertSummary) {
+      lines.push("Severity,Count");
+      (Object.entries(alertSummary.severityCounts) as Array<
+        [string, number]
+      >).forEach(([severity, count]) => {
+        lines.push(`${severity},${count}`);
+      });
+      lines.push("");
+
+      if (alertSummary.topSources.length) {
+        lines.push("Top sources");
+        lines.push("Source,Count,Last alert");
+        alertSummary.topSources.forEach((source) => {
+          lines.push(
+            [
+              source.label,
+              source.count,
+              source.lastAlert ? source.lastAlert : "—",
+            ].join(",")
+          );
+        });
+        lines.push("");
+      }
+
+      if (alertSummary.recentAlerts.length) {
+        lines.push("Recent alerts");
+        lines.push("Title,Severity,Created");
+        alertSummary.recentAlerts.forEach((alert) => {
+          lines.push(
+            [
+              `"${alert.title.replace(/"/g, '""')}"`,
+              alert.severity,
+              alert.createdAt,
+            ].join(",")
+          );
+        });
+        lines.push("");
+      }
+    }
   }
 
   const blob = new Blob([lines.join("\n")], {
@@ -180,9 +240,13 @@ export const exportAnalyticsToCsv = (
 
 export const exportAnalyticsToPdf = (
   snapshot: AnalyticsSnapshot,
-  sections: Partial<ExportSectionOptions> = {},
-  filename = `cocoa-analytics-${timestampLabel()}.pdf`
+  options: ExportAnalyticsOptions = {}
 ) => {
+  const {
+    sections = {},
+    filename = `cocoa-analytics-${timestampLabel()}.pdf`,
+    alertSummary,
+  } = options;
   const resolvedSections = { ...defaultSections, ...sections };
   const doc = new jsPDF({
     unit: "pt",
@@ -323,20 +387,57 @@ export const exportAnalyticsToPdf = (
     addSpacer();
   }
 
-  if (resolvedSections.alerts) {
-    addHeading("Collaborator pulse");
-    snapshot.collaboratorInsights.slice(0, 5).forEach((insight) => {
+  if (resolvedSections.alerts && alertSummary) {
+    addHeading("Alert intelligence");
+    addParagraph(`Total alerts: ${alertSummary.total}`);
+    addParagraph(`Open alerts: ${alertSummary.open}`);
+    addParagraph(`Acknowledged: ${alertSummary.acknowledged}`);
+    if (alertSummary.averageResponseMinutes != null) {
       addParagraph(
-        `${insight.name} (${insight.role}) — ${insight.plantations} plantations`
+        `Average response time: ${alertSummary.averageResponseMinutes} minutes`
       );
-      if (insight.lastNote) {
-        addParagraph(`Latest note: ${insight.lastNote}`);
-      }
-      if (insight.lastUpdated) {
-        addParagraph(`Updated: ${new Date(insight.lastUpdated).toLocaleString()}`);
-      }
-      addSpacer();
+    }
+    addParagraph(`Critical overdue: ${alertSummary.criticalOverdue}`);
+    addParagraph(
+      `Channel failures: ${alertSummary.channelFailureCount} (${(
+        alertSummary.channelFailureRate * 100
+      ).toFixed(1)}%)`
+    );
+    addSpacer();
+
+    addParagraph("Severity distribution:");
+    (Object.entries(alertSummary.severityCounts) as Array<
+      [string, number]
+    >).forEach(([severity, count]) => {
+      addParagraph(`- ${severity}: ${count}`);
     });
+    addSpacer();
+
+    if (alertSummary.topSources.length) {
+      addParagraph("Top sources:");
+      alertSummary.topSources.forEach((source) => {
+        addParagraph(
+          `${source.label}: ${source.count} alerts${
+            source.lastAlert
+              ? ` (last ${new Date(source.lastAlert).toLocaleString()})`
+              : ""
+          }`
+        );
+      });
+      addSpacer();
+    }
+
+    if (alertSummary.recentAlerts.length) {
+      addParagraph("Recent alerts:");
+      alertSummary.recentAlerts.forEach((alert) => {
+        addParagraph(
+          `${new Date(alert.createdAt).toLocaleString()} — ${
+            alert.title
+          } [${alert.severity}]`
+        );
+      });
+      addSpacer();
+    }
   }
 
   doc.save(filename.endsWith(".pdf") ? filename : `${filename}.pdf`);

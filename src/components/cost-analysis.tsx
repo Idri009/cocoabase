@@ -1,146 +1,95 @@
 "use client";
 
-import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/cn";
-import { useFinancialStore } from "@/store/financial";
-import { useLaborStore } from "@/store/labor";
-import { useInventoryStore } from "@/store/inventory";
-import { useMaintenanceStore } from "@/store/maintenance";
-import AnimatedCounter from "./animated-counter";
+import { useMemo } from "react";
+import { useEngagementStore } from "@/store/engagement";
+import { usePlantationsStore } from "@/store/plantations";
 
 export default function CostAnalysis() {
-  const transactions = useFinancialStore((state) => state.transactions);
-  const laborRecords = useLaborStore((state) => state.records);
-  const inventoryItems = useInventoryStore((state) => state.items);
-  const maintenanceRecords = useMaintenanceStore((state) => state.records);
+  const receipts = useEngagementStore((state) => state.receipts);
+  const plantations = usePlantationsStore((state) => state.plantations);
 
   const analysis = useMemo(() => {
-    const expenses = transactions
-      .filter((t) => t.type === "expense")
-      .reduce((sum, t) => sum + t.amount, 0);
+    const totalCosts = receipts.reduce((acc, r) => acc + r.amount, 0);
+    const harvested = plantations.filter((p) => p.stage === "harvested").length;
+    const totalYield = plantations.reduce((acc, p) => {
+      if (p.yieldTimeline.length > 0) {
+        return acc + p.yieldTimeline[p.yieldTimeline.length - 1].yieldKg;
+      }
+      return acc;
+    }, 0);
 
-    const laborCosts = laborRecords.reduce(
-      (sum, record) => sum + record.totalCost,
-      0
-    );
-
-    const inventoryValue = inventoryItems.reduce(
-      (sum, item) => sum + item.unitPrice * item.quantity,
-      0
-    );
-
-    const maintenanceCosts = maintenanceRecords
-      .filter((r) => r.cost)
-      .reduce((sum, r) => sum + (r.cost || 0), 0);
-
-    const totalCosts = expenses + laborCosts + maintenanceCosts;
-
-    const categoryBreakdown = transactions
-      .filter((t) => t.type === "expense")
-      .reduce((acc, t) => {
-        const category = t.category || "other";
-        acc[category] = (acc[category] || 0) + t.amount;
-        return acc;
-      }, {} as Record<string, number>);
+    const costPerPlantation =
+      plantations.length > 0 ? totalCosts / plantations.length : 0;
+    const costPerKg = totalYield > 0 ? totalCosts / totalYield : 0;
 
     return {
       totalCosts,
-      expenses,
-      laborCosts,
-      inventoryValue,
-      maintenanceCosts,
-      categoryBreakdown,
+      costPerPlantation,
+      costPerKg,
+      totalYield,
+      harvested,
     };
-  }, [transactions, laborRecords, inventoryItems, maintenanceRecords]);
-
-  const categories = Object.entries(analysis.categoryBreakdown)
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 5);
+  }, [receipts, plantations]);
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
-      className="rounded-3xl border border-cocoa-800/60 bg-[#101f3c]/80 p-6 text-slate-100 shadow-xl shadow-black/20 backdrop-blur"
+      className="rounded-3xl border border-cream-200 bg-gradient-to-br from-purple-50/80 to-pink-50/80 p-6 shadow-sm backdrop-blur"
     >
-      <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Cost analysis</h2>
-          <p className="text-sm text-slate-300/80">
-            Detailed breakdown of operational costs and expenses.
-          </p>
-        </div>
-      </header>
-
-      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-2xl border border-blue-500/40 bg-blue-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-blue-300/70">
-            Total costs
-          </p>
-          <p className="mt-2 text-2xl font-bold text-blue-300">
-            $<AnimatedCounter value={analysis.totalCosts} />
-          </p>
-        </div>
-        <div className="rounded-2xl border border-purple-500/40 bg-purple-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-purple-300/70">
-            Labor costs
-          </p>
-          <p className="mt-2 text-2xl font-bold text-purple-300">
-            $<AnimatedCounter value={analysis.laborCosts} />
-          </p>
-        </div>
-        <div className="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-amber-300/70">
-            Maintenance
-          </p>
-          <p className="mt-2 text-2xl font-bold text-amber-300">
-            $<AnimatedCounter value={analysis.maintenanceCosts} />
-          </p>
-        </div>
-        <div className="rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-emerald-300/70">
-            Inventory value
-          </p>
-          <p className="mt-2 text-2xl font-bold text-emerald-300">
-            $<AnimatedCounter value={analysis.inventoryValue} />
-          </p>
-        </div>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-cocoa-900">
+          Cost Analysis
+        </h2>
+        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+          Analyze costs and efficiency
+        </p>
       </div>
 
-      {categories.length > 0 && (
-        <div className="mt-6">
-          <h3 className="mb-3 text-sm font-semibold text-white">
-            Top expense categories
-          </h3>
-          <div className="space-y-2">
-            {categories.map(([category, amount]) => {
-              const percentage =
-                (amount / analysis.totalCosts) * 100 || 0;
-              return (
-                <div key={category} className="space-y-1">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-300/70 capitalize">
-                      {category.replace("_", " ")}
-                    </span>
-                    <span className="font-semibold text-white">
-                      ${amount.toLocaleString()} ({percentage.toFixed(1)}%)
-                    </span>
-                  </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-slate-800/60">
-                    <div
-                      className="h-full bg-blue-500/60 transition-all"
-                      style={{ width: `${percentage}%` }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="rounded-xl border border-purple-200 bg-white/90 p-4">
+          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+            Total Costs
+          </div>
+          <div className="text-2xl font-bold text-purple-700">
+            {new Intl.NumberFormat(undefined, {
+              style: "currency",
+              currency: receipts[0]?.currency || "USD",
+            }).format(analysis.totalCosts)}
           </div>
         </div>
-      )}
+        <div className="rounded-xl border border-pink-200 bg-white/90 p-4">
+          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+            Cost per Plantation
+          </div>
+          <div className="text-2xl font-bold text-pink-700">
+            {new Intl.NumberFormat(undefined, {
+              style: "currency",
+              currency: receipts[0]?.currency || "USD",
+            }).format(analysis.costPerPlantation)}
+          </div>
+        </div>
+        <div className="rounded-xl border border-violet-200 bg-white/90 p-4">
+          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+            Cost per Kg
+          </div>
+          <div className="text-2xl font-bold text-violet-700">
+            {new Intl.NumberFormat(undefined, {
+              style: "currency",
+              currency: receipts[0]?.currency || "USD",
+            }).format(analysis.costPerKg)}
+          </div>
+        </div>
+        <div className="rounded-xl border border-fuchsia-200 bg-white/90 p-4">
+          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+            Total Yield
+          </div>
+          <div className="text-2xl font-bold text-fuchsia-700">
+            {analysis.totalYield.toFixed(0)} kg
+          </div>
+        </div>
+      </div>
     </motion.section>
   );
 }
-

@@ -120,6 +120,12 @@ export default function ActivityFeed({
     );
   }, [events, plantations, filter]);
 
+  useEffect(() => {
+    if (onFilterChange) {
+      onFilterChange(filteredPlantations);
+    }
+  }, [filteredPlantations, onFilterChange]);
+
   const typeFilters = [
     { value: "all", label: "All activity" },
     { value: "stage_change", label: "Stage changes" },

@@ -55,31 +55,41 @@ export default function TopBar({
       </div>
 
       <div className="flex flex-col items-start gap-4 md:flex-row md:items-center">
-        <dl className="flex flex-wrap gap-6 text-sm">
+        <dl className="flex flex-wrap gap-6 text-sm text-slate-200/80">
           <div>
-            <dt className="text-cocoa-500">Seeds planted</dt>
-            <dd className="text-lg font-semibold text-cocoa-900">{totalSeeds}</dd>
+            <dt className="text-xs uppercase tracking-[0.2em] text-slate-300/60">
+              Seeds planted
+            </dt>
+            <dd className="text-lg font-semibold text-white">{totalSeeds}</dd>
           </div>
           <div>
-            <dt className="text-cocoa-500">Harvested</dt>
-            <dd className="text-lg font-semibold text-cocoa-900">{harvested}</dd>
+            <dt className="text-xs uppercase tracking-[0.2em] text-slate-300/60">
+              Harvested
+            </dt>
+            <dd className="text-lg font-semibold text-white">{harvested}</dd>
           </div>
           <div>
-            <dt className="text-cocoa-500">Growing</dt>
-            <dd className="text-lg font-semibold text-cocoa-900">{growing}</dd>
+            <dt className="text-xs uppercase tracking-[0.2em] text-slate-300/60">
+              Growing
+            </dt>
+            <dd className="text-lg font-semibold text-white">{growing}</dd>
           </div>
           {carbonOffsetTons != null && (
             <div>
-              <dt className="text-cocoa-500">Carbon offset</dt>
-              <dd className="text-lg font-semibold text-cocoa-900">
+              <dt className="text-xs uppercase tracking-[0.2em] text-slate-300/60">
+                Carbon offset
+              </dt>
+              <dd className="text-lg font-semibold text-white">
                 {carbonOffsetTons.toLocaleString()} tCO₂
               </dd>
             </div>
           )}
           {treeCount != null && (
             <div>
-              <dt className="text-cocoa-500">Trees protected</dt>
-              <dd className="text-lg font-semibold text-cocoa-900">
+              <dt className="text-xs uppercase tracking-[0.2em] text-slate-300/60">
+                Trees protected
+              </dt>
+              <dd className="text-lg font-semibold text-white">
                 {treeCount.toLocaleString()}
               </dd>
             </div>

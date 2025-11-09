@@ -137,7 +137,7 @@ export default function AlertInsightsPanel() {
               Severity distribution
             </h3>
             <span className="text-xs text-slate-400/80">
-              Total channels: {summary.total}
+              Total alerts: {summary.total}
             </span>
           </header>
           <div className="flex flex-wrap gap-3">

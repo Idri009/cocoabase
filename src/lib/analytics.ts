@@ -238,6 +238,26 @@ export const buildAnalyticsSnapshot = (
     timeline: YieldCheckpoint[];
   }> = [];
   const timelineEntries: YieldTimelineEntry[] = [];
+  const walletAggregation = new Map<
+    string,
+    {
+      address: string;
+      stageCounts: Record<Plantation["stage"], number>;
+      totalPlantations: number;
+      activeTasks: number;
+      completedTasks: number;
+      carbonOffsetTons: number;
+      treeCount: number;
+      areaHectares: number;
+      harvestByMonth: Map<string, number>;
+      yieldSum: number;
+      yieldSamples: number;
+      forecastTotal: number;
+      forecastSamples: number;
+      lastUpdated?: string;
+    }
+  >();
+  const plantationWalletMap = new Map<string, string>();
 
   plantations.forEach((plantation) => {
     totals[plantation.stage] = (totals[plantation.stage] ?? 0) + 1;

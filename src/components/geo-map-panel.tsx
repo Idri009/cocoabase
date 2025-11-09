@@ -14,9 +14,7 @@ import type { Plantation } from "@/store/plantations";
 import {
   buildAnalyticsSnapshot,
   type AnalyticsSnapshot,
-  type GeoPlantationPoint,
 } from "@/lib/analytics";
-import { cn } from "@/lib/cn";
 
 type GeoMapPanelProps = {
   plantations: Plantation[];

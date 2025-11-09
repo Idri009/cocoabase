@@ -269,19 +269,27 @@ export const usePlantationsStore = create<PlantationState>()(
       plantations: seedData,
       addPlantation: (payload) => {
         const now = new Date().toISOString();
+        const {
+          stage: draftStage,
+          tasks: draftTasks,
+          collaborators: draftCollaborators,
+          yieldTimeline: draftTimeline,
+          ...rest
+        } = payload;
+
         const collaborators =
-          payload.collaborators?.map((collaborator) =>
+          draftCollaborators?.map((collaborator) =>
             normalizeCollaborator(collaborator, now)
           ) ?? [];
 
         const plantation: Plantation = {
           id: generateId(),
-          stage: payload.stage ?? "planted",
+          stage: draftStage ?? "planted",
           updatedAt: now,
-          tasks: payload.tasks?.map((task) => normalizeTask(task)) ?? [],
-          yieldTimeline: payload.yieldTimeline ?? [],
+          tasks: draftTasks?.map((task) => normalizeTask(task)) ?? [],
+          yieldTimeline: draftTimeline ?? [],
           collaborators,
-          ...payload,
+          ...rest,
         };
 
         set((state) => ({

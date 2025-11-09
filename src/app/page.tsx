@@ -202,6 +202,10 @@ export default function DashboardPage() {
   const [showDocumentScanner, setShowDocumentScanner] = useState(false);
   const [showComplianceTracker, setShowComplianceTracker] = useState(false);
   const [showYieldOptimizer, setShowYieldOptimizer] = useState(false);
+  const [showRiskAssessment, setShowRiskAssessment] = useState(false);
+  const [showSupplyChainManager, setShowSupplyChainManager] = useState(false);
+  const [showAdvancedAnalytics, setShowAdvancedAnalytics] = useState(false);
+  const [showAutomationRules, setShowAutomationRules] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;

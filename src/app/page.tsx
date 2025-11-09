@@ -514,6 +514,8 @@ export default function DashboardPage() {
           totalSeeds={stats.totalSeeds}
           harvested={stats.harvested}
           growing={stats.growing}
+          carbonOffsetTons={carbonTotals.carbonOffsetTons}
+          treeCount={carbonTotals.treeCount}
           onPlantSeed={handlePlantSeedClick}
           onUploadReceipt={() => setReceiptModalOpen(true)}
           onFileComplaint={() => setComplaintModalOpen(true)}

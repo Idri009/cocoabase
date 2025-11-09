@@ -32,9 +32,9 @@ npm install
 
 ## Run the App
 
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+```
 
 Visit [http://localhost:3000](http://localhost:3000/) to see the dashboard.
 
@@ -137,6 +137,9 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Mobile Features**: GPS tracking, offline mode, photo capture, barcode scanning
 - **Training Resources**: Educational content and guides for farmers
 - **Marketplace**: Buy and sell agricultural products with other farmers
+- **Soil Management**: Track soil tests, pH levels, and nutrient content (N, P, K)
+- **Compliance Tracker**: Monitor regulatory compliance requirements and deadlines
+- **Budget Planner**: Create and track budgets by category with spending analysis
 
 ### Data Management
 - **Data Export**: Export plantations, tasks, and analytics data

@@ -8,6 +8,8 @@ type TopBarProps = {
   totalSeeds: number;
   harvested: number;
   growing: number;
+  carbonOffsetTons?: number;
+  treeCount?: number;
   onPlantSeed: () => void;
   onUploadReceipt: () => void;
   onFileComplaint: () => void;
@@ -25,6 +27,8 @@ export default function TopBar({
   totalSeeds,
   harvested,
   growing,
+  carbonOffsetTons,
+  treeCount,
   onPlantSeed,
   onUploadReceipt,
   onFileComplaint,
@@ -51,7 +55,7 @@ export default function TopBar({
       </div>
 
       <div className="flex flex-col items-start gap-4 md:flex-row md:items-center">
-        <dl className="flex gap-6 text-sm">
+        <dl className="flex flex-wrap gap-6 text-sm">
           <div>
             <dt className="text-cocoa-500">Seeds planted</dt>
             <dd className="text-lg font-semibold text-cocoa-900">{totalSeeds}</dd>
@@ -64,6 +68,22 @@ export default function TopBar({
             <dt className="text-cocoa-500">Growing</dt>
             <dd className="text-lg font-semibold text-cocoa-900">{growing}</dd>
           </div>
+          {carbonOffsetTons != null && (
+            <div>
+              <dt className="text-cocoa-500">Carbon offset</dt>
+              <dd className="text-lg font-semibold text-cocoa-900">
+                {carbonOffsetTons.toLocaleString()} tCO₂
+              </dd>
+            </div>
+          )}
+          {treeCount != null && (
+            <div>
+              <dt className="text-cocoa-500">Trees protected</dt>
+              <dd className="text-lg font-semibold text-cocoa-900">
+                {treeCount.toLocaleString()}
+              </dd>
+            </div>
+          )}
         </dl>
 
         <div className="flex flex-wrap items-center gap-2">

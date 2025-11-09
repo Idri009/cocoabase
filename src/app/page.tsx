@@ -600,6 +600,7 @@ export default function DashboardPage() {
                   plantations={filteredPlantations}
                   snapshot={analyticsSnapshot}
                 />
+                <AlertInsightsPanel />
                 <CohortChart cohorts={analyticsSnapshot.cohortPerformance} />
                 <ForecastPanel
                   plantations={filteredPlantations}

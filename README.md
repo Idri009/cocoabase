@@ -133,10 +133,10 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Data Import**: Import data from various formats
 - **Data Management Panel**: Centralized data management interface
 - **Backup & Restore**: Complete data backup and restore functionality with validation
-- **Document Library**: Store and manage plantation-related documents
-- **Certification Manager**: Track and manage certifications
-- **Report Generation**: Generate comprehensive reports (plantation summary, task performance, financial, inventory, sustainability, yield forecast)
-- **Report Export**: Export reports to PDF, HTML, and text formats
+- **Document Library**: Store and manage plantation-related documents (contracts, certificates, receipts, invoices, permits)
+- **Certification Manager**: Track and manage certifications (organic, fair trade, rainforest alliance, UTZ, ISO)
+- **Report Generation**: Generate comprehensive reports (plantation summary, financial, inventory, quality, sustainability)
+- **Report Export**: Export reports to JSON format with download functionality
 
 ### User Experience
 - **Dark Theme Support**: Full dark mode with system preference detection

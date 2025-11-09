@@ -1192,7 +1192,11 @@ export const usePlantationsStore = create<PlantationState>()(
         }
       },
       resetToSeedData: () => {
-        set({ plantations: seedData, recurringTemplates: [] });
+        set({
+          plantations: seedData,
+          recurringTemplates: [],
+          stageTemplates: stageTemplateSeed,
+        });
       },
     }),
     buildPersistOptions()

@@ -252,6 +252,10 @@ export default function DashboardPage() {
   const [showResourceOptimizer, setShowResourceOptimizer] = useState(false);
   const [showQualityMetrics, setShowQualityMetrics] = useState(false);
   const [showSustainabilityReport, setShowSustainabilityReport] = useState(false);
+  const [showWorkflowAutomation, setShowWorkflowAutomation] = useState(false);
+  const [showDataInsights, setShowDataInsights] = useState(false);
+  const [showCollaborationHub, setShowCollaborationHub] = useState(false);
+  const [showMarketAnalytics, setShowMarketAnalytics] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;

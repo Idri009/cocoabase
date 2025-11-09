@@ -198,7 +198,7 @@ function SustainabilityPanelBase({
                   className="rounded-2xl bg-white/80 p-4 shadow-sm shadow-cocoa-900/5"
                 >
                   <div className="flex items-center justify-between text-sm font-semibold text-cocoa-900">
-                    <span>{region.region}</span>
+                    <span>{region.region ?? "Unspecified"}</span>
                     <span>{region.carbonOffsetTons.toLocaleString()} t</span>
                   </div>
                   <p className="mt-1 text-xs text-cocoa-500">

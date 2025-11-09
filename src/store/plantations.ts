@@ -280,6 +280,74 @@ const addIntervalToDate = (
   return next;
 };
 
+const assignCollaboratorByRole = (
+  collaborators: PlantationCollaborator[],
+  role?: string
+) => {
+  if (!role) {
+    return undefined;
+  }
+  const normalizedRole = role.trim().toLowerCase();
+  return collaborators.find(
+    (collaborator) =>
+      collaborator.role?.trim().toLowerCase() === normalizedRole
+  );
+};
+
+const generateStageTemplateTasks = (
+  plantation: Plantation,
+  targetStage: GrowthStage,
+  stageTemplates: StageTaskTemplate[]
+): { tasks: PlantationTask[]; created: PlantationTask[] } => {
+  if (!stageTemplates.length) {
+    return { tasks: plantation.tasks, created: [] };
+  }
+
+  const relevant = stageTemplates.filter(
+    (template) => template.stage === targetStage && template.enabled
+  );
+
+  if (!relevant.length) {
+    return { tasks: plantation.tasks, created: [] };
+  }
+
+  const created: PlantationTask[] = [];
+  const nextTasks = [...plantation.tasks];
+
+  relevant.forEach((template) => {
+    const templateKey = `stage:${template.id}`;
+    const hasActiveTask = nextTasks.some(
+      (task) => task.templateId === templateKey && task.status !== "completed"
+    );
+
+    if (hasActiveTask) {
+      return;
+    }
+
+    const dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + template.dueOffsetDays);
+    const assignee = assignCollaboratorByRole(
+      plantation.collaborators,
+      template.assigneeRole
+    );
+
+    const task: PlantationTask = {
+      id: generateTaskId(),
+      title: template.title,
+      dueDate: dueDate.toISOString(),
+      status: "pending",
+      templateId: templateKey,
+      assigneeId: assignee?.id,
+      notes: template.description,
+    };
+
+    created.push(task);
+    nextTasks.push(task);
+  });
+
+  return { tasks: nextTasks, created };
+};
+
 type SeedCollaborator = Omit<PlantationCollaborator, "id"> & { id?: string };
 type SeedPlantation = Omit<
   Plantation,

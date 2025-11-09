@@ -170,6 +170,7 @@ type PlantationState = {
   recurringTemplates: RecurringTaskTemplate[];
   stageTemplates: StageTaskTemplate[];
   gateRules: StageGateRule[];
+  sharedNotes: SharedNote[];
   validateStageTransition: (
     plantation: Plantation,
     targetStage: GrowthStage
@@ -177,6 +178,13 @@ type PlantationState = {
   addGateRule: (rule: StageGateRuleDraft) => StageGateRule;
   updateGateRule: (id: string, updates: Partial<StageGateRuleDraft>) => void;
   removeGateRule: (id: string) => void;
+  addSharedNote: (note: SharedNoteDraft) => SharedNote;
+  updateSharedNote: (
+    noteId: string,
+    updates: Partial<Pick<SharedNote, "content" | "tags" | "attachments">>
+  ) => void;
+  removeSharedNote: (noteId: string) => void;
+  getSharedNotesForPlantation: (plantationId: string) => SharedNote[];
   addPlantation: (payload: PlantationDraft) => Plantation;
   updateStage: (id: string, nextStage: GrowthStage, note?: string) => void;
   updateStages: (

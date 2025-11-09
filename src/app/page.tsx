@@ -165,8 +165,11 @@ export default function DashboardPage() {
     const harvested = filteredPlantations.filter(
       (plantation) => plantation.stage === "harvested"
     ).length;
+    const growing = filteredPlantations.filter(
+      (plantation) => plantation.stage === "growing"
+    ).length;
 
-    return { totalSeeds, harvested };
+    return { totalSeeds, harvested, growing };
   }, [filteredPlantations]);
 
   const analyticsSnapshot = useMemo(

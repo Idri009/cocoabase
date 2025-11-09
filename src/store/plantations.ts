@@ -322,6 +322,22 @@ const normalizePlantation = (plantation: SeedPlantation): Plantation => {
   };
 };
 
+const clampDueOffset = (offset?: number) => Math.max(0, offset ?? 0);
+
+const normalizeStageTemplate = (
+  template: SeedStageTemplate
+): StageTaskTemplate => {
+  const nowIso = new Date().toISOString();
+  return {
+    ...template,
+    id: template.id ?? generateStageTemplateId(),
+    dueOffsetDays: clampDueOffset(template.dueOffsetDays),
+    enabled: template.enabled ?? true,
+    createdAt: template.createdAt ?? nowIso,
+    updatedAt: template.updatedAt,
+  };
+};
+
 const seedData: Plantation[] = (
   plantationsSeedData as unknown as SeedPlantation[]
 ).map(normalizePlantation);

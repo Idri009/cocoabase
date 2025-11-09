@@ -116,6 +116,26 @@ export type StageGateValidationResult = {
   warnings: string[];
 };
 
+export type SharedNote = {
+  id: string;
+  plantationId: string;
+  authorWalletAddress: string;
+  authorName?: string;
+  content: string;
+  createdAt: string;
+  updatedAt?: string;
+  attachments?: string[];
+  tags?: string[];
+};
+
+export type SharedNoteDraft = Omit<
+  SharedNote,
+  "id" | "createdAt" | "updatedAt"
+> & {
+  attachments?: string[];
+  tags?: string[];
+};
+
 export type Plantation = {
   id: string;
   seedName: string;

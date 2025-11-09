@@ -701,7 +701,7 @@ export const usePlantationsStore = create<PlantationState>()(
 
         set((state) => {
           if (!state.recurringTemplates.length) {
-            return state;
+            return {};
           }
 
           const additions = new Map<string, PlantationTask[]>();

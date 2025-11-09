@@ -346,6 +346,7 @@ const generateStageTemplateTasks = (
       templateId: templateKey,
       assigneeId: assignee?.id,
       notes: template.description,
+      attachments: template.attachments ? [...template.attachments] : [],
     };
 
     created.push(task);

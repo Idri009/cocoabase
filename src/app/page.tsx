@@ -4281,6 +4281,229 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
+                {/* AI Assistant */}
+                {showAIAssistant && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-violet-50/80 to-purple-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          AI Assistant
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Get help and insights
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowAIAssistant(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close AI assistant"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="rounded-2xl border border-violet-200 bg-white/90 p-4">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Ask a Question
+                        </h3>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            placeholder="Ask about plantations, tasks, or best practices..."
+                            className="flex-1 rounded-xl border border-cream-300 bg-white px-4 py-2 text-sm focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-200"
+                          />
+                          <button
+                            type="button"
+                            className="rounded-xl border border-violet-300 bg-violet-50 px-4 py-2 text-sm font-semibold text-violet-700 transition hover:bg-violet-100"
+                          >
+                            Ask
+                          </button>
+                        </div>
+                      </div>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        {[
+                          "How do I improve yield?",
+                          "What tasks are overdue?",
+                          "Best practices for harvesting",
+                          "Carbon offset tips",
+                        ].map((suggestion) => (
+                          <button
+                            key={suggestion}
+                            type="button"
+                            className="rounded-xl border border-violet-200 bg-white/80 px-4 py-2 text-left text-sm text-cocoa-700 transition hover:bg-violet-50"
+                          >
+                            {suggestion}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Yield Optimizer */}
+                {showYieldOptimizer && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-green-50/80 to-emerald-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Yield Optimizer
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Optimize your plantation yields
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowYieldOptimizer(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close optimizer"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {yieldOptimizationTips.length === 0 ? (
+                        <div className="rounded-2xl border border-green-200 bg-green-50/80 p-6 text-center">
+                          <span className="text-4xl">✅</span>
+                          <p className="mt-2 text-sm font-semibold text-green-900">
+                            Optimal yields!
+                          </p>
+                          <p className="mt-1 text-xs text-green-700">
+                            Your plantations are well optimized.
+                          </p>
+                        </div>
+                      ) : (
+                        yieldOptimizationTips.map((tip) => (
+                          <div
+                            key={tip.id}
+                            className={`rounded-2xl border p-4 ${
+                              tip.impact === "high"
+                                ? "border-green-200 bg-green-50/80"
+                                : tip.impact === "medium"
+                                ? "border-amber-200 bg-amber-50/80"
+                                : "border-blue-200 bg-blue-50/80"
+                            }`}
+                          >
+                            <div className="flex items-start gap-3">
+                              <span className="text-2xl">{tip.icon}</span>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <h3 className="font-semibold text-cocoa-900">
+                                    {tip.title}
+                                  </h3>
+                                  <span
+                                    className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                                      tip.impact === "high"
+                                        ? "bg-green-100 text-green-700"
+                                        : tip.impact === "medium"
+                                        ? "bg-amber-100 text-amber-700"
+                                        : "bg-blue-100 text-blue-700"
+                                    }`}
+                                  >
+                                    {tip.impact.toUpperCase()} IMPACT
+                                  </span>
+                                </div>
+                                <p className="mt-1 text-sm text-cocoa-600">
+                                  {tip.description}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Compliance Tracker */}
+                {showComplianceTracker && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-blue-50/80 to-indigo-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Compliance Tracker
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Track certifications and compliance
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowComplianceTracker(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close compliance"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="grid gap-4 sm:grid-cols-3">
+                        <div className="rounded-2xl border border-blue-200 bg-white/90 p-4 shadow-sm">
+                          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                            Certified
+                          </div>
+                          <div className="text-2xl font-bold text-blue-700">
+                            {complianceStatus.certified}
+                          </div>
+                          <p className="mt-1 text-xs text-cocoa-500">
+                            of {complianceStatus.total} plantations
+                          </p>
+                        </div>
+                        <div className="rounded-2xl border border-indigo-200 bg-white/90 p-4 shadow-sm">
+                          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                            Compliance Rate
+                          </div>
+                          <div className="text-2xl font-bold text-indigo-700">
+                            {Math.round(complianceStatus.complianceRate)}%
+                          </div>
+                          <p className="mt-1 text-xs text-cocoa-500">
+                            Overall compliance
+                          </p>
+                        </div>
+                        <div className="rounded-2xl border border-purple-200 bg-white/90 p-4 shadow-sm">
+                          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                            Status
+                          </div>
+                          <div className="text-lg font-bold text-purple-700">
+                            {complianceStatus.complianceRate >= 80
+                              ? "✅ Compliant"
+                              : complianceStatus.complianceRate >= 50
+                              ? "⚠️ Partial"
+                              : "❌ Non-Compliant"}
+                          </div>
+                          <p className="mt-1 text-xs text-cocoa-500">
+                            Current status
+                          </p>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                        <p className="text-sm font-semibold text-cocoa-900">
+                          Compliance Requirements:
+                        </p>
+                        <ul className="mt-2 space-y-1 text-xs text-cocoa-600">
+                          <li>• Organic certification standards</li>
+                          <li>• Fair Trade compliance</li>
+                          <li>• Environmental regulations</li>
+                          <li>• Quality control standards</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
                 {/* Notification Center */}
                 {showNotificationCenter && (
                   <motion.section
@@ -5309,7 +5532,7 @@ export default function DashboardPage() {
                 </div>
               </>
             )}
-          </div>
+        </div>
       </main>
       </div>
 

@@ -481,6 +481,7 @@ export default function DashboardPage() {
           walletAddress={address}
           totalSeeds={stats.totalSeeds}
           harvested={stats.harvested}
+          growing={stats.growing}
           onPlantSeed={handlePlantSeedClick}
           onUploadReceipt={() => setReceiptModalOpen(true)}
           onFileComplaint={() => setComplaintModalOpen(true)}

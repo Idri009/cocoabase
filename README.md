@@ -114,6 +114,8 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Harvest Planner**: Plan and schedule harvest operations
 - **Resource Allocation**: Allocate resources across plantations
 - **Inventory Panel**: Track equipment and supplies
+- **Inventory Management**: Complete inventory tracking with low stock alerts, expiry monitoring, and reorder recommendations
+- **Inventory Status Dashboard**: Real-time inventory health scoring and issue detection
 - **Equipment Tracker**: Monitor equipment usage and maintenance
 - **Supply Chain Tracker**: Track supply chain operations
 - **Yield Journal**: Document and track yield data over time

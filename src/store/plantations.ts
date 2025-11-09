@@ -842,6 +842,29 @@ export const usePlantationsStore = create<PlantationState>()(
           return;
         }
 
+        const eligibleIds: string[] = [];
+        previousMap.forEach((plantation, id) => {
+          if (plantation.stage === nextStage) {
+            return;
+          }
+          const validation = get().validateStageTransition(
+            plantation,
+            nextStage
+          );
+          if (validation.canProceed) {
+            eligibleIds.push(id);
+          } else {
+            console.warn(
+              `[plantations] Stage transition blocked for ${id}:`,
+              validation.blockingReasons
+            );
+          }
+        });
+
+        if (!eligibleIds.length) {
+          return;
+        }
+
         const nowIso = new Date().toISOString();
         const stageTemplates = get().stageTemplates;
         const newStageTaskRefs: Array<{

@@ -266,6 +266,9 @@ const generateRecurringTemplateId = () =>
 const generateStageTemplateId = () =>
   `stage-${Math.random().toString(36).slice(2, 9)}`;
 
+const generateYieldCheckpointId = () =>
+  `yield-${Math.random().toString(36).slice(2, 9)}`;
+
 const clampInterval = (interval?: number) => Math.max(1, interval ?? 1);
 
 const addIntervalToDate = (

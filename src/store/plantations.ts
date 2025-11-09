@@ -734,6 +734,46 @@ export const usePlantationsStore = create<PlantationState>()(
           gateRules: state.gateRules.filter((rule) => rule.id !== id),
         }));
       },
+      addSharedNote: (noteDraft) => {
+        const now = new Date().toISOString();
+        const note: SharedNote = {
+          id: generateSharedNoteId(),
+          createdAt: now,
+          attachments: noteDraft.attachments ?? [],
+          tags: noteDraft.tags ?? [],
+          ...noteDraft,
+        };
+
+        set((state) => ({
+          sharedNotes: [note, ...state.sharedNotes],
+        }));
+
+        return note;
+      },
+      updateSharedNote: (noteId, updates) => {
+        const now = new Date().toISOString();
+        set((state) => ({
+          sharedNotes: state.sharedNotes.map((note) =>
+            note.id === noteId
+              ? { ...note, ...updates, updatedAt: now }
+              : note
+          ),
+        }));
+      },
+      removeSharedNote: (noteId) => {
+        set((state) => ({
+          sharedNotes: state.sharedNotes.filter((note) => note.id !== noteId),
+        }));
+      },
+      getSharedNotesForPlantation: (plantationId) => {
+        return get()
+          .sharedNotes.filter((note) => note.plantationId === plantationId)
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() -
+              new Date(a.createdAt).getTime()
+          );
+      },
       addPlantation: (payload) => {
         const now = new Date().toISOString();
         const {

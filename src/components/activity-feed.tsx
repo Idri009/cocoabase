@@ -9,7 +9,6 @@ import { subscribeToPlantationEvents, type PlantationEvent } from "@/store/plant
 type ActivityFeedProps = {
   plantations: Plantation[];
   maxItems?: number;
-  onFilterChange?: (filtered: Plantation[]) => void;
 };
 
 type ActivityItem = {
@@ -27,6 +26,7 @@ type ActivityItem = {
 export default function ActivityFeed({
   plantations,
   maxItems = 20,
+  onFilterChange,
 }: ActivityFeedProps) {
   const [events, setEvents] = useState<PlantationEvent[]>([]);
   const [filter, setFilter] = useState<string>("all");

@@ -283,8 +283,8 @@ export default function DashboardPage() {
     // Filter by wallet addresses
     if (normalizedFilters.length > 0) {
       result = result.filter((plantation) =>
-        normalizedFilters.includes(plantation.walletAddress.toLowerCase())
-      );
+      normalizedFilters.includes(plantation.walletAddress.toLowerCase())
+    );
     } else if (isConnected) {
       result = walletPlantations;
     }
@@ -4701,21 +4701,29 @@ export default function DashboardPage() {
                   <PestDiseaseManager />
                 </div>
                 <IrrigationTracker />
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <ReportingDashboard />
+                  <MobileFeatures />
+                </div>
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <TrainingResources />
+                  <MarketplacePanel />
+                </div>
 
                 <div className="grid gap-6 xl:grid-cols-[1.3fr,0.7fr]">
                   <section className="rounded-3xl border border-cream-200 bg-cream-50/80 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur">
                     <header className="mb-6 flex flex-col gap-4">
                       <div className="flex flex-wrap items-center justify-between gap-4">
                         <div>
-                          <h2 className="text-lg font-semibold text-cocoa-900">
-                            {isConnected
-                              ? "Your plantations"
-                              : "Community plantations"}
-                          </h2>
-                          <p className="text-sm text-cocoa-500">
-                            Track each seed from planting to harvest with live
-                            progress updates and shared insights across wallets.
-          </p>
+                      <h2 className="text-lg font-semibold text-cocoa-900">
+                        {isConnected
+                          ? "Your plantations"
+                          : "Community plantations"}
+                      </h2>
+                      <p className="text-sm text-cocoa-500">
+                        Track each seed from planting to harvest with live
+                        progress updates and shared insights across wallets.
+                      </p>
         </div>
                         <div className="flex items-center gap-2">
                           <div className="flex items-center gap-2">
@@ -5020,9 +5028,9 @@ export default function DashboardPage() {
                         </div>
                       </div>
                     ) : viewMode === "grid" ? (
-                      <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                        <AnimatePresence mode="popLayout">
-                          {filteredPlantations.map((plantation) => (
+                    <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                      <AnimatePresence mode="popLayout">
+                        {filteredPlantations.map((plantation) => (
                             <div key={plantation.id} className="relative">
                               <label className="absolute left-3 top-3 z-10">
                                 <input
@@ -5081,15 +5089,15 @@ export default function DashboardPage() {
                                   {notes.has(plantation.id) ? "📝" : "📄"}
                                 </button>
                               </div>
-                              <PlantationCard
-                                plantation={plantation}
-                                onUpdate={handleUpdateRequest}
-                                onAdvanceStage={handleAdvanceStage}
-                              />
+                          <PlantationCard
+                            plantation={plantation}
+                            onUpdate={handleUpdateRequest}
+                            onAdvanceStage={handleAdvanceStage}
+                          />
                             </div>
-                          ))}
-                        </AnimatePresence>
-                      </div>
+                        ))}
+                      </AnimatePresence>
+                    </div>
                     ) : (
                       <div className="mt-6 space-y-3">
                         <AnimatePresence mode="popLayout">
@@ -5219,7 +5227,7 @@ export default function DashboardPage() {
                 </div>
               </>
             )}
-        </div>
+          </div>
       </main>
       </div>
 

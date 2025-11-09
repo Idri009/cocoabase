@@ -46,6 +46,8 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - Multi-wallet dashboard with watchlist, labels, and per-wallet filters
 - Growth analytics hub with charts (Chart.js) and regional insights
 - Plantation management: plant seeds, update stages, track notes
+- Plantation task planner with due-date tracking and status transitions
+- Sustainability analytics tracking tree coverage, land use, and carbon offsets
 - On-chain sync simulator to visualise transaction lifecycle
 - Social sharing panel for community updates
 

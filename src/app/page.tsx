@@ -39,6 +39,7 @@ import SecurityEventsPanel from "@/components/security-events-panel";
 import SecurityMonitor from "@/components/security-monitor";
 import SessionGuard from "@/components/session-guard";
 import ExportSummaryModal from "@/components/export-summary-modal";
+import AlertInsightsPanel from "@/components/alert-insights-panel";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";

@@ -404,7 +404,9 @@ const normalizePlantation = (plantation: SeedPlantation): Plantation => {
     ...plantation,
     updatedAt,
     yieldTimeline: Array.isArray(plantation.yieldTimeline)
-      ? plantation.yieldTimeline
+      ? plantation.yieldTimeline.map((checkpoint) =>
+          normalizeYieldCheckpoint(checkpoint)
+        )
       : [],
     collaborators: Array.isArray(plantation.collaborators)
       ? plantation.collaborators.map((collaborator) =>

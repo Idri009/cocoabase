@@ -12,19 +12,26 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import type { Plantation } from "@/store/plantations";
-import { buildAnalyticsSnapshot } from "@/lib/analytics";
+import {
+  buildAnalyticsSnapshot,
+  type AnalyticsSnapshot,
+} from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 type SustainabilityPanelProps = {
   plantations: Plantation[];
+  snapshot?: AnalyticsSnapshot;
 };
 
-function SustainabilityPanelBase({ plantations }: SustainabilityPanelProps) {
+function SustainabilityPanelBase({
+  plantations,
+  snapshot: providedSnapshot,
+}: SustainabilityPanelProps) {
   const snapshot = useMemo(
-    () => buildAnalyticsSnapshot(plantations),
-    [plantations]
+    () => providedSnapshot ?? buildAnalyticsSnapshot(plantations),
+    [plantations, providedSnapshot]
   );
   const { totals, perRegion } = snapshot.sustainability;
 

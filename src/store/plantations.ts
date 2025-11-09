@@ -630,17 +630,21 @@ export const usePlantationsStore = create<PlantationState>()(
       addRecurringTemplate: (templateDraft) => {
         const now = new Date();
         const nowIso = now.toISOString();
+        const frequency = templateDraft.frequency ?? "weekly";
         const interval = clampInterval(templateDraft.interval);
-        const nextRunDate = templateDraft.nextRunDate
-          ? new Date(templateDraft.nextRunDate).toISOString()
-          : addIntervalToDate(now, templateDraft.frequency ?? "weekly", 0).toISOString();
+        const nextRunBase = templateDraft.nextRunDate
+          ? new Date(templateDraft.nextRunDate)
+          : addIntervalToDate(now, frequency, interval);
+        const nextRunDate = Number.isNaN(nextRunBase.getTime())
+          ? nowIso
+          : nextRunBase.toISOString();
 
         const template: RecurringTaskTemplate = {
           id: templateDraft.id ?? generateRecurringTemplateId(),
           plantationId: templateDraft.plantationId,
           title: templateDraft.title,
           description: templateDraft.description,
-          frequency: templateDraft.frequency ?? "weekly",
+          frequency,
           interval,
           leadTimeDays: Math.max(0, templateDraft.leadTimeDays ?? 0),
           nextRunDate,

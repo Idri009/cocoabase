@@ -57,6 +57,9 @@ export default function DashboardPage() {
   const recurringTemplates = usePlantationsStore(
     (state) => state.recurringTemplates
   );
+  const recordSecurityEvent = useSecurityStore(
+    (state) => state.recordEvent
+  );
   const getPlantationsByWallet = usePlantationsStore(
     (state) => state.getPlantationsByWallet
   );

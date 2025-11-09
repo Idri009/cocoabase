@@ -22,7 +22,8 @@ type NewTemplateState = {
   description: string;
   dueOffsetDays: number;
   assigneeRole: string;
-  attachmentUrl: string;
+  attachments: string[];
+  attachmentDraft: string;
 };
 
 const defaultState: NewTemplateState = {
@@ -31,7 +32,8 @@ const defaultState: NewTemplateState = {
   description: "",
   dueOffsetDays: 3,
   assigneeRole: "",
-  attachmentUrl: "",
+  attachments: [],
+  attachmentDraft: "",
 };
 
 export default function StageTemplatePanel() {
@@ -59,6 +61,27 @@ export default function StageTemplatePanel() {
     return map;
   }, [stageTemplates]);
 
+  const handleAddAttachment = () => {
+    const trimmed = form.attachmentDraft.trim();
+    if (!trimmed) {
+      return;
+    }
+    setForm((prev) => ({
+      ...prev,
+      attachments: prev.attachments.includes(trimmed)
+        ? prev.attachments
+        : [...prev.attachments, trimmed],
+      attachmentDraft: "",
+    }));
+  };
+
+  const handleRemoveAttachment = (url: string) => {
+    setForm((prev) => ({
+      ...prev,
+      attachments: prev.attachments.filter((item) => item !== url),
+    }));
+  };
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!form.title.trim()) {
@@ -72,6 +95,7 @@ export default function StageTemplatePanel() {
         description: form.description.trim() || undefined,
         dueOffsetDays: form.dueOffsetDays,
         assigneeRole: form.assigneeRole.trim() || undefined,
+        attachments: form.attachments,
         enabled: true,
       };
       addStageTemplate(draft);

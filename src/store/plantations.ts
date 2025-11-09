@@ -116,6 +116,7 @@ export type PlantationDraft = Omit<
 type PlantationState = {
   plantations: Plantation[];
   recurringTemplates: RecurringTaskTemplate[];
+  stageTemplates: StageTaskTemplate[];
   addPlantation: (payload: PlantationDraft) => Plantation;
   updateStage: (id: string, nextStage: GrowthStage, note?: string) => void;
   updateStages: (
@@ -161,6 +162,14 @@ type PlantationState = {
   ) => void;
   removeRecurringTemplate: (id: string) => void;
   processRecurringTemplates: (currentDate?: string | Date) => void;
+  addStageTaskTemplate: (
+    template: StageTaskTemplateDraft
+  ) => StageTaskTemplate;
+  updateStageTaskTemplate: (
+    id: string,
+    updates: Partial<StageTaskTemplateDraft>
+  ) => void;
+  removeStageTaskTemplate: (id: string) => void;
   resetToSeedData: () => void;
 };
 

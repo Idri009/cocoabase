@@ -45,9 +45,14 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - Wallet login via Reown AppKit + WalletConnect (wagmi)
 - Multi-wallet dashboard with watchlist, labels, and per-wallet filters
 - Growth analytics hub with charts (Chart.js) and regional insights
+- Yield forecast radar highlighting projected harvest windows
+- Global canopy map driven by d3-geo + world-atlas
 - Plantation management: plant seeds, update stages, track notes
 - Plantation task planner with due-date tracking and status transitions
 - Sustainability analytics tracking tree coverage, land use, and carbon offsets
+- Wallet performance table with carbon + task exposure per address
+- Collaboration hub for logging agronomist updates and adding new collaborators
+- Activity timeline weaving stages, tasks, yield checkpoints, and field notes
 - Alerting engine for task deadlines, stage changes, and wallet activity (in-app, email, SMS stubs)
 - On-chain sync simulator to visualise transaction lifecycle
 - Social sharing panel for community updates
@@ -61,7 +66,17 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - Framer Motion for animated UI
 - TanStack Query for Wallet/Web3 caching
 - Chart.js + react-chartjs-2 for analytics visuals
+- d3-geo + world-atlas + topojson-client for geospatial rendering
+- date-fns for timeline formatting and scheduling utilities
 - Local JSON + localStorage hydration for prototype data persistence
+
+## Analytics Snapshot Overview
+
+- **Forecast Panel:** blends yield checkpoints, growth velocities, and cohort metrics to surface upcoming harvest opportunities.
+- **Global Footprint Map:** plots every plantation with carbon-weighted markers and highlights top offset regions.
+- **Wallet Performance:** aggregates plantation counts, harvest conversion, carbon footprint, and outstanding tasks per wallet.
+- **Collaboration Hub:** centralises collaborator insights, lets you add new contributors, and log notes that feed the activity timeline.
+- **Activity Timeline:** time-orders stages, yield events, tasks, and collaboration updates for rapid situational awareness.
 
 ## Alerts
 
@@ -81,4 +96,4 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - `npm run dev` – start the local dev server
 - `npm run build` – build for production
 - `npm run start` – run the compiled app
-- `npm run lint` – run ESLint checks
+- `npm run lint` – run ESLint checks (passes on the current codebase)

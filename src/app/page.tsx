@@ -122,6 +122,7 @@ export default function DashboardPage() {
   }>({});
   const [locationFilter, setLocationFilter] = useState<string>("");
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [favoritesHydrated, setFavoritesHydrated] = useState(false);
   const [quickFilterPreset, setQuickFilterPreset] = useState<string | null>(null);
   const [showQuickActions, setShowQuickActions] = useState(false);
   const [comparisonMode, setComparisonMode] = useState(false);

@@ -104,8 +104,7 @@ export default function MarketPrices() {
               {price.commodity}
             </p>
             <p className="mt-2 text-2xl font-bold text-white">
-              {price.currency}{" "}
-              <AnimatedCounter value={Math.round(price.price)} />
+              {price.currency} <AnimatedCounter value={Math.round(price.price)} />
             </p>
             <div className="mt-2 flex items-center gap-2">
               <span

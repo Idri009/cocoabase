@@ -7,7 +7,24 @@
     "startDate": "2025-02-12",
     "updatedAt": "2025-02-12",
     "walletAddress": "0x8cC58dF0D77FB2C8F1fB0d0B15D261F94dB5A03e",
-    "notes": "First seed planted for the co-op."
+    "notes": "First seed planted for the co-op.",
+    "treeCount": 45,
+    "areaHectares": 1.8,
+    "carbonOffsetTons": 6.2,
+    "tasks": [
+      {
+        "id": "task-001",
+        "title": "Irrigate seedlings",
+        "dueDate": "2025-02-20",
+        "status": "pending"
+      },
+      {
+        "id": "task-002",
+        "title": "Inspect for pests",
+        "dueDate": "2025-02-25",
+        "status": "pending"
+      }
+    ]
   },
   {
     "id": "seed-002",
@@ -17,7 +34,24 @@
     "startDate": "2024-12-01",
     "updatedAt": "2025-02-01",
     "walletAddress": "0x8cC58dF0D77FB2C8F1fB0d0B15D261F94dB5A03e",
-    "notes": "Sprouted leaves and is now in the growth phase."
+    "notes": "Sprouted leaves and is now in the growth phase.",
+    "treeCount": 120,
+    "areaHectares": 3.4,
+    "carbonOffsetTons": 15.9,
+    "tasks": [
+      {
+        "id": "task-003",
+        "title": "Apply organic fertiliser",
+        "dueDate": "2025-02-18",
+        "status": "in_progress"
+      },
+      {
+        "id": "task-004",
+        "title": "Map canopy coverage",
+        "dueDate": "2025-03-01",
+        "status": "pending"
+      }
+    ]
   },
   {
     "id": "seed-003",
@@ -27,7 +61,24 @@
     "startDate": "2024-06-10",
     "updatedAt": "2025-01-20",
     "walletAddress": "0x4A2e8f8F81e2D5C5dAa02Bf694aF21B318d5F960",
-    "notes": "Ready for processing and shipment."
+    "notes": "Ready for processing and shipment.",
+    "treeCount": 300,
+    "areaHectares": 6.2,
+    "carbonOffsetTons": 42.5,
+    "tasks": [
+      {
+        "id": "task-005",
+        "title": "Schedule harvest pickup",
+        "dueDate": "2025-01-25",
+        "status": "completed"
+      },
+      {
+        "id": "task-006",
+        "title": "Upload harvest report",
+        "dueDate": "2025-02-05",
+        "status": "completed"
+      }
+    ]
   }
 ]
 

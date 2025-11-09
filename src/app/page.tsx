@@ -284,6 +284,15 @@ export default function DashboardPage() {
       ? formatCurrency(loanPipelineTotal, primaryLoanCurrency)
       : "—";
 
+    const carbonPerTree =
+      carbonTotals.treeCount > 0
+        ? carbonTotals.carbonOffsetTons / carbonTotals.treeCount
+        : null;
+    const carbonPerHectare =
+      carbonTotals.areaHectares > 0
+        ? carbonTotals.carbonOffsetTons / carbonTotals.areaHectares
+        : null;
+
     const plantationCaption =
       stats.totalSeeds === 0
         ? isConnected
@@ -401,6 +410,25 @@ export default function DashboardPage() {
         icon: "🌍",
         trendLabel: `${carbonTotals.areaHectares.toLocaleString()} ha protected`,
         trendDirection: "up",
+      },
+      {
+        id: "carbon-intensity",
+        label: "Carbon Efficiency",
+        value:
+          carbonPerTree != null
+            ? `${(carbonPerTree * 1000).toFixed(1)} kg/tree`
+            : "—",
+        caption:
+          carbonPerHectare != null
+            ? `${carbonPerHectare.toFixed(2)} tCO₂ per ha`
+            : "Awaiting data",
+        icon: "♻️",
+        trendLabel:
+          carbonPerTree != null && carbonPerHectare != null
+            ? `Per-tree & per-ha offsets refreshed`
+            : "Need more sustainability data",
+        trendDirection:
+          carbonPerTree != null && carbonPerHectare != null ? "up" : "neutral",
       }
     );
 

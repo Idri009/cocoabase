@@ -197,6 +197,7 @@ export default function DashboardPage() {
 
       <div className="relative flex flex-1 flex-col">
         <AlertManager />
+        <SecurityMonitor />
         <RecurringTaskScheduler />
         <AlertToaster />
         <TopBar

@@ -1275,29 +1275,65 @@ export default function DashboardPage() {
           </p>
         </div>
                         <div className="flex items-center gap-2">
-                          <div className="flex items-center gap-1 rounded-full border border-cream-300 bg-white p-1 shadow-sm">
-                            <button
-                              type="button"
-                              onClick={() => setViewMode("grid")}
-                              className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
-                                viewMode === "grid"
-                                  ? "bg-cocoa-900 text-white"
-                                  : "text-cocoa-600 hover:bg-cream-100"
-                              }`}
+                          <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1 rounded-full border border-cream-300 bg-white p-1 shadow-sm">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setViewMode("grid");
+                                  setShowCalendarView(false);
+                                }}
+                                className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
+                                  viewMode === "grid" && !showCalendarView
+                                    ? "bg-cocoa-900 text-white"
+                                    : "text-cocoa-600 hover:bg-cream-100"
+                                }`}
+                              >
+                                Grid
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setViewMode("list");
+                                  setShowCalendarView(false);
+                                }}
+                                className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
+                                  viewMode === "list" && !showCalendarView
+                                    ? "bg-cocoa-900 text-white"
+                                    : "text-cocoa-600 hover:bg-cream-100"
+                                }`}
+                              >
+                                List
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setShowCalendarView(true);
+                                  setViewMode("grid");
+                                }}
+                                className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
+                                  showCalendarView
+                                    ? "bg-cocoa-900 text-white"
+                                    : "text-cocoa-600 hover:bg-cream-100"
+                                }`}
+                              >
+                                📅 Calendar
+                              </button>
+                            </div>
+                            <select
+                              value={dashboardLayout}
+                              onChange={(e) =>
+                                setDashboardLayout(
+                                  e.target.value as "default" | "compact" | "spacious"
+                                )
+                              }
+                              aria-label="Dashboard layout"
+                              className="rounded-full border border-cream-300 bg-white px-3 py-1 text-xs font-semibold text-cocoa-700 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
                             >
-                              Grid
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => setViewMode("list")}
-                              className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
-                                viewMode === "list"
-                                  ? "bg-cocoa-900 text-white"
-                                  : "text-cocoa-600 hover:bg-cream-100"
-                              }`}
-                            >
-                              List
-                            </button>
+                              <option value="default">Default</option>
+                              <option value="compact">Compact</option>
+                              <option value="spacious">Spacious</option>
+                            </select>
                           </div>
                           <motion.button
                             type="button"

@@ -54,6 +54,7 @@ export type Alert = {
   severity: AlertSeverity;
   createdAt: string;
   acknowledged: boolean;
+  acknowledgedAt?: string;
   channels: AlertChannelState[];
   metadata?: Record<string, unknown>;
   source?: AlertSource;
@@ -177,6 +178,7 @@ export const useAlertsStore = create<AlertsState>()(
           severity: input.severity ?? "info",
           createdAt: now,
           acknowledged: false,
+          acknowledgedAt: undefined,
           metadata: input.metadata,
           source: input.source,
           dedupeKey: input.dedupeKey,
@@ -190,12 +192,14 @@ export const useAlertsStore = create<AlertsState>()(
         return alert;
       },
       acknowledgeAlert: (id) => {
+        const timestamp = new Date().toISOString();
         set((state) => ({
           alerts: state.alerts.map((alert) =>
             alert.id === id
               ? {
                   ...alert,
                   acknowledged: true,
+                  acknowledgedAt: alert.acknowledgedAt ?? timestamp,
                 }
               : alert
           ),

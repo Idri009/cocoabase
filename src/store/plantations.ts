@@ -18,6 +18,7 @@ export type PlantationTask = {
   status: TaskStatus;
   templateId?: string;
   assigneeId?: string;
+  notes?: string;
 };
 
 export type PlantationCoordinates = {

@@ -145,6 +145,8 @@ export default function DashboardPage() {
   });
   const [showNotificationCenter, setShowNotificationCenter] = useState(false);
   const [exportFormat, setExportFormat] = useState<"json" | "csv" | "pdf">("json");
+  const [showAchievements, setShowAchievements] = useState(false);
+  const [showProgressTracker, setShowProgressTracker] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;

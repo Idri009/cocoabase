@@ -72,6 +72,9 @@ export default function DashboardPage() {
   const updateTaskStatus = usePlantationsStore(
     (state) => state.updateTaskStatus
   );
+  const setTaskAssignee = usePlantationsStore(
+    (state) => state.setTaskAssignee
+  );
   const updateStages = usePlantationsStore((state) => state.updateStages);
   const recordCollaboratorNote = usePlantationsStore(
     (state) => state.recordCollaboratorNote

@@ -15,6 +15,7 @@ export type PlantationTask = {
   title: string;
   dueDate: string;
   status: TaskStatus;
+  templateId?: string;
 };
 
 export type PlantationCoordinates = {
@@ -36,6 +37,29 @@ export type PlantationCollaborator = {
   avatarUrl?: string;
   lastNote?: string;
   lastUpdated?: string;
+};
+
+export type RecurringFrequency = "daily" | "weekly" | "monthly";
+
+export type RecurringTaskTemplate = {
+  id: string;
+  plantationId: string;
+  title: string;
+  description?: string;
+  frequency: RecurringFrequency;
+  interval: number;
+  leadTimeDays: number;
+  nextRunDate: string;
+  lastGeneratedAt?: string;
+  createdAt: string;
+  enabled: boolean;
+};
+
+export type RecurringTaskTemplateDraft = Omit<
+  RecurringTaskTemplate,
+  "id" | "createdAt" | "lastGeneratedAt"
+> & {
+  id?: string;
 };
 
 export type Plantation = {
@@ -61,7 +85,7 @@ export type PlantationDraft = Omit<
   "id" | "stage" | "updatedAt" | "tasks" | "yieldTimeline" | "collaborators"
 > & {
   stage?: GrowthStage;
-  tasks?: PlantationTask[];
+  tasks?: (PlantationTask | Omit<PlantationTask, "id">)[];
   yieldTimeline?: YieldCheckpoint[];
   collaborators?: Omit<PlantationCollaborator, "id">[];
   coordinates?: PlantationCoordinates;
@@ -69,6 +93,7 @@ export type PlantationDraft = Omit<
 
 type PlantationState = {
   plantations: Plantation[];
+  recurringTemplates: RecurringTaskTemplate[];
   addPlantation: (payload: PlantationDraft) => Plantation;
   updateStage: (id: string, nextStage: GrowthStage, note?: string) => void;
   getPlantationsByWallet: (walletAddress: string | undefined) => Plantation[];
@@ -95,6 +120,15 @@ type PlantationState = {
     plantationId: string,
     coordinates: PlantationCoordinates
   ) => void;
+  addRecurringTemplate: (
+    template: RecurringTaskTemplateDraft
+  ) => RecurringTaskTemplate;
+  updateRecurringTemplate: (
+    id: string,
+    updates: Partial<RecurringTaskTemplateDraft>
+  ) => void;
+  removeRecurringTemplate: (id: string) => void;
+  processRecurringTemplates: (currentDate?: string | Date) => void;
   resetToSeedData: () => void;
 };
 

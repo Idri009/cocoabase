@@ -906,8 +906,9 @@ export const usePlantationsStore = create<PlantationState>()(
         }));
 
         const latestState = get();
+        const eligibleSetForEvents = new Set(eligibleIds);
         latestState.plantations.forEach((plantation) => {
-          if (!setOfIds.has(plantation.id)) {
+          if (!eligibleSetForEvents.has(plantation.id)) {
             return;
           }
           const previous = previousMap.get(plantation.id);

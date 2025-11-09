@@ -61,7 +61,6 @@ export type AnalyticsSnapshot = {
   regionGeoMetrics: RegionGeoMetric[];
   scenarioForecasts: ScenarioForecast[];
   yieldTimeline: YieldTimelineEntry[];
-  walletPerformance: WalletPerformanceSummary[];
 };
 
 export type GeoPlantationPoint = {
@@ -127,21 +126,6 @@ export type YieldTimelineEntry = {
   date: string;
   event: string;
   yieldKg: number;
-};
-
-export type WalletPerformanceSummary = {
-  address: string;
-  totalPlantations: number;
-  stageCounts: Record<Plantation["stage"], number>;
-  activeTasks: number;
-  completedTasks: number;
-  carbonOffsetTons: number;
-  treeCount: number;
-  areaHectares: number;
-  avgYieldKg: number | null;
-  forecastKg: number | null;
-  harvestTrend: Array<{ label: string; harvested: number }>;
-  lastUpdated?: string;
 };
 
 const monthFormatter = new Intl.DateTimeFormat("en-US", {
@@ -238,26 +222,6 @@ export const buildAnalyticsSnapshot = (
     timeline: YieldCheckpoint[];
   }> = [];
   const timelineEntries: YieldTimelineEntry[] = [];
-  const walletAggregation = new Map<
-    string,
-    {
-      address: string;
-      stageCounts: Record<Plantation["stage"], number>;
-      totalPlantations: number;
-      activeTasks: number;
-      completedTasks: number;
-      carbonOffsetTons: number;
-      treeCount: number;
-      areaHectares: number;
-      harvestByMonth: Map<string, number>;
-      yieldSum: number;
-      yieldSamples: number;
-      forecastTotal: number;
-      forecastSamples: number;
-      lastUpdated?: string;
-    }
-  >();
-  const plantationWalletMap = new Map<string, string>();
 
   plantations.forEach((plantation) => {
     totals[plantation.stage] = (totals[plantation.stage] ?? 0) + 1;
@@ -361,58 +325,6 @@ export const buildAnalyticsSnapshot = (
     });
     regionGeoMap.set(region, geoRegionEntry);
 
-    const walletKey = plantation.walletAddress.toLowerCase();
-    plantationWalletMap.set(plantation.id, walletKey);
-    const walletEntry =
-      walletAggregation.get(walletKey) ?? {
-        address: plantation.walletAddress,
-        stageCounts: {
-          planted: 0,
-          growing: 0,
-          harvested: 0,
-        },
-        totalPlantations: 0,
-        activeTasks: 0,
-        completedTasks: 0,
-        carbonOffsetTons: 0,
-        treeCount: 0,
-        areaHectares: 0,
-        harvestByMonth: new Map<string, number>(),
-        yieldSum: 0,
-        yieldSamples: 0,
-        forecastTotal: 0,
-        forecastSamples: 0,
-        lastUpdated: undefined,
-      };
-
-    walletEntry.totalPlantations += 1;
-    walletEntry.stageCounts[plantation.stage] += 1;
-
-    const activeTaskCount = plantation.tasks.filter(
-      (task) => task.status !== "completed"
-    ).length;
-    walletEntry.activeTasks += activeTaskCount;
-    walletEntry.completedTasks += plantation.tasks.length - activeTaskCount;
-    walletEntry.carbonOffsetTons += plantation.carbonOffsetTons;
-    walletEntry.treeCount += plantation.treeCount;
-    walletEntry.areaHectares += plantation.areaHectares;
-
-    if (
-      !walletEntry.lastUpdated ||
-      new Date(plantation.updatedAt).getTime() >
-        new Date(walletEntry.lastUpdated).getTime()
-    ) {
-      walletEntry.lastUpdated = plantation.updatedAt;
-    }
-
-    if (plantation.stage === "harvested") {
-      const harvestKey = getMonthKey(plantation.updatedAt ?? plantation.startDate);
-      walletEntry.harvestByMonth.set(
-        harvestKey,
-        (walletEntry.harvestByMonth.get(harvestKey) ?? 0) + 1
-      );
-    }
-
     if (plantation.yieldTimeline.length) {
       const timeline = [...plantation.yieldTimeline].sort(sortTimelineAsc);
       forecastInputs.push({ plantation, timeline });
@@ -426,15 +338,7 @@ export const buildAnalyticsSnapshot = (
           yieldKg: checkpoint.yieldKg,
         });
       });
-
-      const latestCheckpoint = timeline[timeline.length - 1];
-      if (latestCheckpoint) {
-        walletEntry.yieldSum += latestCheckpoint.yieldKg;
-        walletEntry.yieldSamples += 1;
-      }
     }
-
-    walletAggregation.set(walletKey, walletEntry);
   });
 
   const total = plantations.length || 1;
@@ -447,11 +351,9 @@ export const buildAnalyticsSnapshot = (
 
   const now = new Date();
   const monthlyPoints: MonthlyPlantingPoint[] = [];
-  const monthKeys: string[] = [];
   for (let i = monthsBack - 1; i >= 0; i -= 1) {
     const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const key = `${date.getFullYear()}-${date.getMonth()}`;
-    monthKeys.push(key);
     const entry = monthlyMap.get(key);
     monthlyPoints.push({
       label: monthFormatter.format(date),

@@ -492,6 +492,20 @@ export default function DashboardPage() {
     setUpdateTarget(null);
   };
 
+  const handleTaskStatusChange = useCallback(
+    (plantationId: string, taskId: string, status: TaskStatus) => {
+      updateTaskStatus(plantationId, taskId, status);
+    },
+    [updateTaskStatus]
+  );
+
+  const handleTaskAssign = useCallback(
+    (plantationId: string, taskId: string, assigneeId?: string) => {
+      setTaskAssignee(plantationId, taskId, assigneeId);
+    },
+    [setTaskAssignee]
+  );
+
   const handleCloseModals = () => {
     setPlantModalOpen(false);
     setUpdateTarget(null);

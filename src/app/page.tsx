@@ -562,6 +562,19 @@ export default function DashboardPage() {
     setUpdateTarget(null);
   };
 
+  const handleRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    // Simulate refresh delay
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    setIsRefreshing(false);
+  }, []);
+
+  const handleClearFilters = useCallback(() => {
+    setSearchQuery("");
+    setStageFilter("all");
+    setSortBy("date");
+  }, []);
+
   const showEmptyState =
     filteredPlantations.length === 0 &&
     (isConnected || normalizedFilters.length > 0);

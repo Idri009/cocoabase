@@ -134,6 +134,21 @@ export const buildAnalyticsSnapshot = (
     sustainabilityEntry.treeCount += plantation.treeCount;
     sustainabilityEntry.carbonOffsetTons += plantation.carbonOffsetTons;
     regionSustainability[region] = sustainabilityEntry;
+
+    const cohortEntry = cohortMap.get(monthKey) ?? {
+      planted: 0,
+      harvested: 0,
+      date: monthDate,
+      harvestDurations: [] as number[],
+    };
+    cohortEntry.planted += 1;
+    if (plantation.stage === "harvested") {
+      cohortEntry.harvested += 1;
+      cohortEntry.harvestDurations.push(
+        differenceInDays(plantation.startDate, plantation.updatedAt)
+      );
+    }
+    cohortMap.set(monthKey, cohortEntry);
   });
 
   const total = plantations.length || 1;

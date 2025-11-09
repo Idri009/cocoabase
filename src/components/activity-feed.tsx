@@ -1,11 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/cn";
 import type { Plantation } from "@/store/plantations";
 import { subscribeToPlantationEvents, type PlantationEvent } from "@/store/plantations";
-import { useEffect } from "react";
 
 type ActivityFeedProps = {
   plantations: Plantation[];

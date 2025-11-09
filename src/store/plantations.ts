@@ -96,6 +96,11 @@ type PlantationState = {
   recurringTemplates: RecurringTaskTemplate[];
   addPlantation: (payload: PlantationDraft) => Plantation;
   updateStage: (id: string, nextStage: GrowthStage, note?: string) => void;
+  updateStages: (
+    ids: string[],
+    nextStage: GrowthStage,
+    note?: string
+  ) => void;
   getPlantationsByWallet: (walletAddress: string | undefined) => Plantation[];
   addTask: (plantationId: string, task: Omit<PlantationTask, "id">) => void;
   updateTaskStatus: (

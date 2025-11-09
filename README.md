@@ -523,6 +523,14 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Inventory Alerts**: Low stock and expiry alerts with actionable recommendations
 - **Performance Reports**: Generate monthly, quarterly, annual, and custom performance reports
 - **Export Manager**: Export data in multiple formats (JSON, CSV, Excel, PDF)
+- **Payment Tracker**: Track payments and loans with status (completed/pending) and totals
+- **Field Notes**: Record observations and notes with plantation tags and date tracking
+- **Cost Analysis**: Analyze costs with total costs, cost per plantation, cost per kg, and yield metrics
+- **Yield Comparison**: Compare yields across plantations with average, max, min yields and visual progress bars
+- **Revenue Forecast**: Projected revenue estimates for 30 days, 90 days, 6 months, and 1 year
+- **Resource Optimizer**: Optimize resource allocation with recommendations for water, fertilizer, and labor
+- **Quality Metrics**: Track quality scores with average quality, premium grade, grade A, and reject rate
+- **Sustainability Report**: Environmental impact summary with carbon offset, trees protected, and sustainability score
 
 ## Tech Stack
 

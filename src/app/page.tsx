@@ -153,6 +153,37 @@ export default function DashboardPage() {
   }, [address, getPlantationsByWallet, plantations]);
 
   useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    try {
+      const stored = window.localStorage.getItem("cocoa-favorite-plantations");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          setFavorites(new Set<string>(parsed));
+        }
+      }
+    } catch (error) {
+      console.warn("[dashboard] failed to hydrate favorites", error);
+    } finally {
+      setFavoritesHydrated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!favoritesHydrated || typeof window === "undefined") {
+      return;
+    }
+    try {
+      const serialized = JSON.stringify(Array.from(favorites));
+      window.localStorage.setItem("cocoa-favorite-plantations", serialized);
+    } catch (error) {
+      console.warn("[dashboard] failed to persist favorites", error);
+    }
+  }, [favorites, favoritesHydrated]);
+
+  useEffect(() => {
     if (status === "connected" && address) {
       setConnectedWallet(address);
       return;

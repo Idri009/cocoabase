@@ -11,6 +11,7 @@ type TopBarProps = {
   onUploadReceipt: () => void;
   onFileComplaint: () => void;
   onRequestLoan: () => void;
+  welcomeNote?: string;
 };
 
 const formatAddress = (address?: string) => {
@@ -26,6 +27,7 @@ export default function TopBar({
   onUploadReceipt,
   onFileComplaint,
   onRequestLoan,
+  welcomeNote,
 }: TopBarProps) {
   return (
     <header className="flex flex-col gap-4 border-b border-cream-200 bg-cream-50/80 px-6 py-4 backdrop-blur md:flex-row md:items-center md:justify-between">
@@ -33,6 +35,9 @@ export default function TopBar({
         <span className="text-sm uppercase tracking-[0.3em] text-cocoa-400">
           Welcome back
         </span>
+        {welcomeNote && (
+          <p className="text-xs text-cocoa-500">{welcomeNote}</p>
+        )}
         <h1 className="text-2xl font-semibold text-cocoa-900">
           {walletAddress ? "Your Cocoa Plantations" : "Connect your wallet"}
         </h1>

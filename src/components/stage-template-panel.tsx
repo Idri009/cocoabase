@@ -22,6 +22,7 @@ type NewTemplateState = {
   description: string;
   dueOffsetDays: number;
   assigneeRole: string;
+  attachmentUrl: string;
 };
 
 const defaultState: NewTemplateState = {
@@ -30,6 +31,7 @@ const defaultState: NewTemplateState = {
   description: "",
   dueOffsetDays: 3,
   assigneeRole: "",
+  attachmentUrl: "",
 };
 
 export default function StageTemplatePanel() {

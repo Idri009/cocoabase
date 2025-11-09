@@ -434,6 +434,23 @@ export default function TaskKanbanBoard({
                               </p>
                             )}
 
+                            {task.attachments.length > 0 && (
+                              <ul className="mt-2 space-y-1 text-xs text-slate-300/70">
+                                {task.attachments.map((url) => (
+                                  <li key={url} className="truncate">
+                                    <a
+                                      href={url}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="text-leaf-300 underline-offset-2 hover:underline"
+                                    >
+                                      {url}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+
                             <div className="mt-3 flex flex-col gap-2">
                               <label className="text-[11px] uppercase tracking-[0.25em] text-slate-400/70">
                                 Assign

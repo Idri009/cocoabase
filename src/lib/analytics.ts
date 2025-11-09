@@ -128,6 +128,21 @@ export type YieldTimelineEntry = {
   yieldKg: number;
 };
 
+export type WalletPerformanceSummary = {
+  address: string;
+  totalPlantations: number;
+  stageCounts: Record<Plantation["stage"], number>;
+  activeTasks: number;
+  completedTasks: number;
+  carbonOffsetTons: number;
+  treeCount: number;
+  areaHectares: number;
+  avgYieldKg: number | null;
+  forecastKg: number | null;
+  harvestTrend: Array<{ label: string; harvested: number }>;
+  lastUpdated?: string;
+};
+
 const monthFormatter = new Intl.DateTimeFormat("en-US", {
   month: "short",
   year: "2-digit",

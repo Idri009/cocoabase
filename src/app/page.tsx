@@ -603,6 +603,24 @@ export default function DashboardPage() {
         onSubmit={handleUpdateSubmit}
       />
 
+      <ReceiptUploadModal
+        open={isReceiptModalOpen}
+        onClose={() => setReceiptModalOpen(false)}
+        defaultPlantationId={primaryPlantationId}
+      />
+
+      <ComplaintModal
+        open={isComplaintModalOpen}
+        onClose={() => setComplaintModalOpen(false)}
+        defaultPlantationId={primaryPlantationId}
+      />
+
+      <LoanRequestModal
+        open={isLoanModalOpen}
+        onClose={() => setLoanModalOpen(false)}
+        defaultPlantationId={primaryPlantationId}
+      />
+
       <RecurringTaskModal
         open={isRecurringModalOpen}
         onClose={() => setRecurringModalOpen(false)}

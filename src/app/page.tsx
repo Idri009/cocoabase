@@ -1458,6 +1458,7 @@ export default function DashboardPage() {
                     </span>
                   </div>
                 </motion.section>
+                )}
 
                 {favoriteSummary && widgetVisibility.favoritesSpotlight && (
                   <motion.section

@@ -60,6 +60,10 @@ const FRIENDLY_WELCOME_NOTE =
   "Welcome back to the grove — harvest insights refresh in real-time.";
 
 export default function DashboardPage() {
+  useEffect(() => {
+    console.debug(FRIENDLY_WELCOME_NOTE);
+  }, []);
+
   const { address, status } = useAccount();
   const plantations = usePlantationsStore((state) => state.plantations);
   const addPlantation = usePlantationsStore((state) => state.addPlantation);

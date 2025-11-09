@@ -15,7 +15,6 @@ import AlertsPanel from "@/components/alerts-panel";
 import AlertManager from "@/components/alert-manager";
 import AlertToaster from "@/components/alert-toaster";
 import CohortChart from "@/components/cohort-chart";
-import ForecastWorkspace from "@/components/forecast-workspace";
 import RecurringTaskModal from "@/components/recurring-task-modal";
 import RecurringTaskScheduler from "@/components/recurring-task-scheduler";
 import BulkStagePanel from "@/components/bulk-stage-panel";

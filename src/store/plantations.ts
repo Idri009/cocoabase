@@ -627,6 +627,198 @@ export const usePlantationsStore = create<PlantationState>()(
           });
         }
       },
+      addRecurringTemplate: (templateDraft) => {
+        const now = new Date();
+        const nowIso = now.toISOString();
+        const interval = clampInterval(templateDraft.interval);
+        const nextRunDate = templateDraft.nextRunDate
+          ? new Date(templateDraft.nextRunDate).toISOString()
+          : addIntervalToDate(now, templateDraft.frequency ?? "weekly", 0).toISOString();
+
+        const template: RecurringTaskTemplate = {
+          id: templateDraft.id ?? generateRecurringTemplateId(),
+          plantationId: templateDraft.plantationId,
+          title: templateDraft.title,
+          description: templateDraft.description,
+          frequency: templateDraft.frequency ?? "weekly",
+          interval,
+          leadTimeDays: Math.max(0, templateDraft.leadTimeDays ?? 0),
+          nextRunDate,
+          createdAt: nowIso,
+          enabled: templateDraft.enabled ?? true,
+          lastGeneratedAt: undefined,
+        };
+
+        set((state) => ({
+          recurringTemplates: [template, ...state.recurringTemplates],
+        }));
+
+        return template;
+      },
+      updateRecurringTemplate: (id, updates) => {
+        set((state) => ({
+          recurringTemplates: state.recurringTemplates.map((template) =>
+            template.id === id
+              ? {
+                  ...template,
+                  ...updates,
+                  interval: updates.interval
+                    ? clampInterval(updates.interval)
+                    : template.interval,
+                  leadTimeDays:
+                    updates.leadTimeDays !== undefined
+                      ? Math.max(0, updates.leadTimeDays)
+                      : template.leadTimeDays,
+                  nextRunDate:
+                    updates.nextRunDate !== undefined
+                      ? new Date(updates.nextRunDate).toISOString()
+                      : template.nextRunDate,
+                }
+              : template
+          ),
+        }));
+      },
+      removeRecurringTemplate: (id) => {
+        set((state) => ({
+          recurringTemplates: state.recurringTemplates.filter(
+            (template) => template.id !== id
+          ),
+        }));
+      },
+      processRecurringTemplates: (currentDate) => {
+        const now =
+          currentDate instanceof Date
+            ? currentDate
+            : currentDate
+            ? new Date(currentDate)
+            : new Date();
+        const nowIso = new Date().toISOString();
+        const newTaskRefs: Array<{ plantationId: string; taskId: string }> = [];
+
+        set((state) => {
+          if (!state.recurringTemplates.length) {
+            return state;
+          }
+
+          const additions = new Map<string, PlantationTask[]>();
+          const updatedTemplates = state.recurringTemplates.map((template) => {
+            if (!template.enabled) {
+              return template;
+            }
+
+            const plantation = state.plantations.find(
+              (item) => item.id === template.plantationId
+            );
+            if (!plantation) {
+              return template;
+            }
+
+            let nextRun = new Date(template.nextRunDate);
+            if (Number.isNaN(nextRun.getTime())) {
+              nextRun = new Date();
+            }
+
+            const interval = clampInterval(template.interval);
+            const tasksToAdd: PlantationTask[] = [];
+            let iterations = 0;
+
+            while (iterations < 12) {
+              const creationThreshold = new Date(nextRun);
+              creationThreshold.setDate(
+                creationThreshold.getDate() - template.leadTimeDays
+              );
+
+              if (now < creationThreshold) {
+                break;
+              }
+
+              const dueIso = nextRun.toISOString();
+              const taskExists = plantation.tasks.some(
+                (task) =>
+                  task.templateId === template.id && task.dueDate === dueIso
+              );
+
+              if (!taskExists) {
+                const task: PlantationTask = {
+                  id: generateTaskId(),
+                  title: template.title,
+                  dueDate: dueIso,
+                  status: "pending",
+                  templateId: template.id,
+                };
+                tasksToAdd.push(task);
+                const existing = additions.get(plantation.id) ?? [];
+                existing.push(task);
+                additions.set(plantation.id, existing);
+                newTaskRefs.push({
+                  plantationId: plantation.id,
+                  taskId: task.id,
+                });
+              }
+
+              iterations += 1;
+              nextRun = addIntervalToDate(nextRun, template.frequency, interval);
+            }
+
+            if (tasksToAdd.length) {
+              return {
+                ...template,
+                nextRunDate: nextRun.toISOString(),
+                lastGeneratedAt: nowIso,
+              };
+            }
+
+            return template;
+          });
+
+          if (!additions.size) {
+            return {
+              recurringTemplates: updatedTemplates,
+            };
+          }
+
+          const updatedPlantations = state.plantations.map((plantation) => {
+            const addedTasks = additions.get(plantation.id);
+            if (!addedTasks?.length) {
+              return plantation;
+            }
+
+            const tasks = [...addedTasks, ...plantation.tasks].sort(
+              (a, b) =>
+                new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+            );
+
+            return {
+              ...plantation,
+              tasks,
+              updatedAt: nowIso,
+            };
+          });
+
+          return {
+            plantations: updatedPlantations,
+            recurringTemplates: updatedTemplates,
+          };
+        });
+
+        if (newTaskRefs.length) {
+          const latestState = get();
+          newTaskRefs.forEach(({ plantationId, taskId }) => {
+            const plantation = latestState.plantations.find(
+              (item) => item.id === plantationId
+            );
+            const task = plantation?.tasks.find((item) => item.id === taskId);
+            if (plantation && task) {
+              emitPlantationEvent({
+                type: "task_added",
+                plantation,
+                task,
+                timestamp: nowIso,
+              });
+            }
+          });
+        }
+      },
       setCoordinates: (plantationId, coordinates) => {
         const timestamp = new Date().toISOString();
         set((state) => ({
@@ -655,7 +847,7 @@ export const usePlantationsStore = create<PlantationState>()(
         }
       },
       resetToSeedData: () => {
-        set({ plantations: seedData });
+        set({ plantations: seedData, recurringTemplates: [] });
       },
     }),
     buildPersistOptions()

@@ -28,6 +28,7 @@ type TopBarProps = {
   onRequestLoan: () => void;
   onViewAlerts?: () => void;
   onViewReputation?: () => void;
+  onOpenSettings?: () => void;
   welcomeNote?: string;
 };
 

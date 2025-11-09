@@ -32,9 +32,9 @@ npm install
 
 ## Run the App
 
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
 Visit [http://localhost:3000](http://localhost:3000/) to see the dashboard.
 
@@ -142,6 +142,8 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Task Deadline Alerts**: Automatic alerts for upcoming and overdue tasks
 - **Stage Change Notifications**: Notify on plantation stage transitions
 - **Weather Alerts**: Weather-based alerts and recommendations
+- **Notification Center**: Centralized notification hub with read/unread status
+- **Price Alerts**: Market price alerts with customizable thresholds
 
 ### Geospatial Features
 - **Global Footprint Map**: Interactive map showing all plantations

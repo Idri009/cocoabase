@@ -163,14 +163,61 @@ export default function DashboardPage() {
   const normalizedFilters = activeAddresses;
 
   const filteredPlantations = useMemo(() => {
-    if (!normalizedFilters.length) {
-      return isConnected ? walletPlantations : plantations;
+    let result = plantations;
+
+    // Filter by wallet addresses
+    if (normalizedFilters.length > 0) {
+      result = result.filter((plantation) =>
+        normalizedFilters.includes(plantation.walletAddress.toLowerCase())
+      );
+    } else if (isConnected) {
+      result = walletPlantations;
     }
 
-    return plantations.filter((plantation) =>
-      normalizedFilters.includes(plantation.walletAddress.toLowerCase())
-    );
-  }, [normalizedFilters, plantations, isConnected, walletPlantations]);
+    // Filter by stage
+    if (stageFilter !== "all") {
+      result = result.filter((plantation) => plantation.stage === stageFilter);
+    }
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(
+        (plantation) =>
+          plantation.seedName.toLowerCase().includes(query) ||
+          plantation.location?.toLowerCase().includes(query) ||
+          plantation.notes?.toLowerCase().includes(query)
+      );
+    }
+
+    // Sort
+    const sorted = [...result].sort((a, b) => {
+      switch (sortBy) {
+        case "name":
+          return a.seedName.localeCompare(b.seedName);
+        case "stage":
+          const stageOrder: GrowthStage[] = ["planted", "growing", "harvested"];
+          return (
+            stageOrder.indexOf(a.stage) - stageOrder.indexOf(b.stage)
+          );
+        case "date":
+        default:
+          return (
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+          );
+      }
+    });
+
+    return sorted;
+  }, [
+    normalizedFilters,
+    plantations,
+    isConnected,
+    walletPlantations,
+    stageFilter,
+    searchQuery,
+    sortBy,
+  ]);
 
   const primaryPlantationId = filteredPlantations[0]?.id;
 

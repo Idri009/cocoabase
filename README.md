@@ -163,6 +163,25 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **KPI Dashboard**: Calculate and display KPI scores across categories
 - **Benchmark Comparison**: Compare performance against industry averages and best-in-class
 - **Performance Trends**: Track performance trends (improving/declining/stable)
+- **Insurance Tracker**: Manage insurance policies and track coverage amounts
+- **Crop Rotation Planner**: Plan crop rotations to optimize soil health and yields
+- **Sustainability Scorecard**: Overall sustainability performance scoring and metrics
+- **Photo Gallery**: Store and organize plantation photos with categories and tags
+- **Loan Calculator**: Calculate loan payments and manage agricultural loans
+- **Seasonal Planner**: Plan activities by season for optimal crop management
+- **Compliance Checklist**: Track regulatory compliance requirements and deadlines
+- **Farmer Network**: Connect with other farmers and build your agricultural network
+- **Weather History**: Track historical weather data for your plantations
+- **Expense Categories**: Organize expenses with custom categories and colors
+- **Supplier Management**: Manage suppliers and vendors for your operations
+- **Harvest Quality Tracker**: Track quality metrics and grades for harvests
+- **Contract Management**: Manage contracts with suppliers, buyers, and service providers
+- **Training Records**: Track training sessions and certifications for workers
+- **Audit Trail**: Track all system activities and changes for compliance
+- **Payment Tracker**: Track payments, invoices, and financial transactions
+- **Field Notes**: Record daily observations and field activities
+- **Cost Analysis**: Detailed breakdown of operational costs and expenses
+- **Yield Comparison**: Compare yields across plantations and track performance
 
 ### Data Management
 - **Data Export**: Export plantations, tasks, and analytics data

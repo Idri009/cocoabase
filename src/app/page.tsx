@@ -521,7 +521,7 @@ export default function DashboardPage() {
                   <div className="space-y-6">
                     <SecurityPanel />
                     <WalletPerformancePanel
-                      plantations={filteredPlantations}
+                      snapshot={analyticsSnapshot}
                     />
                     <SecurityEventsPanel />
                   </div>

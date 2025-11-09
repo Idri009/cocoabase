@@ -733,16 +733,82 @@ export default function DashboardPage() {
 
                 <div className="grid gap-6 xl:grid-cols-[1.3fr,0.7fr]">
                   <section className="rounded-3xl border border-cream-200 bg-cream-50/80 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur">
-                    <header className="flex flex-col gap-2">
-                      <h2 className="text-lg font-semibold text-cocoa-900">
-                        {isConnected
-                          ? "Your plantations"
-                          : "Community plantations"}
-                      </h2>
-                      <p className="text-sm text-cocoa-500">
-                        Track each seed from planting to harvest with live
-                        progress updates and shared insights across wallets.
-                      </p>
+                    <header className="mb-6 flex flex-col gap-4">
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                          <h2 className="text-lg font-semibold text-cocoa-900">
+                            {isConnected
+                              ? "Your plantations"
+                              : "Community plantations"}
+                          </h2>
+                          <p className="text-sm text-cocoa-500">
+                            Track each seed from planting to harvest with live
+                            progress updates and shared insights across wallets.
+                          </p>
+                        </div>
+                        <motion.button
+                          type="button"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={handleRefresh}
+                          disabled={isRefreshing}
+                          className="flex items-center gap-2 rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200 focus:ring-offset-2 disabled:opacity-50"
+                        >
+                          {isRefreshing ? "🔄 Refreshing..." : "🔄 Refresh"}
+                        </motion.button>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-3">
+                        <div className="flex-1 min-w-[200px]">
+                          <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            placeholder="Search plantations..."
+                            className="w-full rounded-2xl border border-cream-300 bg-white px-4 py-2 text-sm text-cocoa-800 shadow-sm placeholder:text-cocoa-400 focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                          />
+                        </div>
+                        <select
+                          value={stageFilter}
+                          onChange={(e) =>
+                            setStageFilter(e.target.value as GrowthStage | "all")
+                          }
+                          className="rounded-2xl border border-cream-300 bg-white px-4 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                        >
+                          <option value="all">All stages</option>
+                          <option value="planted">Planted</option>
+                          <option value="growing">Growing</option>
+                          <option value="harvested">Harvested</option>
+                        </select>
+                        <select
+                          value={sortBy}
+                          onChange={(e) =>
+                            setSortBy(e.target.value as "date" | "name" | "stage")
+                          }
+                          className="rounded-2xl border border-cream-300 bg-white px-4 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                        >
+                          <option value="date">Sort by date</option>
+                          <option value="name">Sort by name</option>
+                          <option value="stage">Sort by stage</option>
+                        </select>
+                        {(searchQuery || stageFilter !== "all") && (
+                          <motion.button
+                            type="button"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={handleClearFilters}
+                            className="rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                          >
+                            Clear filters
+                          </motion.button>
+                        )}
+                      </div>
+                      {(searchQuery || stageFilter !== "all") && (
+                        <p className="text-xs text-cocoa-500">
+                          Showing {filteredPlantations.length} of{" "}
+                          {plantations.length} plantations
+                        </p>
+                      )}
                     </header>
 
                     <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">

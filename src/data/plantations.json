@@ -11,6 +11,39 @@
     "treeCount": 45,
     "areaHectares": 1.8,
     "carbonOffsetTons": 6.2,
+    "coordinates": {
+      "latitude": 6.711,
+      "longitude": -1.615
+    },
+    "yieldTimeline": [
+      {
+        "date": "2025-02-12",
+        "event": "Seed planted",
+        "yieldKg": 0
+      },
+      {
+        "date": "2025-02-26",
+        "event": "Sprouting observed",
+        "yieldKg": 0
+      },
+      {
+        "date": "2025-03-10",
+        "event": "First nutrient cycle",
+        "yieldKg": 0.4
+      }
+    ],
+    "collaborators": [
+      {
+        "name": "Ama Boateng",
+        "role": "Field Lead",
+        "contact": "ama@cocoacoop.org"
+      },
+      {
+        "name": "Kwesi Mensah",
+        "role": "Drone Analyst",
+        "contact": "@kwesimensah"
+      }
+    ],
     "tasks": [
       {
         "id": "task-001",
@@ -38,6 +71,39 @@
     "treeCount": 120,
     "areaHectares": 3.4,
     "carbonOffsetTons": 15.9,
+    "coordinates": {
+      "latitude": 6.688,
+      "longitude": -1.624
+    },
+    "yieldTimeline": [
+      {
+        "date": "2024-12-01",
+        "event": "Seed cluster planted",
+        "yieldKg": 0
+      },
+      {
+        "date": "2025-01-10",
+        "event": "Healthy canopy observed",
+        "yieldKg": 4.2
+      },
+      {
+        "date": "2025-02-01",
+        "event": "First pod count",
+        "yieldKg": 7.8
+      }
+    ],
+    "collaborators": [
+      {
+        "name": "Selina Owusu",
+        "role": "Agronomist",
+        "contact": "selina@cocoacoop.org"
+      },
+      {
+        "name": "Bright Tetteh",
+        "role": "Community Liaison",
+        "contact": "+233-555-0101"
+      }
+    ],
     "tasks": [
       {
         "id": "task-003",
@@ -65,6 +131,39 @@
     "treeCount": 300,
     "areaHectares": 6.2,
     "carbonOffsetTons": 42.5,
+    "coordinates": {
+      "latitude": 9.928,
+      "longitude": -84.091
+    },
+    "yieldTimeline": [
+      {
+        "date": "2024-06-10",
+        "event": "Seed nursery established",
+        "yieldKg": 0
+      },
+      {
+        "date": "2024-10-05",
+        "event": "First flowering",
+        "yieldKg": 12.6
+      },
+      {
+        "date": "2025-01-10",
+        "event": "Pods harvested",
+        "yieldKg": 38.4
+      }
+    ],
+    "collaborators": [
+      {
+        "name": "Lucia Fernandez",
+        "role": "Supply Lead",
+        "contact": "lucia@pacificcacao.cr"
+      },
+      {
+        "name": "Diego Ramirez",
+        "role": "Quality Inspector",
+        "contact": "@diego_tico"
+      }
+    ],
     "tasks": [
       {
         "id": "task-005",

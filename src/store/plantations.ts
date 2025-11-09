@@ -147,7 +147,17 @@ type PlantationState = {
   ) => void;
   addYieldCheckpoint: (
     plantationId: string,
-    checkpoint: YieldCheckpoint
+    checkpoint: YieldCheckpointDraft
+  ) => YieldCheckpoint;
+  updateYieldCheckpoint: (
+    plantationId: string,
+    checkpointId: string,
+    updates: Partial<Pick<YieldCheckpoint, "event" | "date" | "yieldKg" | "notes" | "photos">>
+  ) => void;
+  addYieldCheckpointPhoto: (
+    plantationId: string,
+    checkpointId: string,
+    photoUrl: string
   ) => void;
   recordCollaboratorNote: (
     plantationId: string,

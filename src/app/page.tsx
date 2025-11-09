@@ -1317,6 +1317,114 @@ export default function DashboardPage() {
     ]
   );
 
+  const timelineEvents = useMemo(() => {
+    const events: Array<{
+      id: string;
+      date: string;
+      type: "plantation" | "task" | "harvest" | "update";
+      title: string;
+      description: string;
+      plantationId?: string;
+    }> = [];
+
+    filteredPlantations.forEach((plantation) => {
+      // Plantation start
+      events.push({
+        id: `timeline-${plantation.id}-start`,
+        date: plantation.startDate,
+        type: "plantation",
+        title: `Planted: ${plantation.seedName}`,
+        description: plantation.location || "Location not specified",
+        plantationId: plantation.id,
+      });
+
+      // Stage updates
+      if (plantation.updatedAt !== plantation.startDate) {
+        events.push({
+          id: `timeline-${plantation.id}-update`,
+          date: plantation.updatedAt,
+          type: "update",
+          title: `Updated: ${plantation.seedName}`,
+          description: `Stage: ${plantation.stage}`,
+          plantationId: plantation.id,
+        });
+      }
+
+      // Tasks
+      plantation.tasks.forEach((task) => {
+        events.push({
+          id: `timeline-${plantation.id}-task-${task.id}`,
+          date: task.dueDate,
+          type: "task",
+          title: task.title,
+          description: `${plantation.seedName} • Status: ${task.status}`,
+          plantationId: plantation.id,
+        });
+      });
+
+      // Harvests
+      if (plantation.stage === "harvested") {
+        events.push({
+          id: `timeline-${plantation.id}-harvest`,
+          date: plantation.updatedAt,
+          type: "harvest",
+          title: `Harvested: ${plantation.seedName}`,
+          description: `Yield timeline: ${plantation.yieldTimeline.length} checkpoints`,
+          plantationId: plantation.id,
+        });
+      }
+    });
+
+    return events.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+  }, [filteredPlantations]);
+
+  const statisticsComparison = useMemo(() => {
+    const allTimeStats = {
+      totalPlantations: plantations.length,
+      totalHarvested: plantations.filter((p) => p.stage === "harvested").length,
+      totalCarbon: plantations.reduce(
+        (acc, p) => acc + p.carbonOffsetTons,
+        0
+      ),
+      totalTasks: plantations.reduce((acc, p) => acc + p.tasks.length, 0),
+    };
+
+    const filteredStats = {
+      totalPlantations: filteredPlantations.length,
+      totalHarvested: filteredPlantations.filter((p) => p.stage === "harvested")
+        .length,
+      totalCarbon: filteredPlantations.reduce(
+        (acc, p) => acc + p.carbonOffsetTons,
+        0
+      ),
+      totalTasks: filteredPlantations.reduce(
+        (acc, p) => acc + p.tasks.length,
+        0
+      ),
+    };
+
+    return {
+      allTime: allTimeStats,
+      filtered: filteredStats,
+      percentage: {
+        plantations:
+          (filteredStats.totalPlantations / Math.max(allTimeStats.totalPlantations, 1)) *
+          100,
+        harvested:
+          (filteredStats.totalHarvested / Math.max(allTimeStats.totalHarvested, 1)) *
+          100,
+        carbon:
+          (filteredStats.totalCarbon / Math.max(allTimeStats.totalCarbon, 1)) *
+          100,
+        tasks:
+          (filteredStats.totalTasks / Math.max(allTimeStats.totalTasks, 1)) *
+          100,
+      },
+    };
+  }, [plantations, filteredPlantations]);
+
   const showEmptyState =
     filteredPlantations.length === 0 &&
     (isConnected || normalizedFilters.length > 0);

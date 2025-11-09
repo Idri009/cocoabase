@@ -131,7 +131,7 @@ function CommunitySupportPanelBase() {
       <div className="mt-5 space-y-3">
         {filteredComplaints.length === 0 ? (
           <div className="rounded-2xl border border-cream-200 bg-white/70 px-4 py-6 text-sm text-cocoa-500">
-            No complaints found for this filter. You're all caught up!
+            No complaints found for this filter. You&rsquo;re all caught up!
           </div>
         ) : (
           filteredComplaints.map((complaint) => (

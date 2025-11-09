@@ -648,6 +648,8 @@ The codebase includes a comprehensive set of utility libraries for common operat
 - **`SoilHealthCard`**: Soil health dashboard with pH, nutrients, and recommendations
 - **`RiskCard`**: Risk assessment card with scoring and mitigation recommendations
 - **`PerformanceDashboard`**: Performance dashboard with KPI scores and benchmark comparisons
+- **`CarbonProjections`**: Carbon offset projections component with 30d, 90d, and 1y forecasts
+- **`YieldOptimizerTips`**: Yield optimization tips component with impact assessment and implementation steps
 
 ## Custom React Hooks
 

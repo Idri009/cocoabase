@@ -32,9 +32,9 @@ npm install
 
 ## Run the App
 
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
 Visit [http://localhost:3000](http://localhost:3000/) to see the dashboard.
 
@@ -181,6 +181,21 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Revenue Projection**: Calculate projected revenue based on yield and current prices
 - **Best Sell Time Detection**: Identify optimal selling windows based on price trends
 - **Price Alerts**: Set alerts for price thresholds (above/below/change)
+
+### Quality Control
+- **Quality Assessment**: Comprehensive quality grading system (Premium, Grade A, Grade B, Grade C, Reject)
+- **Quality Scoring**: Weighted quality score calculation based on multiple metrics
+- **Quality Metrics**: Track quality metrics with min/max ranges and weights
+- **Quality Trends**: Track quality trends over time (improving/declining/stable)
+- **Quality Comparison**: Compare quality assessments between harvests
+- **Quality Indicators**: Visual quality grade indicators with color coding
+
+### Certification Management
+- **Certification Types**: Support for Organic, Fair Trade, Rainforest Alliance, UTZ, ISO, and custom certifications
+- **Certification Status Tracking**: Monitor certification status and expiry dates
+- **Expiry Alerts**: Automatic alerts for certifications expiring soon
+- **Certification Summary**: Overview of all certifications by status and type
+- **Days Until Expiry**: Calculate and display days until certification expiry
 
 ### Additional Features
 - **On-chain Sync**: Simulate and visualize blockchain transactions

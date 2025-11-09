@@ -55,6 +55,7 @@ export default function TopBar({
   onRequestLoan,
   onViewAlerts,
   onViewReputation,
+  onOpenSettings,
   welcomeNote,
 }: TopBarProps) {
   return (

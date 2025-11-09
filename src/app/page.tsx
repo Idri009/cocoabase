@@ -641,6 +641,54 @@ export default function DashboardPage() {
     setSearchQuery("");
     setStageFilter("all");
     setSortBy("date");
+    setLocationFilter("");
+    setDateRangeFilter({});
+    setShowAdvancedFilters(false);
+  }, []);
+
+  const handleToggleSelection = useCallback((plantationId: string) => {
+    setSelectedPlantations((prev) => {
+      const next = new Set(prev);
+      if (next.has(plantationId)) {
+        next.delete(plantationId);
+      } else {
+        next.add(plantationId);
+      }
+      return next;
+    });
+  }, []);
+
+  const handleSelectAll = useCallback(() => {
+    if (selectedPlantations.size === filteredPlantations.length) {
+      setSelectedPlantations(new Set());
+    } else {
+      setSelectedPlantations(
+        new Set(filteredPlantations.map((p) => p.id))
+      );
+    }
+  }, [filteredPlantations, selectedPlantations.size]);
+
+  const handleBulkAdvanceStage = useCallback(
+    (nextStage: GrowthStage) => {
+      const ids = Array.from(selectedPlantations);
+      if (ids.length > 0) {
+        updateStages(ids, nextStage);
+        setSelectedPlantations(new Set());
+      }
+    },
+    [selectedPlantations, updateStages]
+  );
+
+  const handleToggleFavorite = useCallback((plantationId: string) => {
+    setFavorites((prev) => {
+      const next = new Set(prev);
+      if (next.has(plantationId)) {
+        next.delete(plantationId);
+      } else {
+        next.add(plantationId);
+      }
+      return next;
+    });
   }, []);
 
   const showEmptyState =

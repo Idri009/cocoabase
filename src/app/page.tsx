@@ -19,7 +19,9 @@ import ForecastWorkspace from "@/components/forecast-workspace";
 import RecurringTaskModal from "@/components/recurring-task-modal";
 import RecurringTaskScheduler from "@/components/recurring-task-scheduler";
 import BulkStagePanel from "@/components/bulk-stage-panel";
-import DashboardMetrics from "@/components/dashboard-metrics";
+import DashboardMetrics, {
+  type DashboardMetric,
+} from "@/components/dashboard-metrics";
 import ForecastPanel from "@/components/forecast-panel";
 import GeoMapPanel from "@/components/geo-map-panel";
 import GeoInsightsPanel from "@/components/geo-insights-panel";

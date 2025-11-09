@@ -17,6 +17,18 @@ export type RegionStat = {
   count: number;
 };
 
+export type RegionSustainabilityStat = {
+  region: string;
+  treeCount: number;
+  carbonOffsetTons: number;
+};
+
+export type SustainabilityTotals = {
+  treeCount: number;
+  areaHectares: number;
+  carbonOffsetTons: number;
+};
+
 type AnalyticsSnapshot = {
   total: number;
   stageBreakdown: StageBreakdown[];
@@ -24,6 +36,10 @@ type AnalyticsSnapshot = {
   averageDaysToHarvest: number | null;
   activeRegions: RegionStat[];
   lastUpdated: string;
+  sustainability: {
+    totals: SustainabilityTotals;
+    perRegion: RegionSustainabilityStat[];
+  };
 };
 
 const monthFormatter = new Intl.DateTimeFormat("en-US", {

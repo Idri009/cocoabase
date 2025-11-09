@@ -149,8 +149,8 @@ export default function DashboardPage() {
   );
 
   const taskSummary = useMemo(() => {
-    const now = Date.now();
-    const soonThreshold = now + 1000 * 60 * 60 * 24 * 3; // 3 days
+    const nowTime = new Date().getTime();
+    const soonThreshold = nowTime + 1000 * 60 * 60 * 24 * 3; // 3 days
     let active = 0;
     let dueSoon = 0;
     let overdue = 0;
@@ -165,7 +165,7 @@ export default function DashboardPage() {
         if (Number.isNaN(dueTime)) {
           return;
         }
-        if (dueTime < now) {
+        if (dueTime < nowTime) {
           overdue += 1;
         } else if (dueTime <= soonThreshold) {
           dueSoon += 1;

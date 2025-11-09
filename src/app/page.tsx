@@ -2426,6 +2426,316 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
+                {/* Timeline View */}
+                {showTimelineView && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-lg"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Activity Timeline
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Chronological event history
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowTimelineView(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-cream-100"
+                        aria-label="Close timeline"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      {timelineEvents.slice(0, 20).map((event, index) => (
+                        <div
+                          key={event.id}
+                          className="flex gap-4 rounded-2xl border border-cream-200 bg-cream-50/70 p-4"
+                        >
+                          <div className="flex flex-col items-center">
+                            <div
+                              className={`h-3 w-3 rounded-full ${
+                                event.type === "plantation"
+                                  ? "bg-leaf-500"
+                                  : event.type === "harvest"
+                                  ? "bg-gold-500"
+                                  : event.type === "task"
+                                  ? "bg-blue-500"
+                                  : "bg-purple-500"
+                              }`}
+                            />
+                            {index < timelineEvents.slice(0, 20).length - 1 && (
+                              <div className="h-full w-0.5 bg-cream-300" />
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-start justify-between">
+                              <div>
+                                <h3 className="font-semibold text-cocoa-900">
+                                  {event.title}
+                                </h3>
+                                <p className="mt-1 text-sm text-cocoa-600">
+                                  {event.description}
+                                </p>
+                              </div>
+                              <span className="text-xs text-cocoa-500">
+                                {new Date(event.date).toLocaleDateString()}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      {timelineEvents.length === 0 && (
+                        <p className="py-8 text-center text-sm text-cocoa-500">
+                          No timeline events found
+                        </p>
+                      )}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Statistics Comparison */}
+                {showStatisticsComparison && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-violet-50/80 to-fuchsia-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Statistics Comparison
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Filtered vs All-time stats
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowStatisticsComparison(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close comparison"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                      <div className="rounded-2xl border border-violet-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Plantations
+                        </div>
+                        <div className="mb-2 flex items-baseline gap-2">
+                          <span className="text-2xl font-bold text-violet-700">
+                            {statisticsComparison.filtered.totalPlantations}
+                          </span>
+                          <span className="text-sm text-cocoa-500">
+                            / {statisticsComparison.allTime.totalPlantations}
+                          </span>
+                        </div>
+                        <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{
+                              width: `${statisticsComparison.percentage.plantations}%`,
+                            }}
+                            className="h-full bg-violet-500"
+                          />
+                        </div>
+                        <p className="mt-2 text-xs text-cocoa-500">
+                          {Math.round(statisticsComparison.percentage.plantations)}% of
+                          total
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-fuchsia-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Harvested
+                        </div>
+                        <div className="mb-2 flex items-baseline gap-2">
+                          <span className="text-2xl font-bold text-fuchsia-700">
+                            {statisticsComparison.filtered.totalHarvested}
+                          </span>
+                          <span className="text-sm text-cocoa-500">
+                            / {statisticsComparison.allTime.totalHarvested}
+                          </span>
+                        </div>
+                        <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{
+                              width: `${statisticsComparison.percentage.harvested}%`,
+                            }}
+                            className="h-full bg-fuchsia-500"
+                          />
+                        </div>
+                        <p className="mt-2 text-xs text-cocoa-500">
+                          {Math.round(statisticsComparison.percentage.harvested)}% of
+                          total
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-indigo-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Carbon Offset
+                        </div>
+                        <div className="mb-2 flex items-baseline gap-2">
+                          <span className="text-2xl font-bold text-indigo-700">
+                            {statisticsComparison.filtered.totalCarbon.toFixed(1)}
+                          </span>
+                          <span className="text-sm text-cocoa-500">
+                            / {statisticsComparison.allTime.totalCarbon.toFixed(1)} tCO₂
+                          </span>
+                        </div>
+                        <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{
+                              width: `${statisticsComparison.percentage.carbon}%`,
+                            }}
+                            className="h-full bg-indigo-500"
+                          />
+                        </div>
+                        <p className="mt-2 text-xs text-cocoa-500">
+                          {Math.round(statisticsComparison.percentage.carbon)}% of total
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-cyan-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Tasks
+                        </div>
+                        <div className="mb-2 flex items-baseline gap-2">
+                          <span className="text-2xl font-bold text-cyan-700">
+                            {statisticsComparison.filtered.totalTasks}
+                          </span>
+                          <span className="text-sm text-cocoa-500">
+                            / {statisticsComparison.allTime.totalTasks}
+                          </span>
+                        </div>
+                        <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{
+                              width: `${statisticsComparison.percentage.tasks}%`,
+                            }}
+                            className="h-full bg-cyan-500"
+                          />
+                        </div>
+                        <p className="mt-2 text-xs text-cocoa-500">
+                          {Math.round(statisticsComparison.percentage.tasks)}% of total
+                        </p>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Advanced Search */}
+                {showAdvancedSearch && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-lg"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Advanced Search
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Multi-criteria search filters
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowAdvancedSearch(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-cream-100"
+                        aria-label="Close advanced search"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div>
+                          <label className="mb-2 block text-sm font-semibold text-cocoa-700">
+                            Search in:
+                          </label>
+                          <div className="space-y-2">
+                            {[
+                              "Seed Name",
+                              "Location",
+                              "Notes",
+                              "Tasks",
+                              "Collaborators",
+                            ].map((field) => (
+                              <label
+                                key={field}
+                                className="flex items-center gap-2 text-sm text-cocoa-600"
+                              >
+                                <input
+                                  type="checkbox"
+                                  defaultChecked
+                                  className="h-4 w-4 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
+                                />
+                                {field}
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-sm font-semibold text-cocoa-700">
+                            Filter by metrics:
+                          </label>
+                          <div className="space-y-2">
+                            <label className="block text-sm text-cocoa-600">
+                              Min trees:
+                              <input
+                                type="number"
+                                min="0"
+                                className="mt-1 w-full rounded-xl border border-cream-300 bg-white px-3 py-1.5 text-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                                placeholder="Any"
+                              />
+                            </label>
+                            <label className="block text-sm text-cocoa-600">
+                              Min carbon offset (tCO₂):
+                              <input
+                                type="number"
+                                min="0"
+                                step="0.1"
+                                className="mt-1 w-full rounded-xl border border-cream-300 bg-white px-3 py-1.5 text-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                                placeholder="Any"
+                              />
+                            </label>
+                            <label className="block text-sm text-cocoa-600">
+                              Min area (ha):
+                              <input
+                                type="number"
+                                min="0"
+                                step="0.1"
+                                className="mt-1 w-full rounded-xl border border-cream-300 bg-white px-3 py-1.5 text-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                                placeholder="Any"
+                              />
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                        <p className="text-sm font-semibold text-cocoa-900">
+                          Search Tips:
+                        </p>
+                        <ul className="mt-2 space-y-1 text-xs text-cocoa-600">
+                          <li>• Use multiple filters together for precise results</li>
+                          <li>• Search is case-insensitive</li>
+                          <li>• Partial matches are supported</li>
+                          <li>• Combine with quick filter presets for best results</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
                 {/* Notification Center */}
                 {showNotificationCenter && (
                   <motion.section

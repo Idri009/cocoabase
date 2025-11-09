@@ -1646,6 +1646,8 @@ export default function DashboardPage() {
               <>
                 <DashboardMetrics metrics={dashboardMetrics} />
                 
+                <WeatherWidget plantations={filteredPlantations} />
+                
                 {/* Comprehensive Statistics Summary */}
                 <motion.section
                   initial={{ opacity: 0, y: 12 }}

@@ -151,6 +151,11 @@ export default function DashboardPage() {
   const [showWeatherWidget, setShowWeatherWidget] = useState(false);
   const [showReports, setShowReports] = useState(false);
   const [selectedReportType, setSelectedReportType] = useState<"summary" | "detailed" | "financial">("summary");
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+  const [showCollaborationTools, setShowCollaborationTools] = useState(false);
+  const [showTimelineView, setShowTimelineView] = useState(false);
+  const [dashboardTheme, setDashboardTheme] = useState<"light" | "dark" | "auto">("light");
+  const [showStatisticsComparison, setShowStatisticsComparison] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;

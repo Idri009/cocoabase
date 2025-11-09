@@ -563,6 +563,10 @@ export default function DashboardPage() {
                   highlightedCount={filteredPlantations.length}
                   snapshot={analyticsSnapshot}
                 />
+                <ForecastWorkspace
+                  plantations={filteredPlantations}
+                  snapshot={analyticsSnapshot}
+                />
                 <SustainabilityPanel
                   plantations={filteredPlantations}
                   snapshot={analyticsSnapshot}

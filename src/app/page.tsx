@@ -127,6 +127,13 @@ export default function DashboardPage() {
   const [showQuickActions, setShowQuickActions] = useState(false);
   const [comparisonMode, setComparisonMode] = useState(false);
   const [comparisonPlantations, setComparisonPlantations] = useState<Set<string>>(new Set());
+  const [showCalendarView, setShowCalendarView] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [notes, setNotes] = useState<Map<string, string>>(new Map());
+  const [showNotesModal, setShowNotesModal] = useState(false);
+  const [notesTargetId, setNotesTargetId] = useState<string | null>(null);
+  const [dashboardLayout, setDashboardLayout] = useState<"default" | "compact" | "spacious">("default");
+  const [showDataInsights, setShowDataInsights] = useState(true);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;

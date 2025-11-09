@@ -233,6 +233,10 @@ export default function DashboardPage() {
   const [showDataSync, setShowDataSync] = useState(false);
   const [showHealthMonitor, setShowHealthMonitor] = useState(false);
   const [showCommunityHub, setShowCommunityHub] = useState(false);
+  const [showBudgetPlanner, setShowBudgetPlanner] = useState(false);
+  const [showInventoryAlerts, setShowInventoryAlerts] = useState(false);
+  const [showPerformanceReports, setShowPerformanceReports] = useState(false);
+  const [showExportManager, setShowExportManager] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;

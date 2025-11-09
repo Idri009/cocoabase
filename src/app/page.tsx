@@ -1823,6 +1823,65 @@ export default function DashboardPage() {
         onClose={() => setExportModalOpen(false)}
         snapshot={analyticsSnapshot}
       />
+
+      {/* Notes Modal */}
+      {showNotesModal && notesTargetId && (
+        <Modal
+          open={showNotesModal}
+          onClose={() => {
+            setShowNotesModal(false);
+            setNotesTargetId(null);
+          }}
+          title="Plantation Notes"
+          description="Add personal notes and observations for this plantation"
+        >
+          <div className="space-y-4">
+            <label className="block text-sm text-cocoa-600">
+              Notes
+              <textarea
+                defaultValue={notes.get(notesTargetId) || ""}
+                rows={6}
+                className="mt-1 w-full rounded-2xl border border-cream-300 bg-white px-3 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                placeholder="Add your notes here..."
+                ref={(textarea) => {
+                  if (textarea && notesTargetId) {
+                    const currentNote = notes.get(notesTargetId) || "";
+                    if (textarea.value !== currentNote) {
+                      textarea.value = currentNote;
+                    }
+                  }
+                }}
+              />
+            </label>
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowNotesModal(false);
+                  setNotesTargetId(null);
+                }}
+                className="rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const textarea = document.querySelector(
+                    'textarea[placeholder="Add your notes here..."]'
+                  ) as HTMLTextAreaElement;
+                  if (textarea && notesTargetId) {
+                    handleSaveNote(notesTargetId, textarea.value);
+                  }
+                }}
+                className="rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-cream-50 shadow-lg transition hover:bg-leaf-600 focus:outline-none focus:ring-2 focus:ring-leaf-400"
+              >
+                Save Notes
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

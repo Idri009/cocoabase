@@ -1,156 +1,138 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/cn";
-
-type TrainingResource = {
-  id: string;
-  title: string;
-  category: string;
-  description: string;
-  type: "video" | "article" | "guide" | "course";
-  duration?: string;
-  url?: string;
-  icon: string;
-};
-
-const trainingResources: TrainingResource[] = [
-  {
-    id: "1",
-    title: "Cocoa Farming Basics",
-    category: "Getting Started",
-    description: "Learn the fundamentals of cocoa cultivation",
-    type: "course",
-    duration: "2 hours",
-    icon: "🌱",
-  },
-  {
-    id: "2",
-    title: "Pest Management Guide",
-    category: "Plant Health",
-    description: "Identify and manage common cocoa pests",
-    type: "guide",
-    icon: "🐛",
-  },
-  {
-    id: "3",
-    title: "Harvesting Best Practices",
-    category: "Operations",
-    description: "Optimize your harvest process",
-    type: "video",
-    duration: "15 min",
-    icon: "✂️",
-  },
-  {
-    id: "4",
-    title: "Soil Management",
-    category: "Plant Health",
-    description: "Maintain healthy soil for better yields",
-    type: "article",
-    icon: "🌍",
-  },
-  {
-    id: "5",
-    title: "Organic Certification",
-    category: "Certification",
-    description: "Steps to achieve organic certification",
-    type: "guide",
-    icon: "✅",
-  },
-  {
-    id: "6",
-    title: "Financial Planning",
-    category: "Business",
-    description: "Manage your farm finances effectively",
-    type: "course",
-    duration: "1.5 hours",
-    icon: "💰",
-  },
-];
+import { useState } from "react";
 
 export default function TrainingResources() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+
+  const resources = [
+    {
+      id: "1",
+      title: "Cocoa Planting Basics",
+      category: "planting",
+      type: "video",
+      duration: "15 min",
+      icon: "🌱",
+    },
+    {
+      id: "2",
+      title: "Pest Management Guide",
+      category: "pests",
+      type: "guide",
+      duration: "10 min read",
+      icon: "🐛",
+    },
+    {
+      id: "3",
+      title: "Harvest Best Practices",
+      category: "harvest",
+      type: "video",
+      duration: "20 min",
+      icon: "🚚",
+    },
+    {
+      id: "4",
+      title: "Soil Health Management",
+      category: "soil",
+      type: "guide",
+      duration: "12 min read",
+      icon: "🌍",
+    },
+    {
+      id: "5",
+      title: "Watering Techniques",
+      category: "irrigation",
+      type: "video",
+      duration: "8 min",
+      icon: "💧",
+    },
+    {
+      id: "6",
+      title: "Organic Certification",
+      category: "certification",
+      type: "guide",
+      duration: "25 min read",
+      icon: "✅",
+    },
+  ];
+
   const categories = [
-    "all",
-    ...new Set(trainingResources.map((r) => r.category)),
+    { id: "all", label: "All Resources" },
+    { id: "planting", label: "Planting" },
+    { id: "pests", label: "Pest Management" },
+    { id: "harvest", label: "Harvest" },
+    { id: "soil", label: "Soil Health" },
+    { id: "irrigation", label: "Irrigation" },
+    { id: "certification", label: "Certification" },
   ];
 
   const filteredResources =
     selectedCategory === "all"
-      ? trainingResources
-      : trainingResources.filter((r) => r.category === selectedCategory);
+      ? resources
+      : resources.filter((r) => r.category === selectedCategory);
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
-      className="rounded-3xl border border-cocoa-800/60 bg-[#101f3c]/80 p-6 text-slate-100 shadow-xl shadow-black/20 backdrop-blur"
+      className="rounded-3xl border border-cream-200 bg-gradient-to-br from-green-50/80 to-emerald-50/80 p-6 shadow-sm backdrop-blur"
     >
-      <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">
-            Training resources
-          </h2>
-          <p className="text-sm text-slate-300/80">
-            Educational content and guides for farmers.
-          </p>
-        </div>
-      </header>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-cocoa-900">
+          Training Resources
+        </h2>
+        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+          Educational content and guides
+        </p>
+      </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mb-4 flex flex-wrap gap-2">
         {categories.map((category) => (
           <button
-            key={category}
+            key={category.id}
             type="button"
-            onClick={() => setSelectedCategory(category)}
-            className={cn(
-              "rounded-full px-3 py-1 text-xs font-semibold transition",
-              selectedCategory === category
-                ? "bg-leaf-500/20 text-leaf-300 border border-leaf-400/40"
-                : "bg-slate-800/80 text-slate-300/70 hover:bg-slate-700/80"
-            )}
+            onClick={() => setSelectedCategory(category.id)}
+            className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
+              selectedCategory === category.id
+                ? "border-green-600 bg-green-600 text-white"
+                : "border-cream-300 bg-white text-cocoa-700 hover:border-green-300"
+            }`}
           >
-            {category.charAt(0).toUpperCase() + category.slice(1)}
+            {category.label}
           </button>
         ))}
       </div>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2">
         {filteredResources.map((resource) => (
           <div
             key={resource.id}
-            className="rounded-2xl border border-slate-700/40 bg-slate-900/50 p-4 transition hover:border-slate-500/60 cursor-pointer"
+            className="flex items-start gap-3 rounded-2xl border border-green-200 bg-white/90 p-4 shadow-sm"
           >
-            <div className="flex items-start gap-3">
-              <span className="text-3xl">{resource.icon}</span>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="rounded-full bg-slate-800/80 px-2 py-0.5 text-xs text-slate-300/70">
-                    {resource.category}
-                  </span>
-                  <span className="rounded-full bg-slate-800/80 px-2 py-0.5 text-xs text-slate-300/70">
-                    {resource.type}
-                  </span>
-                </div>
-                <h3 className="mt-2 text-sm font-semibold text-white">
-                  {resource.title}
-                </h3>
-                <p className="mt-1 text-xs text-slate-300/70">
-                  {resource.description}
-                </p>
-                {resource.duration && (
-                  <p className="mt-2 text-xs text-slate-400/70">
-                    ⏱️ {resource.duration}
-                  </p>
-                )}
+            <span className="text-2xl">{resource.icon}</span>
+            <div className="flex-1">
+              <h3 className="font-semibold text-cocoa-900">
+                {resource.title}
+              </h3>
+              <div className="mt-2 flex items-center gap-2 text-xs text-cocoa-500">
+                <span className="rounded-full bg-green-100 px-2 py-0.5">
+                  {resource.type}
+                </span>
+                <span>{resource.duration}</span>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {filteredResources.length === 0 && (
+        <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-6 text-center">
+          <p className="text-sm text-cocoa-600">
+            No resources found in this category
+          </p>
+        </div>
+      )}
     </motion.section>
   );
 }
-

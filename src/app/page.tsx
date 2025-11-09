@@ -147,6 +147,10 @@ export default function DashboardPage() {
   const [exportFormat, setExportFormat] = useState<"json" | "csv" | "pdf">("json");
   const [showAchievements, setShowAchievements] = useState(false);
   const [showProgressTracker, setShowProgressTracker] = useState(false);
+  const [showMarketPrices, setShowMarketPrices] = useState(false);
+  const [showWeatherWidget, setShowWeatherWidget] = useState(false);
+  const [showReports, setShowReports] = useState(false);
+  const [selectedReportType, setSelectedReportType] = useState<"summary" | "detailed" | "financial">("summary");
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
@@ -1321,7 +1325,7 @@ export default function DashboardPage() {
                       <span className="rounded-full bg-white/70 px-2 py-0.5">
                         {stats.growing} growing
                       </span>
-                    </div>
+        </div>
                   </div>
 
                   {/* Active Tasks */}

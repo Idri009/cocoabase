@@ -182,6 +182,9 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Field Notes**: Record daily observations and field activities
 - **Cost Analysis**: Detailed breakdown of operational costs and expenses
 - **Yield Comparison**: Compare yields across plantations and track performance
+- **Harvest Calendar**: Visual calendar showing harvest schedules and events
+- **Notifications Center**: Centralized notification management and alerts
+- **Task Templates Library**: Pre-defined task templates for common operations
 
 ### Data Management
 - **Data Export**: Export plantations, tasks, and analytics data

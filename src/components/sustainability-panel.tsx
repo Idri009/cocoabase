@@ -16,7 +16,6 @@ import {
   buildAnalyticsSnapshot,
   type AnalyticsSnapshot,
 } from "@/lib/analytics";
-import { cn } from "@/lib/cn";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 

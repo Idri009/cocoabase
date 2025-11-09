@@ -1292,6 +1292,164 @@ export default function DashboardPage() {
                         </motion.div>
                       )}
 
+                      {showQuickActions && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="mt-4 grid gap-3 rounded-2xl border border-cream-200 bg-cream-50/70 p-4 sm:grid-cols-2 lg:grid-cols-4"
+                        >
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setReceiptModalOpen(true);
+                              setShowQuickActions(false);
+                            }}
+                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md"
+                          >
+                            <span className="text-2xl">📄</span>
+                            <span className="text-xs font-semibold text-cocoa-700">
+                              Upload Receipt
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setComplaintModalOpen(true);
+                              setShowQuickActions(false);
+                            }}
+                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md"
+                          >
+                            <span className="text-2xl">🛠️</span>
+                            <span className="text-xs font-semibold text-cocoa-700">
+                              File Complaint
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setLoanModalOpen(true);
+                              setShowQuickActions(false);
+                            }}
+                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md"
+                          >
+                            <span className="text-2xl">💰</span>
+                            <span className="text-xs font-semibold text-cocoa-700">
+                              Request Loan
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setExportModalOpen(true);
+                              setShowQuickActions(false);
+                            }}
+                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md"
+                          >
+                            <span className="text-2xl">📤</span>
+                            <span className="text-xs font-semibold text-cocoa-700">
+                              Export Data
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPlantModalOpen(true);
+                              setShowQuickActions(false);
+                            }}
+                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md"
+                          >
+                            <span className="text-2xl">🌱</span>
+                            <span className="text-xs font-semibold text-cocoa-700">
+                              Plant Seed
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setRecurringModalOpen(true);
+                              setShowQuickActions(false);
+                            }}
+                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md"
+                          >
+                            <span className="text-2xl">🔄</span>
+                            <span className="text-xs font-semibold text-cocoa-700">
+                              Recurring Tasks
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleRefresh}
+                            disabled={isRefreshing}
+                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md disabled:opacity-50"
+                          >
+                            <span className="text-2xl">
+                              {isRefreshing ? "🔄" : "↻"}
+                            </span>
+                            <span className="text-xs font-semibold text-cocoa-700">
+                              Refresh Data
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              handleClearFilters();
+                              setShowQuickActions(false);
+                            }}
+                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md"
+                          >
+                            <span className="text-2xl">🗑️</span>
+                            <span className="text-xs font-semibold text-cocoa-700">
+                              Clear Filters
+                            </span>
+                          </button>
+                        </motion.div>
+                      )}
+
+                      {comparisonMode && comparisonPlantations.size > 0 && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="mt-4 rounded-2xl border border-amber-200 bg-amber-50/80 p-4"
+                        >
+                          <h3 className="mb-3 text-sm font-semibold text-amber-900">
+                            Comparison View ({comparisonPlantations.size} selected)
+                          </h3>
+                          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                            {Array.from(comparisonPlantations).map((id) => {
+                              const plantation = filteredPlantations.find(
+                                (p) => p.id === id
+                              );
+                              if (!plantation) return null;
+                              return (
+                                <div
+                                  key={id}
+                                  className="rounded-xl border border-amber-200 bg-white p-3 text-sm"
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <h4 className="font-semibold text-cocoa-900">
+                                      {plantation.seedName}
+                                    </h4>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleToggleComparison(id)}
+                                      className="text-xs text-amber-600 hover:text-amber-800"
+                                    >
+                                      ✕
+                                    </button>
+                                  </div>
+                                  <div className="mt-2 space-y-1 text-xs text-cocoa-600">
+                                    <p>Stage: {plantation.stage}</p>
+                                    <p>Trees: {plantation.treeCount}</p>
+                                    <p>Carbon: {plantation.carbonOffsetTons} tCO₂</p>
+                                    <p>Area: {plantation.areaHectares} ha</p>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </motion.div>
+                      )}
+
                       {(searchQuery || stageFilter !== "all" || locationFilter || dateRangeFilter.start || dateRangeFilter.end) && (
                         <p className="text-xs text-cocoa-500">
                           Showing {filteredPlantations.length} of{" "}

@@ -320,6 +320,22 @@ export default function StageTemplatePanel() {
                               {template.description}
                             </p>
                           )}
+                    {template.attachments.length > 0 && (
+                      <ul className="mt-2 space-y-1 text-xs text-slate-300/70">
+                        {template.attachments.map((url) => (
+                          <li key={url} className="truncate">
+                            <a
+                              href={url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-leaf-300 underline-offset-2 hover:underline"
+                            >
+                              {url}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                           <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-300/70">
                             <span className="rounded-full bg-slate-800/80 px-2 py-0.5">
                               Due in {template.dueOffsetDays} day

@@ -255,7 +255,7 @@ export default function DashboardPage() {
         caption: `${stats.harvested} harvested to date`,
         icon: "🌱",
         trendLabel: `${stats.harvested} harvested`,
-        trendDirection: "neutral" as const,
+        trendDirection: "neutral",
         emphasis: true,
       },
       {
@@ -269,7 +269,7 @@ export default function DashboardPage() {
               receiptTotals.latest.uploadedAt
             ).toLocaleDateString()}`
           : "Awaiting first upload",
-        trendDirection: receiptTotals.latest ? ("up" as const) : ("neutral" as const),
+        trendDirection: receiptTotals.latest ? "up" : "neutral",
       },
       {
         id: "support",
@@ -280,7 +280,7 @@ export default function DashboardPage() {
         trendLabel: complaintStats.highPriorityOpen
           ? `${complaintStats.highPriorityOpen} high priority`
           : "No urgent cases",
-        trendDirection: complaintStats.highPriorityOpen ? ("down" as const) : ("up" as const),
+        trendDirection: complaintStats.highPriorityOpen ? "down" : "up",
       },
       {
         id: "loan-pipeline",
@@ -291,7 +291,7 @@ export default function DashboardPage() {
         trendLabel: loanMetrics.byStatus.approved
           ? `${loanMetrics.byStatus.approved} approved`
           : "Awaiting review",
-        trendDirection: loanMetrics.byStatus.approved ? ("up" as const) : ("neutral" as const),
+        trendDirection: loanMetrics.byStatus.approved ? "up" : "neutral",
       },
     ];
 
@@ -307,10 +307,10 @@ export default function DashboardPage() {
         trendLabel: `${nextForecast.confidence.toUpperCase()} confidence`,
         trendDirection:
           nextForecast.confidence === "high"
-            ? ("up" as const)
+            ? "up"
             : nextForecast.confidence === "low"
-            ? ("down" as const)
-            : ("neutral" as const),
+            ? "down"
+            : "neutral",
       });
     }
 
@@ -325,10 +325,10 @@ export default function DashboardPage() {
           ? `${taskSummary.overdue} overdue`
           : "All on track",
         trendDirection: taskSummary.overdue
-          ? ("down" as const)
+          ? "down"
           : taskSummary.dueSoon
-          ? ("neutral" as const)
-          : ("up" as const),
+          ? "neutral"
+          : "up",
       },
       {
         id: "carbon",
@@ -337,7 +337,7 @@ export default function DashboardPage() {
         caption: `${carbonTotals.treeCount.toLocaleString()} trees`,
         icon: "🌍",
         trendLabel: `${carbonTotals.areaHectares.toLocaleString()} ha protected`,
-        trendDirection: "up" as const,
+        trendDirection: "up",
       }
     );
 

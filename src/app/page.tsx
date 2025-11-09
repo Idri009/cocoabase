@@ -245,6 +245,10 @@ export default function DashboardPage() {
   const [showInventoryAlerts, setShowInventoryAlerts] = useState(false);
   const [showPerformanceReports, setShowPerformanceReports] = useState(false);
   const [showExportManager, setShowExportManager] = useState(false);
+  const [showRevenueForecast, setShowRevenueForecast] = useState(false);
+  const [showResourceOptimizer, setShowResourceOptimizer] = useState(false);
+  const [showQualityMetrics, setShowQualityMetrics] = useState(false);
+  const [showSustainabilityReport, setShowSustainabilityReport] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;

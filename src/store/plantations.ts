@@ -65,6 +65,25 @@ export type RecurringTaskTemplateDraft = Omit<
   id?: string;
 };
 
+export type StageTaskTemplate = {
+  id: string;
+  stage: GrowthStage;
+  title: string;
+  description?: string;
+  dueOffsetDays: number;
+  assigneeRole?: string;
+  createdAt: string;
+  updatedAt?: string;
+  enabled: boolean;
+};
+
+export type StageTaskTemplateDraft = Omit<
+  StageTaskTemplate,
+  "id" | "createdAt" | "updatedAt"
+> & {
+  id?: string;
+};
+
 export type Plantation = {
   id: string;
   seedName: string;

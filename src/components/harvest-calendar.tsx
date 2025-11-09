@@ -1,201 +1,110 @@
 "use client";
 
-import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/cn";
+import { useMemo } from "react";
 import { usePlantationsStore } from "@/store/plantations";
 
 export default function HarvestCalendar() {
   const plantations = usePlantationsStore((state) => state.plantations);
-  const [selectedMonth, setSelectedMonth] = useState(new Date());
 
-  const harvestEvents = useMemo(() => {
-    const events: Array<{
-      date: Date;
-      plantation: string;
-      stage: string;
-      yield?: number;
+  const upcomingHarvests = useMemo(() => {
+    const harvests: Array<{
+      date: string;
+      plantations: string[];
+      count: number;
     }> = [];
 
     plantations.forEach((plantation) => {
-      if (plantation.stage === "harvested" && plantation.yieldTimeline) {
-        plantation.yieldTimeline.forEach((checkpoint) => {
-          events.push({
-            date: new Date(checkpoint.date),
-            plantation: plantation.seedName,
-            stage: plantation.stage,
-            yield: checkpoint.yieldKg,
+      if (plantation.stage === "growing") {
+        const daysSinceStart = Math.ceil(
+          (Date.now() - new Date(plantation.startDate).getTime()) /
+            (1000 * 60 * 60 * 24)
+        );
+        const estimatedHarvestDays = 180;
+        const daysUntil = estimatedHarvestDays - daysSinceStart;
+        const harvestDate = new Date(
+          Date.now() + daysUntil * 24 * 60 * 60 * 1000
+        );
+        const dateKey = harvestDate.toISOString().split("T")[0];
+
+        const existing = harvests.find((h) => h.date === dateKey);
+        if (existing) {
+          existing.plantations.push(plantation.seedName);
+          existing.count++;
+        } else {
+          harvests.push({
+            date: dateKey,
+            plantations: [plantation.seedName],
+            count: 1,
           });
-        });
+        }
       }
     });
 
-    return events.sort(
-      (a, b) => a.date.getTime() - b.date.getTime()
-    );
+    return harvests
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .slice(0, 7);
   }, [plantations]);
-
-  const monthStart = new Date(
-    selectedMonth.getFullYear(),
-    selectedMonth.getMonth(),
-    1
-  );
-  const monthEnd = new Date(
-    selectedMonth.getFullYear(),
-    selectedMonth.getMonth() + 1,
-    0
-  );
-  const daysInMonth = monthEnd.getDate();
-  const firstDayOfWeek = monthStart.getDay();
-
-  const monthEvents = harvestEvents.filter((event) => {
-    const eventMonth = event.date.getMonth();
-    const eventYear = event.date.getFullYear();
-    return (
-      eventMonth === selectedMonth.getMonth() &&
-      eventYear === selectedMonth.getFullYear()
-    );
-  });
-
-  const getEventsForDay = (day: number) => {
-    return monthEvents.filter(
-      (event) => event.date.getDate() === day
-    );
-  };
-
-  const navigateMonth = (direction: "prev" | "next") => {
-    setSelectedMonth((prev) => {
-      const newDate = new Date(prev);
-      if (direction === "prev") {
-        newDate.setMonth(prev.getMonth() - 1);
-      } else {
-        newDate.setMonth(prev.getMonth() + 1);
-      }
-      return newDate;
-    });
-  };
-
-  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
-      className="rounded-3xl border border-cocoa-800/60 bg-[#101f3c]/80 p-6 text-slate-100 shadow-xl shadow-black/20 backdrop-blur"
+      className="rounded-3xl border border-cream-200 bg-gradient-to-br from-amber-50/80 to-yellow-50/80 p-6 shadow-sm backdrop-blur"
     >
-      <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Harvest calendar</h2>
-          <p className="text-sm text-slate-300/80">
-            Visual calendar showing harvest schedules and events.
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => navigateMonth("prev")}
-            className="rounded-full bg-slate-800/70 p-2 text-slate-200/90 transition hover:bg-slate-700/80"
-          >
-            ←
-          </button>
-          <span className="min-w-[150px] text-center text-sm font-semibold text-white">
-            {selectedMonth.toLocaleDateString("en-US", {
-              month: "long",
-              year: "numeric",
-            })}
-          </span>
-          <button
-            type="button"
-            onClick={() => navigateMonth("next")}
-            className="rounded-full bg-slate-800/70 p-2 text-slate-200/90 transition hover:bg-slate-700/80"
-          >
-            →
-          </button>
-        </div>
-      </header>
-
-      <div className="mt-6">
-        <div className="grid grid-cols-7 gap-1">
-          {weekDays.map((day) => (
-            <div
-              key={day}
-              className="p-2 text-center text-xs font-semibold uppercase text-slate-400/70"
-            >
-              {day}
-            </div>
-          ))}
-        </div>
-        <div className="grid grid-cols-7 gap-1">
-          {Array.from({ length: firstDayOfWeek }).map((_, index) => (
-            <div key={`empty-${index}`} className="aspect-square" />
-          ))}
-          {Array.from({ length: daysInMonth }).map((_, index) => {
-            const day = index + 1;
-            const events = getEventsForDay(day);
-            return (
-              <div
-                key={day}
-                className={cn(
-                  "relative aspect-square rounded-lg border border-slate-700/40 bg-slate-900/50 p-1",
-                  events.length > 0 && "border-emerald-500/60 bg-emerald-500/10"
-                )}
-              >
-                <div className="text-xs font-semibold text-slate-300/70">
-                  {day}
-                </div>
-                {events.length > 0 && (
-                  <div className="mt-1 space-y-0.5">
-                    {events.slice(0, 2).map((event, idx) => (
-                      <div
-                        key={idx}
-                        className="truncate rounded bg-emerald-500/20 px-1 text-[10px] text-emerald-300"
-                        title={`${event.plantation}: ${event.yield || 0}kg`}
-                      >
-                        {event.plantation.slice(0, 8)}
-                      </div>
-                    ))}
-                    {events.length > 2 && (
-                      <div className="text-[10px] text-emerald-300/70">
-                        +{events.length - 2}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-cocoa-900">
+          Harvest Calendar
+        </h2>
+        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+          Upcoming harvest schedule
+        </p>
       </div>
 
-      {monthEvents.length > 0 && (
-        <div className="mt-6 space-y-2">
-          <h3 className="text-sm font-semibold text-white">
-            Harvest events this month
-          </h3>
-          {monthEvents.map((event, index) => (
+      <div className="space-y-3">
+        {upcomingHarvests.length === 0 ? (
+          <div className="rounded-xl border border-cream-200 bg-cream-50/70 p-6 text-center">
+            <span className="text-4xl">📅</span>
+            <p className="mt-2 text-sm text-cocoa-600">
+              No upcoming harvests scheduled
+            </p>
+          </div>
+        ) : (
+          upcomingHarvests.map((harvest) => (
             <div
-              key={index}
-              className="flex items-center justify-between rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-3"
+              key={harvest.date}
+              className="rounded-xl border border-amber-200 bg-white/80 p-4"
             >
-              <div>
-                <p className="text-sm font-semibold text-white">
-                  {event.plantation}
-                </p>
-                <p className="text-xs text-slate-300/70">
-                  {event.date.toLocaleDateString()}
-                </p>
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">📅</span>
+                    <h3 className="font-semibold text-cocoa-900">
+                      {new Date(harvest.date).toLocaleDateString("en-US", {
+                        weekday: "long",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </h3>
+                  </div>
+                  <p className="mt-1 text-sm text-cocoa-600">
+                    {harvest.count} plantation{harvest.count !== 1 ? "s" : ""}{" "}
+                    ready
+                  </p>
+                  <p className="mt-1 text-xs text-cocoa-500">
+                    {harvest.plantations.slice(0, 2).join(", ")}
+                    {harvest.plantations.length > 2 &&
+                      ` +${harvest.plantations.length - 2} more`}
+                  </p>
+                </div>
+                <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
+                  {harvest.count}
+                </span>
               </div>
-              {event.yield && (
-                <p className="text-sm font-bold text-emerald-300">
-                  {event.yield} kg
-                </p>
-              )}
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
     </motion.section>
   );
 }
-

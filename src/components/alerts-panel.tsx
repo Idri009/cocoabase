@@ -24,6 +24,12 @@ const channelStatusStyles: Record<
   failed: "bg-rose-100 text-rose-700",
 };
 
+const channelStatusLabels: Record<AlertChannelState["status"], string> = {
+  pending: "Pending",
+  sent: "Delivered",
+  failed: "Failed",
+};
+
 const severityBadgeStyles: Record<
   Alert["severity"],
   string
@@ -117,7 +123,7 @@ export default function AlertsPanel() {
                           severityBadgeStyles[alert.severity]
                         )}
                       >
-                        {alert.severity}
+                        {alert.severity.toUpperCase()}
                       </span>
                       <span className="text-xs text-cocoa-400">
                         {formatRelativeTime(alert.createdAt)}
@@ -161,7 +167,8 @@ export default function AlertsPanel() {
                         channelStatusStyles[channel.status]
                       )}
                     >
-                      {channelLabels[channel.channel]} · {channel.status}
+                      {channelLabels[channel.channel]} ·{" "}
+                      {channelStatusLabels[channel.status]}
                     </span>
                   ))}
                 </div>

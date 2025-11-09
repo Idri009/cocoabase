@@ -1,177 +1,147 @@
 "use client";
 
-import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/cn";
-import type { Plantation } from "@/store/plantations";
+import {
+  WeatherData,
+  getWeatherIcon,
+  formatWeatherCondition,
+  getWeatherImpact,
+  calculateWeatherScore,
+  getWeatherRecommendations,
+} from "@/lib/weather-utils";
 
 type WeatherWidgetProps = {
-  plantations: Plantation[];
+  weather: WeatherData;
   className?: string;
-};
-
-type WeatherData = {
-  location: string;
-  temperature: number;
-  condition: string;
-  humidity: number;
-  rainfall: number;
-  forecast: Array<{
-    day: string;
-    high: number;
-    low: number;
-    condition: string;
-  }>;
-};
-
-const mockWeatherData: Record<string, WeatherData> = {
-  "Ashanti, Ghana": {
-    location: "Ashanti, Ghana",
-    temperature: 28,
-    condition: "Partly Cloudy",
-    humidity: 75,
-    rainfall: 2.5,
-    forecast: [
-      { day: "Today", high: 30, low: 22, condition: "Partly Cloudy" },
-      { day: "Tomorrow", high: 29, low: 21, condition: "Sunny" },
-      { day: "Day 3", high: 31, low: 23, condition: "Rain" },
-    ],
-  },
-  "Kumasi, Ghana": {
-    location: "Kumasi, Ghana",
-    temperature: 27,
-    condition: "Sunny",
-    humidity: 70,
-    rainfall: 1.8,
-    forecast: [
-      { day: "Today", high: 29, low: 21, condition: "Sunny" },
-      { day: "Tomorrow", high: 28, low: 20, condition: "Partly Cloudy" },
-      { day: "Day 3", high: 30, low: 22, condition: "Sunny" },
-    ],
-  },
-  "San José, Costa Rica": {
-    location: "San José, Costa Rica",
-    temperature: 24,
-    condition: "Rain",
-    humidity: 85,
-    rainfall: 5.2,
-    forecast: [
-      { day: "Today", high: 26, low: 18, condition: "Rain" },
-      { day: "Tomorrow", high: 25, low: 17, condition: "Cloudy" },
-      { day: "Day 3", high: 27, low: 19, condition: "Partly Cloudy" },
-    ],
-  },
-};
-
-const getWeatherIcon = (condition: string) => {
-  const lower = condition.toLowerCase();
-  if (lower.includes("rain")) return "🌧️";
-  if (lower.includes("cloud")) return "☁️";
-  if (lower.includes("sun")) return "☀️";
-  return "🌤️";
+  compact?: boolean;
 };
 
 export default function WeatherWidget({
-  plantations,
+  weather,
   className,
+  compact = false,
 }: WeatherWidgetProps) {
-  const locations = useMemo(() => {
-    const locationSet = new Set<string>();
-    plantations.forEach((p) => {
-      if (p.location) {
-        locationSet.add(p.location);
-      }
-    });
-    return Array.from(locationSet);
-  }, [plantations]);
+  const impact = getWeatherImpact(weather);
+  const score = calculateWeatherScore(weather);
+  const recommendations = getWeatherRecommendations(weather);
 
-  const weatherData = useMemo(() => {
-    return locations
-      .map((loc) => mockWeatherData[loc])
-      .filter(Boolean) as WeatherData[];
-  }, [locations]);
-
-  if (weatherData.length === 0) {
-    return null;
+  if (compact) {
+    return (
+      <div className={cn("rounded-xl bg-white border border-cream-200 p-4", className)}>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-3xl">{getWeatherIcon(weather.condition)}</span>
+            <div>
+              <div className="text-lg font-semibold text-cocoa-800">
+                {weather.temperature}°C
+              </div>
+              <div className="text-sm text-cocoa-600">
+                {formatWeatherCondition(weather.condition)}
+              </div>
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-xs text-cocoa-500">Score</div>
+            <div className="text-lg font-semibold text-cocoa-800">{score}</div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 16 }}
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
-      className={cn(
-        "rounded-3xl border border-cocoa-800/60 bg-[#101f3c]/80 p-6 text-slate-100 shadow-xl shadow-black/20 backdrop-blur",
-        className
-      )}
+      className={cn("rounded-xl bg-white border border-cream-200 p-6", className)}
     >
-      <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Weather forecast</h2>
-          <p className="text-sm text-slate-300/80">
-            Current conditions and forecast for your plantation locations.
-          </p>
-        </div>
-      </header>
-
-      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {weatherData.map((weather) => (
-          <div
-            key={weather.location}
-            className="rounded-2xl border border-slate-700/40 bg-slate-900/50 p-4"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold text-white">
-                  {weather.location}
-                </p>
-                <div className="mt-2 flex items-center gap-2">
-                  <span className="text-3xl">
-                    {getWeatherIcon(weather.condition)}
-                  </span>
-                  <div>
-                    <p className="text-2xl font-bold text-white">
-                      {weather.temperature}°C
-                    </p>
-                    <p className="text-xs text-slate-300/70">
-                      {weather.condition}
-                    </p>
-                  </div>
-                </div>
-              </div>
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex items-center gap-4">
+          <span className="text-5xl">{getWeatherIcon(weather.condition)}</span>
+          <div>
+            <div className="text-3xl font-bold text-cocoa-800">
+              {weather.temperature}°C
             </div>
-            <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-              <div>
-                <p className="text-slate-400/70">Humidity</p>
-                <p className="font-semibold text-white">{weather.humidity}%</p>
-              </div>
-              <div>
-                <p className="text-slate-400/70">Rainfall</p>
-                <p className="font-semibold text-white">
-                  {weather.rainfall}mm
-                </p>
-              </div>
-            </div>
-            <div className="mt-4 space-y-2 border-t border-slate-700/40 pt-4">
-              {weather.forecast.map((day, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between text-xs"
-                >
-                  <span className="text-slate-300/70">{day.day}</span>
-                  <div className="flex items-center gap-2">
-                    <span>{getWeatherIcon(day.condition)}</span>
-                    <span className="text-slate-200">
-                      {day.high}° / {day.low}°
-                    </span>
-                  </div>
-                </div>
-              ))}
+            <div className="text-lg text-cocoa-600">
+              {formatWeatherCondition(weather.condition)}
             </div>
           </div>
-        ))}
+        </div>
+        <div className="text-right">
+          <div className="text-sm text-cocoa-500 mb-1">Weather Score</div>
+          <div className="text-2xl font-bold text-cocoa-800">{score}/100</div>
+        </div>
       </div>
-    </motion.section>
+
+      <div className="grid grid-cols-3 gap-4 mb-4">
+        <div className="text-center">
+          <div className="text-xs text-cocoa-500 mb-1">Humidity</div>
+          <div className="text-lg font-semibold text-cocoa-800">
+            {weather.humidity}%
+          </div>
+        </div>
+        <div className="text-center">
+          <div className="text-xs text-cocoa-500 mb-1">Precipitation</div>
+          <div className="text-lg font-semibold text-cocoa-800">
+            {weather.precipitation}mm
+          </div>
+        </div>
+        <div className="text-center">
+          <div className="text-xs text-cocoa-500 mb-1">Wind Speed</div>
+          <div className="text-lg font-semibold text-cocoa-800">
+            {weather.windSpeed} km/h
+          </div>
+        </div>
+      </div>
+
+      <div
+        className={cn(
+          "rounded-lg p-3 mb-4",
+          impact.impact === "positive"
+            ? "bg-green-50 border border-green-200"
+            : impact.impact === "negative"
+            ? "bg-red-50 border border-red-200"
+            : "bg-blue-50 border border-blue-200"
+        )}
+      >
+        <div className="text-sm font-medium text-cocoa-800 mb-1">
+          {impact.impact === "positive" ? "✓" : impact.impact === "negative" ? "⚠" : "ℹ"}{" "}
+          Impact Assessment
+        </div>
+        <div className="text-xs text-cocoa-600">{impact.message}</div>
+      </div>
+
+      {weather.alerts.length > 0 && (
+        <div className="mb-4">
+          <div className="text-sm font-semibold text-cocoa-800 mb-2">Weather Alerts</div>
+          <div className="space-y-2">
+            {weather.alerts.map((alert, index) => (
+              <div
+                key={index}
+                className="rounded-lg bg-yellow-50 border border-yellow-200 p-2 text-xs text-yellow-800"
+              >
+                <div className="font-medium">{alert.type.toUpperCase()}</div>
+                <div>{alert.message}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {recommendations.length > 0 && (
+        <div>
+          <div className="text-sm font-semibold text-cocoa-800 mb-2">Recommendations</div>
+          <ul className="space-y-1">
+            {recommendations.map((rec, index) => (
+              <li key={index} className="text-xs text-cocoa-600 flex items-start gap-2">
+                <span>•</span>
+                <span>{rec}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </motion.div>
   );
 }
-

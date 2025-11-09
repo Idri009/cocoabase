@@ -345,6 +345,9 @@ const generateYieldCheckpointId = () =>
 const generateGateRuleId = () =>
   `gate-${Math.random().toString(36).slice(2, 9)}`;
 
+const generateSharedNoteId = () =>
+  `note-${Math.random().toString(36).slice(2, 9)}`;
+
 const clampInterval = (interval?: number) => Math.max(1, interval ?? 1);
 
 const validateStageTransition = (

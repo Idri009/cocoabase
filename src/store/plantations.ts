@@ -476,6 +476,7 @@ export const usePlantationsStore = create<PlantationState>()(
     (set, get) => ({
       plantations: seedData,
       recurringTemplates: [],
+      stageTemplates: stageTemplateSeed,
       addPlantation: (payload) => {
         const now = new Date().toISOString();
         const {

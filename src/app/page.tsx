@@ -36,7 +36,7 @@ import SecurityEventsPanel from "@/components/security-events-panel";
 import SecurityMonitor from "@/components/security-monitor";
 import SessionGuard from "@/components/session-guard";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
 import {
   usePlantationsStore,

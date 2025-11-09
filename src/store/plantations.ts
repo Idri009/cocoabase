@@ -77,6 +77,10 @@ type PlantationState = {
     taskId: string,
     status: TaskStatus
   ) => void;
+  addCollaborator: (
+    plantationId: string,
+    collaborator: Omit<PlantationCollaborator, "id">
+  ) => void;
   addYieldCheckpoint: (
     plantationId: string,
     checkpoint: YieldCheckpoint
@@ -126,6 +130,13 @@ export type PlantationEvent =
       type: "collaborator_added";
       plantation: Plantation;
       collaborator: PlantationCollaborator;
+      timestamp: string;
+    }
+  | {
+      type: "collaborator_note_logged";
+      plantation: Plantation;
+      collaborator: PlantationCollaborator;
+      note: string;
       timestamp: string;
     }
   | {

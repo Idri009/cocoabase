@@ -405,6 +405,8 @@ export default function DashboardPage() {
   }, [
     stats.totalSeeds,
     stats.harvested,
+    stats.growing,
+    isConnected,
     receiptTotals,
     formatCurrency,
     openSupportCount,

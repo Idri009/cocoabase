@@ -1364,8 +1364,154 @@ export default function DashboardPage() {
                     )}
                   </motion.button>
                 </div>
+                {/* Notification Center */}
+                {showNotificationCenter && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-lg"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <h2 className="text-lg font-semibold text-cocoa-900">
+                        Notification Center
+                      </h2>
+                      <button
+                        type="button"
+                        onClick={() => setShowNotificationCenter(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-cream-100"
+                        aria-label="Close notifications"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {taskSummary.overdue > 0 && (
+                        <div className="rounded-2xl border border-rose-200 bg-rose-50/80 p-4">
+                          <div className="flex items-start gap-3">
+                            <span className="text-2xl">⏰</span>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-rose-900">
+                                Overdue Tasks Alert
+                              </h3>
+                              <p className="mt-1 text-sm text-rose-700">
+                                {taskSummary.overdue} task
+                                {taskSummary.overdue > 1 ? "s are" : " is"} overdue and
+                                requires immediate attention.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {taskSummary.dueSoon > 0 && (
+                        <div className="rounded-2xl border border-amber-200 bg-amber-50/80 p-4">
+                          <div className="flex items-start gap-3">
+                            <span className="text-2xl">📅</span>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-amber-900">
+                                Tasks Due Soon
+                              </h3>
+                              <p className="mt-1 text-sm text-amber-700">
+                                {taskSummary.dueSoon} task
+                                {taskSummary.dueSoon > 1 ? "s are" : " is"} due within the
+                                next 3 days.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {stats.growing > 0 && (
+                        <div className="rounded-2xl border border-blue-200 bg-blue-50/80 p-4">
+                          <div className="flex items-start gap-3">
+                            <span className="text-2xl">🌱</span>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-blue-900">
+                                Active Growth Phase
+                              </h3>
+                              <p className="mt-1 text-sm text-blue-700">
+                                {stats.growing} plantation
+                                {stats.growing > 1 ? "s are" : " is"} in active growth and
+                                may need attention soon.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {complaintStats.highPriorityOpen > 0 && (
+                        <div className="rounded-2xl border border-orange-200 bg-orange-50/80 p-4">
+                          <div className="flex items-start gap-3">
+                            <span className="text-2xl">🛠️</span>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-orange-900">
+                                High Priority Complaints
+                              </h3>
+                              <p className="mt-1 text-sm text-orange-700">
+                                {complaintStats.highPriorityOpen} high priority complaint
+                                {complaintStats.highPriorityOpen > 1 ? "s" : ""} awaiting
+                                resolution.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {taskSummary.overdue === 0 &&
+                        taskSummary.dueSoon === 0 &&
+                        complaintStats.highPriorityOpen === 0 && (
+                          <div className="rounded-2xl border border-green-200 bg-green-50/80 p-4 text-center">
+                            <span className="text-2xl">✅</span>
+                            <p className="mt-2 text-sm font-semibold text-green-900">
+                              All caught up! No urgent notifications.
+                            </p>
+                          </div>
+                        )}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Widget Customization */}
+                <motion.section
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-3xl border border-cream-200 bg-white/90 p-4 shadow-sm"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                      <h3 className="text-sm font-semibold text-cocoa-900">
+                        Customize Dashboard
+                      </h3>
+                      <p className="text-xs text-cocoa-500">
+                        Show or hide widgets to personalize your view
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {Object.entries(widgetVisibility).map(([key, visible]) => (
+                        <label
+                          key={key}
+                          className="flex cursor-pointer items-center gap-2 rounded-full border border-cream-300 bg-white px-3 py-1.5 text-xs transition hover:border-cocoa-300"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={visible}
+                            onChange={(e) =>
+                              setWidgetVisibility((prev) => ({
+                                ...prev,
+                                [key]: e.target.checked,
+                              }))
+                            }
+                            className="h-3 w-3 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
+                          />
+                          <span className="text-xs font-semibold text-cocoa-700">
+                            {key
+                              .replace(/([A-Z])/g, " $1")
+                              .replace(/^./, (str) => str.toUpperCase())}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </motion.section>
+
                 {/* Data Insights Panel */}
-                {showDataInsights && dataInsights.length > 0 && (
+                {showDataInsights && widgetVisibility.dataInsights && dataInsights.length > 0 && (
                   <motion.section
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}

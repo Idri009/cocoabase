@@ -61,6 +61,17 @@ export default function PlantationCard({
   );
   const canAdvance = plantation.stage !== "harvested";
 
+  const age = useMemo(() => getPlantationAge(plantation), [plantation]);
+  const urgentTasks = useMemo(() => getUrgentTasks(plantation), [plantation]);
+  const healthScore = useMemo(
+    () => getPlantationHealthScore(plantation, null),
+    [plantation]
+  );
+  const summary = useMemo(
+    () => getPlantationSummary(plantation),
+    [plantation]
+  );
+
   return (
     <motion.article
       layout

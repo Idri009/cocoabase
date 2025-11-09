@@ -632,6 +632,10 @@ const buildPersistOptions = (): PersistOptions<PlantationState> => {
       if (!state.stageTemplates) {
         state.stageTemplates = stageTemplateSeed;
       }
+
+      if (!state.gateRules) {
+        state.gateRules = [];
+      }
     },
   };
 

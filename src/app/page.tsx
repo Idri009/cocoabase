@@ -918,18 +918,44 @@ export default function DashboardPage() {
                           <p className="text-sm text-cocoa-500">
                             Track each seed from planting to harvest with live
                             progress updates and shared insights across wallets.
-          </p>
-        </div>
-                        <motion.button
-                          type="button"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={handleRefresh}
-                          disabled={isRefreshing}
-                          className="flex items-center gap-2 rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200 focus:ring-offset-2 disabled:opacity-50"
-                        >
-                          {isRefreshing ? "🔄 Refreshing..." : "🔄 Refresh"}
-                        </motion.button>
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1 rounded-full border border-cream-300 bg-white p-1 shadow-sm">
+                            <button
+                              type="button"
+                              onClick={() => setViewMode("grid")}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
+                                viewMode === "grid"
+                                  ? "bg-cocoa-900 text-white"
+                                  : "text-cocoa-600 hover:bg-cream-100"
+                              }`}
+                            >
+                              Grid
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setViewMode("list")}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
+                                viewMode === "list"
+                                  ? "bg-cocoa-900 text-white"
+                                  : "text-cocoa-600 hover:bg-cream-100"
+                              }`}
+                            >
+                              List
+                            </button>
+                          </div>
+                          <motion.button
+                            type="button"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={handleRefresh}
+                            disabled={isRefreshing}
+                            className="flex items-center gap-2 rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200 focus:ring-offset-2 disabled:opacity-50"
+                          >
+                            {isRefreshing ? "🔄 Refreshing..." : "🔄 Refresh"}
+                          </motion.button>
+                        </div>
                       </div>
 
                       <div className="flex flex-wrap items-center gap-3">

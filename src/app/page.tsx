@@ -4107,6 +4107,8 @@ export default function DashboardPage() {
                         </div>
                       </div>
 
+                      <PlantationTemplates />
+
                       <div className="flex flex-wrap items-center gap-3">
                         <div className="flex-1 min-w-[200px]">
                           <input

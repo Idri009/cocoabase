@@ -689,6 +689,7 @@ export const usePlantationsStore = create<PlantationState>()(
       recurringTemplates: [],
       stageTemplates: stageTemplateSeed,
       gateRules: [],
+      sharedNotes: [],
       validateStageTransition: (plantation, targetStage) => {
         return validateStageTransition(
           plantation,

@@ -227,14 +227,6 @@ export default function DashboardPage() {
     return { active, dueSoon, overdue };
   }, [filteredPlantations]);
 
-  const harvestedBreakdown = useMemo(
-    () =>
-      analyticsSnapshot.stageBreakdown.find(
-        (item) => item.stage === "harvested"
-      ),
-    [analyticsSnapshot.stageBreakdown]
-  );
-
   const carbonTotals = analyticsSnapshot.sustainability.totals;
 
   const nextForecast = analyticsSnapshot.yieldForecasts[0];

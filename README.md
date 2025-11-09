@@ -236,6 +236,16 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Best Sell Time Detection**: Identify optimal selling windows based on price trends
 - **Price Alerts**: Set alerts for price thresholds (above/below/change)
 
+### Marketplace
+- **Buy & Sell Listings**: Create buy, sell, and trade listings for agricultural products
+- **Seller Ratings**: Rate and review sellers with average rating calculations
+- **Listing Management**: Manage active, pending, sold, and cancelled listings
+- **Search & Filter**: Search listings by query, filter by price range and location
+- **Price Sorting**: Sort listings by price (ascending/descending)
+- **Rating Sorting**: Sort listings by seller rating
+- **Location-Based Search**: Find listings by location
+- **Marketplace Summary**: Overview of total listings, average prices, and total market value
+
 ### Quality Control
 - **Quality Assessment**: Comprehensive quality grading system (Premium, Grade A, Grade B, Grade C, Reject)
 - **Quality Scoring**: Weighted quality score calculation based on multiple metrics

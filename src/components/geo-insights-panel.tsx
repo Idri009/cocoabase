@@ -6,7 +6,6 @@ import type {
   GeoPlantationPoint,
   RegionGeoMetric,
 } from "@/lib/analytics";
-import { cn } from "@/lib/cn";
 
 type GeoInsightsPanelProps = {
   metrics: RegionGeoMetric[];
@@ -15,14 +14,6 @@ type GeoInsightsPanelProps = {
 
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
-
-const buildHeatColor = (value: number, max: number) => {
-  if (max <= 0) {
-    return "rgba(18, 94, 41, 0.15)";
-  }
-  const intensity = clamp(value / max, 0.08, 1);
-  return `rgba(18, 94, 41, ${intensity})`;
-};
 
 const buildCarbonColor = (value: number, max: number) => {
   if (max <= 0) {
@@ -46,15 +37,6 @@ const GeoInsightsPanelBase = ({
         )
         .slice(0, 5),
     [clusters]
-  );
-
-  const maxTree = useMemo(
-    () =>
-      topMetrics.reduce(
-        (acc, metric) => Math.max(acc, metric.treeCount),
-        0
-      ),
-    [topMetrics]
   );
 
   const maxCarbon = useMemo(
@@ -162,7 +144,7 @@ const GeoInsightsPanelBase = ({
         </header>
 
         <ul className="space-y-3 text-sm text-cocoa-700">
-          {topClusters.map((cluster, index) => (
+          {topClusters.map((cluster) => (
             <li
               key={cluster.id}
               className="flex items-start justify-between rounded-2xl border border-cream-200 bg-cream-50/80 px-3 py-2 shadow-sm"

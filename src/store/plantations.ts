@@ -433,6 +433,35 @@ export const usePlantationsStore = create<PlantationState>()(
           });
         }
       },
+      addCollaborator: (plantationId, collaborator) => {
+        const timestamp = new Date().toISOString();
+        const normalized = normalizeCollaborator(collaborator, timestamp);
+
+        set((state) => ({
+          plantations: state.plantations.map((plantation) =>
+            plantation.id === plantationId
+              ? {
+                  ...plantation,
+                  updatedAt: timestamp,
+                  collaborators: [normalized, ...plantation.collaborators],
+                }
+              : plantation
+          ),
+        }));
+
+        const updated = get().plantations.find(
+          (plantation) => plantation.id === plantationId
+        );
+
+        if (updated) {
+          emitPlantationEvent({
+            type: "collaborator_added",
+            plantation: updated,
+            collaborator: normalized,
+            timestamp,
+          });
+        }
+      },
       addYieldCheckpoint: (plantationId, checkpoint) => {
         const timestamp = new Date().toISOString();
         set((state) => ({
@@ -493,9 +522,10 @@ export const usePlantationsStore = create<PlantationState>()(
 
         if (updated && collaborator) {
           emitPlantationEvent({
-            type: "collaborator_added",
+            type: "collaborator_note_logged",
             plantation: updated,
             collaborator,
+            note,
             timestamp,
           });
         }

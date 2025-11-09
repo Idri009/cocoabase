@@ -915,74 +915,6 @@ export default function DashboardPage() {
                   </div>
                 </motion.section>
 
-                {/* Performance Metrics */}
-                <motion.section
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="grid gap-4 rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-sm sm:grid-cols-2 lg:grid-cols-4"
-                >
-                  <div className="flex flex-col gap-2">
-                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
-                      Avg Growth Time
-                    </span>
-                    <span className="text-2xl font-bold text-cocoa-900">
-                      {analyticsSnapshot.averageDaysToHarvest
-                        ? `${Math.round(analyticsSnapshot.averageDaysToHarvest)} days`
-                        : "—"}
-                    </span>
-                    <span className="text-xs text-cocoa-500">
-                      Time to harvest
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
-                      Harvest Rate
-                    </span>
-                    <span className="text-2xl font-bold text-leaf-600">
-                      {stats.totalSeeds > 0
-                        ? `${Math.round((stats.harvested / stats.totalSeeds) * 100)}%`
-                        : "0%"}
-                    </span>
-                    <span className="text-xs text-cocoa-500">
-                      {stats.harvested} of {stats.totalSeeds} harvested
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
-                      Active Regions
-                    </span>
-                    <span className="text-2xl font-bold text-cocoa-900">
-                      {analyticsSnapshot.activeRegions.length}
-                    </span>
-                    <span className="text-xs text-cocoa-500">
-                      {analyticsSnapshot.activeRegions
-                        .slice(0, 2)
-                        .map((r) => r.region)
-                        .join(", ")}
-                      {analyticsSnapshot.activeRegions.length > 2 && "..."}
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
-                      Task Completion
-                    </span>
-                    <span className="text-2xl font-bold text-cocoa-900">
-                      {taskSummary.active > 0
-                        ? `${Math.round(
-                            ((taskSummary.active -
-                              taskSummary.overdue -
-                              taskSummary.dueSoon) /
-                              taskSummary.active) *
-                              100
-                          )}%`
-                        : "100%"}
-                    </span>
-                    <span className="text-xs text-cocoa-500">
-                      {taskSummary.active} active tasks
-                    </span>
-                  </div>
-                </motion.section>
-
                 <div className="flex justify-end">
                   <motion.button
                     type="button"
@@ -1197,30 +1129,12 @@ export default function DashboardPage() {
                       </div>
 
                       <div className="flex flex-wrap items-center gap-3">
-                        {comparisonMode && (
-                          <div className="flex items-center gap-2 rounded-full border border-amber-300 bg-amber-50/80 px-3 py-1.5 text-xs font-semibold text-amber-800">
-                            <span>🔍 Comparison mode</span>
-                            <span className="text-amber-600">
-                              ({comparisonPlantations.size}/3)
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setComparisonMode(false);
-                                setComparisonPlantations(new Set());
-                              }}
-                              className="ml-2 rounded-full bg-amber-200 px-2 py-0.5 text-xs hover:bg-amber-300"
-                            >
-                              Exit
-                            </button>
-                          </div>
-                        )}
                         <div className="flex-1 min-w-[200px]">
                           <input
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Search plantations... (⌘K)"
+                            placeholder="Search plantations..."
                             className="w-full rounded-2xl border border-cream-300 bg-white px-4 py-2 text-sm text-cocoa-800 shadow-sm placeholder:text-cocoa-400 focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
                           />
                         </div>
@@ -1273,39 +1187,6 @@ export default function DashboardPage() {
                         >
                           {showAdvancedFilters ? "▼" : "▶"} Advanced
                         </motion.button>
-                        <motion.button
-                          type="button"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => {
-                            if (!comparisonMode) {
-                              setComparisonMode(true);
-                            } else {
-                              setComparisonMode(false);
-                              setComparisonPlantations(new Set());
-                            }
-                          }}
-                          className={`rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
-                            comparisonMode
-                              ? "border-amber-500 bg-amber-500 text-white"
-                              : "border-cream-300 bg-white text-cocoa-700 hover:border-cocoa-300"
-                          }`}
-                        >
-                          {comparisonMode ? "🔍 Exit Compare" : "🔍 Compare"}
-                        </motion.button>
-                        <motion.button
-                          type="button"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => setShowQuickActions(!showQuickActions)}
-                          className={`rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
-                            showQuickActions
-                              ? "border-cocoa-900 bg-cocoa-900 text-white"
-                              : "border-cream-300 bg-white text-cocoa-700 hover:border-cocoa-300"
-                          }`}
-                        >
-                          ⚡ Quick Actions
-                        </motion.button>
                       </div>
 
                       {showAdvancedFilters && (
@@ -1356,164 +1237,6 @@ export default function DashboardPage() {
                                 />
                               </label>
                             </div>
-                          </div>
-                        </motion.div>
-                      )}
-
-                      {showQuickActions && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="mt-4 grid gap-3 rounded-2xl border border-cream-200 bg-cream-50/70 p-4 sm:grid-cols-2 lg:grid-cols-4"
-                        >
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setReceiptModalOpen(true);
-                              setShowQuickActions(false);
-                            }}
-                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md"
-                          >
-                            <span className="text-2xl">📄</span>
-                            <span className="text-xs font-semibold text-cocoa-700">
-                              Upload Receipt
-                            </span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setComplaintModalOpen(true);
-                              setShowQuickActions(false);
-                            }}
-                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md"
-                          >
-                            <span className="text-2xl">🛠️</span>
-                            <span className="text-xs font-semibold text-cocoa-700">
-                              File Complaint
-                            </span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setLoanModalOpen(true);
-                              setShowQuickActions(false);
-                            }}
-                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md"
-                          >
-                            <span className="text-2xl">💰</span>
-                            <span className="text-xs font-semibold text-cocoa-700">
-                              Request Loan
-                            </span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setExportModalOpen(true);
-                              setShowQuickActions(false);
-                            }}
-                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md"
-                          >
-                            <span className="text-2xl">📤</span>
-                            <span className="text-xs font-semibold text-cocoa-700">
-                              Export Data
-                            </span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setPlantModalOpen(true);
-                              setShowQuickActions(false);
-                            }}
-                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md"
-                          >
-                            <span className="text-2xl">🌱</span>
-                            <span className="text-xs font-semibold text-cocoa-700">
-                              Plant Seed
-                            </span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setRecurringModalOpen(true);
-                              setShowQuickActions(false);
-                            }}
-                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md"
-                          >
-                            <span className="text-2xl">🔄</span>
-                            <span className="text-xs font-semibold text-cocoa-700">
-                              Recurring Tasks
-                            </span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={handleRefresh}
-                            disabled={isRefreshing}
-                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md disabled:opacity-50"
-                          >
-                            <span className="text-2xl">
-                              {isRefreshing ? "🔄" : "↻"}
-                            </span>
-                            <span className="text-xs font-semibold text-cocoa-700">
-                              Refresh Data
-                            </span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              handleClearFilters();
-                              setShowQuickActions(false);
-                            }}
-                            className="flex flex-col items-center gap-2 rounded-xl border border-cream-300 bg-white p-4 text-center transition hover:border-cocoa-300 hover:shadow-md"
-                          >
-                            <span className="text-2xl">🗑️</span>
-                            <span className="text-xs font-semibold text-cocoa-700">
-                              Clear Filters
-                            </span>
-                          </button>
-                        </motion.div>
-                      )}
-
-                      {comparisonMode && comparisonPlantations.size > 0 && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="mt-4 rounded-2xl border border-amber-200 bg-amber-50/80 p-4"
-                        >
-                          <h3 className="mb-3 text-sm font-semibold text-amber-900">
-                            Comparison View ({comparisonPlantations.size} selected)
-                          </h3>
-                          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                            {Array.from(comparisonPlantations).map((id) => {
-                              const plantation = filteredPlantations.find(
-                                (p) => p.id === id
-                              );
-                              if (!plantation) return null;
-                              return (
-                                <div
-                                  key={id}
-                                  className="rounded-xl border border-amber-200 bg-white p-3 text-sm"
-                                >
-                                  <div className="flex items-center justify-between">
-                                    <h4 className="font-semibold text-cocoa-900">
-                                      {plantation.seedName}
-                                    </h4>
-                                    <button
-                                      type="button"
-                                      onClick={() => handleToggleComparison(id)}
-                                      className="text-xs text-amber-600 hover:text-amber-800"
-                                    >
-                                      ✕
-                                    </button>
-                                  </div>
-                                  <div className="mt-2 space-y-1 text-xs text-cocoa-600">
-                                    <p>Stage: {plantation.stage}</p>
-                                    <p>Trees: {plantation.treeCount}</p>
-                                    <p>Carbon: {plantation.carbonOffsetTons} tCO₂</p>
-                                    <p>Area: {plantation.areaHectares} ha</p>
-                                  </div>
-                                </div>
-                              );
-                            })}
                           </div>
                         </motion.div>
                       )}
@@ -1592,44 +1315,18 @@ export default function DashboardPage() {
                                   className="h-5 w-5 rounded border-cream-300 text-leaf-500 shadow-lg focus:ring-2 focus:ring-leaf-400"
                                 />
                               </label>
-                              <div className="absolute right-3 top-3 z-10 flex flex-col gap-2">
-                                {comparisonMode && (
-                                  <button
-                                    type="button"
-                                    onClick={() => handleToggleComparison(plantation.id)}
-                                    className={`rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white ${
-                                      comparisonPlantations.has(plantation.id)
-                                        ? "ring-2 ring-amber-500"
-                                        : ""
-                                    }`}
-                                    aria-label={
-                                      comparisonPlantations.has(plantation.id)
-                                        ? "Remove from comparison"
-                                        : "Add to comparison"
-                                    }
-                                    disabled={
-                                      !comparisonPlantations.has(plantation.id) &&
-                                      comparisonPlantations.size >= 3
-                                    }
-                                  >
-                                    {comparisonPlantations.has(plantation.id)
-                                      ? "✓"
-                                      : "🔍"}
-                                  </button>
-                                )}
-                                <button
-                                  type="button"
-                                  onClick={() => handleToggleFavorite(plantation.id)}
-                                  className="rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white"
-                                  aria-label={
-                                    favorites.has(plantation.id)
-                                      ? "Remove from favorites"
-                                      : "Add to favorites"
-                                  }
-                                >
-                                  {favorites.has(plantation.id) ? "⭐" : "☆"}
-                                </button>
-                              </div>
+                              <button
+                                type="button"
+                                onClick={() => handleToggleFavorite(plantation.id)}
+                                className="absolute right-3 top-3 z-10 rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white"
+                                aria-label={
+                                  favorites.has(plantation.id)
+                                    ? "Remove from favorites"
+                                    : "Add to favorites"
+                                }
+                              >
+                                {favorites.has(plantation.id) ? "⭐" : "☆"}
+                              </button>
                               <PlantationCard
                                 plantation={plantation}
                                 onUpdate={handleUpdateRequest}
@@ -1659,44 +1356,18 @@ export default function DashboardPage() {
                                   className="h-4 w-4 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
                                 />
                               </label>
-                              <div className="flex items-center gap-2">
-                                {comparisonMode && (
-                                  <button
-                                    type="button"
-                                    onClick={() => handleToggleComparison(plantation.id)}
-                                    className={`rounded-full p-1.5 text-sm transition ${
-                                      comparisonPlantations.has(plantation.id)
-                                        ? "bg-amber-200 text-amber-900 ring-2 ring-amber-500"
-                                        : "bg-cream-100 text-cocoa-600 hover:bg-cream-200"
-                                    }`}
-                                    aria-label={
-                                      comparisonPlantations.has(plantation.id)
-                                        ? "Remove from comparison"
-                                        : "Add to comparison"
-                                    }
-                                    disabled={
-                                      !comparisonPlantations.has(plantation.id) &&
-                                      comparisonPlantations.size >= 3
-                                    }
-                                  >
-                                    {comparisonPlantations.has(plantation.id)
-                                      ? "✓"
-                                      : "🔍"}
-                                  </button>
-                                )}
-                                <button
-                                  type="button"
-                                  onClick={() => handleToggleFavorite(plantation.id)}
-                                  className="text-lg"
-                                  aria-label={
-                                    favorites.has(plantation.id)
-                                      ? "Remove from favorites"
-                                      : "Add to favorites"
-                                  }
-                                >
-                                  {favorites.has(plantation.id) ? "⭐" : "☆"}
-                                </button>
-                              </div>
+                              <button
+                                type="button"
+                                onClick={() => handleToggleFavorite(plantation.id)}
+                                className="text-lg"
+                                aria-label={
+                                  favorites.has(plantation.id)
+                                    ? "Remove from favorites"
+                                    : "Add to favorites"
+                                }
+                              >
+                                {favorites.has(plantation.id) ? "⭐" : "☆"}
+                              </button>
                               <div className="flex-1">
                                 <h3 className="font-semibold text-cocoa-900">
                                   {plantation.seedName}

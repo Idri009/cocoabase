@@ -295,6 +295,34 @@ export const exportAnalyticsToPdf = (
     });
   }
 
+  if (resolvedSections.sustainability) {
+    addHeading("Sustainability");
+    addParagraph(
+      `Total trees: ${formatNumber(snapshot.sustainability.totals.treeCount)}`
+    );
+    addParagraph(
+      `Carbon offset: ${formatNumber(
+        snapshot.sustainability.totals.carbonOffsetTons,
+        2
+      )} tCO₂`
+    );
+    addParagraph(
+      `Protected hectares: ${formatNumber(
+        snapshot.sustainability.totals.areaHectares,
+        1
+      )} ha`
+    );
+    addSpacer();
+    snapshot.sustainability.perRegion.forEach((region) => {
+      addParagraph(
+        `${region.region}: ${formatNumber(
+          region.treeCount
+        )} trees, ${formatNumber(region.carbonOffsetTons, 2)} tCO₂ offset`
+      );
+    });
+    addSpacer();
+  }
+
   if (resolvedSections.alerts) {
     addHeading("Collaborator pulse");
     snapshot.collaboratorInsights.slice(0, 5).forEach((insight) => {

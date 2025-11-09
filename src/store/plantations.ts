@@ -368,6 +368,7 @@ const normalizeTask = (
   dueDate: task.dueDate,
   templateId: "templateId" in task ? task.templateId : undefined,
   assigneeId: "assigneeId" in task ? task.assigneeId : undefined,
+  notes: "notes" in task ? task.notes : undefined,
 });
 
 const buildPersistOptions = (): PersistOptions<PlantationState> => {

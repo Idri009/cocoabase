@@ -7,6 +7,7 @@ export type ExportSectionOptions = {
   overview: boolean;
   forecasts: boolean;
   wallet: boolean;
+  sustainability: boolean;
   alerts: boolean;
 };
 
@@ -14,6 +15,7 @@ const defaultSections: ExportSectionOptions = {
   overview: true,
   forecasts: true,
   wallet: true,
+  sustainability: true,
   alerts: true,
 };
 
@@ -114,6 +116,38 @@ export const exportAnalyticsToCsv = (
           wallet.forecastKg != null
             ? formatNumber(wallet.forecastKg, 1)
             : "—",
+        ].join(",")
+      );
+    });
+    lines.push("");
+  }
+
+  if (resolvedSections.sustainability) {
+    lines.push("Sustainability");
+    lines.push("Metric,Value");
+    lines.push(
+      `Total trees,${formatNumber(snapshot.sustainability.totals.treeCount)}`
+    );
+    lines.push(
+      `Carbon offset (tCO2),${formatNumber(
+        snapshot.sustainability.totals.carbonOffsetTons,
+        2
+      )}`
+    );
+    lines.push(
+      `Protected hectares,${formatNumber(
+        snapshot.sustainability.totals.areaHectares,
+        1
+      )}`
+    );
+    lines.push("");
+    lines.push("Region,Tree count,Carbon offset (tCO2)");
+    snapshot.sustainability.perRegion.forEach((region) => {
+      lines.push(
+        [
+          region.region,
+          formatNumber(region.treeCount),
+          formatNumber(region.carbonOffsetTons, 2),
         ].join(",")
       );
     });

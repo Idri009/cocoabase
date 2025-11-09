@@ -271,6 +271,7 @@ const normalizeTask = (
   status: task.status ?? "pending",
   title: task.title,
   dueDate: task.dueDate,
+  templateId: "templateId" in task ? task.templateId : undefined,
 });
 
 const buildPersistOptions = (): PersistOptions<PlantationState> => {

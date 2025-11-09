@@ -1133,6 +1133,9 @@ export const usePlantationsStore = create<PlantationState>()(
           description: templateDraft.description,
           dueOffsetDays: clampDueOffset(templateDraft.dueOffsetDays),
           assigneeRole: templateDraft.assigneeRole?.trim() || undefined,
+          attachments: templateDraft.attachments
+            ? [...templateDraft.attachments]
+            : [],
           createdAt: now,
           updatedAt: undefined,
           enabled: templateDraft.enabled ?? true,
@@ -1159,6 +1162,10 @@ export const usePlantationsStore = create<PlantationState>()(
                     updates.assigneeRole !== undefined
                       ? updates.assigneeRole.trim() || undefined
                       : template.assigneeRole,
+                  attachments:
+                    updates.attachments !== undefined
+                      ? [...updates.attachments]
+                      : template.attachments,
                   enabled:
                     updates.enabled !== undefined
                       ? updates.enabled

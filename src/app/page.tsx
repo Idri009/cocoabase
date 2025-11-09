@@ -863,6 +863,7 @@ export default function DashboardPage() {
                           onChange={(e) =>
                             setStageFilter(e.target.value as GrowthStage | "all")
                           }
+                          aria-label="Filter by growth stage"
                           className="rounded-2xl border border-cream-300 bg-white px-4 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
                         >
                           <option value="all">All stages</option>
@@ -875,6 +876,7 @@ export default function DashboardPage() {
                           onChange={(e) =>
                             setSortBy(e.target.value as "date" | "name" | "stage")
                           }
+                          aria-label="Sort plantations"
                           className="rounded-2xl border border-cream-300 bg-white px-4 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
                         >
                           <option value="date">Sort by date</option>

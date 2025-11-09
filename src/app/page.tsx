@@ -43,11 +43,6 @@ import AlertInsightsPanel from "@/components/alert-insights-panel";
 import TaskKanbanBoard from "@/components/task-kanban-board";
 import StageTemplatePanel from "@/components/stage-template-panel";
 import Modal from "@/components/ui/modal";
-import WeatherWidget from "@/components/weather-widget";
-import SettingsPanel from "@/components/settings-panel";
-import ActivityFeed from "@/components/activity-feed";
-import PlantationTemplates from "@/components/plantation-templates";
-import AdvancedFilters from "@/components/advanced-filters";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
@@ -169,8 +164,6 @@ export default function DashboardPage() {
   const [showExportOptions, setShowExportOptions] = useState(false);
   const [showImportWizard, setShowImportWizard] = useState(false);
   const [showDashboardSettings, setShowDashboardSettings] = useState(false);
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [filteredPlantationsForAdvanced, setFilteredPlantationsForAdvanced] = useState<Plantation[]>(plantations);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
@@ -1595,7 +1588,6 @@ export default function DashboardPage() {
           onUploadReceipt={() => setReceiptModalOpen(true)}
           onFileComplaint={() => setComplaintModalOpen(true)}
           onRequestLoan={() => setLoanModalOpen(true)}
-          onOpenSettings={() => setIsSettingsModalOpen(true)}
           welcomeNote={dashboardWelcomeNote}
         />
 
@@ -1646,8 +1638,6 @@ export default function DashboardPage() {
           ) : (
               <>
                 <DashboardMetrics metrics={dashboardMetrics} />
-                
-                <WeatherWidget plantations={filteredPlantations} />
                 
                 {/* Comprehensive Statistics Summary */}
                 <motion.section
@@ -3960,7 +3950,47 @@ export default function DashboardPage() {
                   <ReceiptHistoryPanel />
                   <div className="space-y-6">
                     <LoanTrackerPanel />
-                    <ActivityFeed plantations={filteredPlantations} />
+                    {/* Recent Activity Feed */}
+                    <motion.section
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="rounded-3xl border border-cream-200 bg-white/85 p-5 shadow-sm shadow-cocoa-900/5 backdrop-blur"
+                    >
+                      <header className="mb-4">
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Recent Activity
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Latest updates
+                        </p>
+                      </header>
+                      <div className="space-y-3">
+                        {recentActivity.length === 0 ? (
+                          <p className="text-sm text-cocoa-500">
+                            No recent activity
+                          </p>
+                        ) : (
+                          recentActivity.map((activity) => (
+                            <div
+                              key={activity.id}
+                              className="flex items-start gap-3 rounded-2xl border border-cream-200 bg-cream-50/70 p-3 text-sm"
+                            >
+                              <span className="text-lg">
+                                {activity.type === "update" ? "🔄" : "📝"}
+                              </span>
+                              <div className="flex-1">
+                                <p className="font-semibold text-cocoa-900">
+                                  {activity.message}
+                                </p>
+                                <p className="text-xs text-cocoa-500">
+                                  {new Date(activity.timestamp).toLocaleString()}
+                                </p>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </motion.section>
                   </div>
                 </div>
                 <AnalyticsPanel
@@ -4107,8 +4137,6 @@ export default function DashboardPage() {
                         </div>
                       </div>
 
-                      <PlantationTemplates />
-
                       <div className="flex flex-wrap items-center gap-3">
                         <div className="flex-1 min-w-[200px]">
                           <input
@@ -4144,10 +4172,6 @@ export default function DashboardPage() {
                           <option value="name">Sort by name</option>
                           <option value="stage">Sort by stage</option>
                         </select>
-                        <AdvancedFilters
-                          plantations={filteredPlantations}
-                          onFilterChange={setFilteredPlantationsForAdvanced}
-                        />
                         {(searchQuery || stageFilter !== "all" || locationFilter || dateRangeFilter.start || dateRangeFilter.end) && (
                           <motion.button
                             type="button"
@@ -4639,12 +4663,6 @@ export default function DashboardPage() {
           </div>
         </Modal>
       )}
-
-      <SettingsPanel
-        plantations={plantations}
-        isOpen={isSettingsModalOpen}
-        onClose={() => setIsSettingsModalOpen(false)}
-      />
     </div>
   );
 }

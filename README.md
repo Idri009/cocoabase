@@ -581,6 +581,8 @@ The codebase includes a comprehensive set of utility libraries for common operat
 - **`CostBreakdown`**: Visual cost breakdown by category with percentages
 - **`PestDiseaseAlert`**: Alert component for pest and disease incidents with treatment recommendations
 - **`SoilHealthCard`**: Soil health dashboard with pH, nutrients, and recommendations
+- **`RiskCard`**: Risk assessment card with scoring and mitigation recommendations
+- **`PerformanceDashboard`**: Performance dashboard with KPI scores and benchmark comparisons
 
 ## Custom React Hooks
 

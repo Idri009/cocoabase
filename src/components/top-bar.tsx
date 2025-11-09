@@ -28,7 +28,6 @@ type TopBarProps = {
   onRequestLoan: () => void;
   onViewAlerts?: () => void;
   onViewReputation?: () => void;
-  onOpenSettings?: () => void;
   welcomeNote?: string;
 };
 
@@ -55,7 +54,6 @@ export default function TopBar({
   onRequestLoan,
   onViewAlerts,
   onViewReputation,
-  onOpenSettings,
   welcomeNote,
 }: TopBarProps) {
   return (
@@ -208,19 +206,6 @@ export default function TopBar({
           >
             💰 Request loan
           </motion.button>
-
-          {onOpenSettings && (
-            <motion.button
-              type="button"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={onOpenSettings}
-              className="flex items-center gap-2 rounded-full border border-slate-600/40 bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200/90 shadow-sm transition hover:border-slate-500/60 hover:bg-slate-800/80 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-400/40"
-              title="Settings"
-            >
-              ⚙️ Settings
-            </motion.button>
-          )}
         </div>
 
         <ConnectButton />

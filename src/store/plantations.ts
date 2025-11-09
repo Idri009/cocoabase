@@ -314,7 +314,96 @@ const generateStageTemplateId = () =>
 const generateYieldCheckpointId = () =>
   `yield-${Math.random().toString(36).slice(2, 9)}`;
 
+const generateGateRuleId = () =>
+  `gate-${Math.random().toString(36).slice(2, 9)}`;
+
 const clampInterval = (interval?: number) => Math.max(1, interval ?? 1);
+
+const validateStageTransition = (
+  plantation: Plantation,
+  targetStage: GrowthStage,
+  gateRules: StageGateRule[]
+): StageGateValidationResult => {
+  const blockingReasons: string[] = [];
+  const warnings: string[] = [];
+
+  const relevantRules = gateRules.filter(
+    (rule) => rule.targetStage === targetStage && rule.enabled
+  );
+
+  if (!relevantRules.length) {
+    return { canProceed: true, blockingReasons: [], warnings: [] };
+  }
+
+  relevantRules.forEach((rule) => {
+    if (rule.requiredTasksCompleted !== undefined) {
+      const completedCount = plantation.tasks.filter(
+        (task) => task.status === "completed"
+      ).length;
+      if (completedCount < rule.requiredTasksCompleted) {
+        blockingReasons.push(
+          `Requires ${rule.requiredTasksCompleted} completed tasks (currently ${completedCount})`
+        );
+      }
+    }
+
+    if (rule.requiredTaskTemplates && rule.requiredTaskTemplates.length > 0) {
+      const templateSet = new Set(rule.requiredTaskTemplates);
+      const completedTemplates = plantation.tasks
+        .filter(
+          (task) =>
+            task.status === "completed" &&
+            task.templateId &&
+            templateSet.has(task.templateId)
+        )
+        .map((task) => task.templateId!);
+      const missing = rule.requiredTaskTemplates.filter(
+        (templateId) => !completedTemplates.includes(templateId)
+      );
+      if (missing.length > 0) {
+        blockingReasons.push(
+          `Required task templates not completed: ${missing.join(", ")}`
+        );
+      }
+    }
+
+    if (rule.minimumDaysInCurrentStage !== undefined) {
+      const stageStartDate = new Date(plantation.updatedAt);
+      const now = new Date();
+      const daysInStage = Math.floor(
+        (now.getTime() - stageStartDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
+      if (daysInStage < rule.minimumDaysInCurrentStage) {
+        blockingReasons.push(
+          `Must be in current stage for at least ${rule.minimumDaysInCurrentStage} days (currently ${daysInStage})`
+        );
+      }
+    }
+
+    if (rule.minimumYieldCheckpoints !== undefined) {
+      if (plantation.yieldTimeline.length < rule.minimumYieldCheckpoints) {
+        blockingReasons.push(
+          `Requires at least ${rule.minimumYieldCheckpoints} yield checkpoints (currently ${plantation.yieldTimeline.length})`
+        );
+      }
+    }
+
+    if (rule.requireCoordinates && !plantation.coordinates) {
+      blockingReasons.push("Plantation coordinates are required");
+    }
+
+    if (rule.requireCollaborators !== undefined) {
+      if (plantation.collaborators.length < rule.requireCollaborators) {
+        blockingReasons.push(
+          `Requires at least ${rule.requireCollaborators} collaborator${rule.requireCollaborators === 1 ? "" : "s"} (currently ${plantation.collaborators.length})`
+        );
+      }
+    }
+  });
+
+  const canProceed = blockingReasons.length === 0;
+  return { canProceed, blockingReasons, warnings };
+};
 
 const addIntervalToDate = (
   date: Date,

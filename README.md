@@ -143,8 +143,15 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Data Import**: Import data from various formats
 - **Data Management Panel**: Centralized data management interface
 - **Backup & Restore**: Complete data backup and restore functionality with validation
+- **Data Sync**: Online/offline sync with operation queue and retry logic
+- **Sync Status Monitoring**: Track sync operations (upload, download, sync) with status
+- **Offline Support**: Queue operations when offline and sync when online
+- **Online Status Detection**: Automatic detection of online/offline status
 - **Document Library**: Store and manage plantation-related documents (contracts, certificates, receipts, invoices, permits)
 - **Certification Manager**: Track and manage certifications (organic, fair trade, rainforest alliance, UTZ, ISO)
+- **Certification Tracking**: Track certification status (active, expired, renewal-due, pending, revoked)
+- **Certification Expiry Monitoring**: Automatic detection of expiring certifications
+- **Certification Badges**: Visual badges showing certification status and days until expiry
 - **Report Generation**: Generate comprehensive reports (plantation summary, financial, inventory, quality, sustainability)
 - **Report Export**: Export reports to JSON format with download functionality
 

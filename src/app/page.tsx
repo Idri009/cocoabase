@@ -1300,12 +1300,114 @@ export default function DashboardPage() {
               <>
                 <DashboardMetrics metrics={dashboardMetrics} />
                 
-                {/* Quick Stats Summary */}
+                {/* Comprehensive Statistics Summary */}
                 <motion.section
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="grid gap-4 rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur sm:grid-cols-2 lg:grid-cols-4"
                 >
+                  {/* Total Plantations */}
+                  <div className="flex flex-col gap-1 rounded-2xl border border-cream-200 bg-gradient-to-br from-leaf-50/80 to-green-50/80 p-4 shadow-sm">
+                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                      Total Plantations
+                    </span>
+                    <span className="text-3xl font-bold text-leaf-700">
+                      {stats.totalSeeds}
+                    </span>
+                    <div className="mt-2 flex gap-2 text-xs text-cocoa-500">
+                      <span className="rounded-full bg-white/70 px-2 py-0.5">
+                        {stats.harvested} harvested
+                      </span>
+                      <span className="rounded-full bg-white/70 px-2 py-0.5">
+                        {stats.growing} growing
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Active Tasks */}
+                  <div className="flex flex-col gap-1 rounded-2xl border border-cream-200 bg-gradient-to-br from-blue-50/80 to-cyan-50/80 p-4 shadow-sm">
+                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                      Active Tasks
+                    </span>
+                    <span className="text-3xl font-bold text-blue-700">
+                      {taskSummary.active}
+                    </span>
+                    <div className="mt-2 flex gap-2 text-xs text-cocoa-500">
+                      {taskSummary.overdue > 0 && (
+                        <span className="rounded-full bg-rose-100 px-2 py-0.5 text-rose-700">
+                          {taskSummary.overdue} overdue
+                        </span>
+                      )}
+                      {taskSummary.dueSoon > 0 && (
+                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-amber-700">
+                          {taskSummary.dueSoon} due soon
+                        </span>
+                      )}
+                      {taskSummary.overdue === 0 && taskSummary.dueSoon === 0 && (
+                        <span className="rounded-full bg-green-100 px-2 py-0.5 text-green-700">
+                          All on track
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Carbon Offset */}
+                  <div className="flex flex-col gap-1 rounded-2xl border border-cream-200 bg-gradient-to-br from-emerald-50/80 to-teal-50/80 p-4 shadow-sm">
+                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                      Carbon Offset
+                    </span>
+                    <span className="text-3xl font-bold text-emerald-700">
+                      {carbonTotals.carbonOffsetTons.toLocaleString(undefined, {
+                        maximumFractionDigits: 1,
+                      })}
+                    </span>
+                    <span className="text-xs font-semibold text-emerald-600">
+                      tCO₂
+                    </span>
+                    <div className="mt-2 flex gap-2 text-xs text-cocoa-500">
+                      <span className="rounded-full bg-white/70 px-2 py-0.5">
+                        {carbonTotals.treeCount.toLocaleString()} trees
+                      </span>
+                      <span className="rounded-full bg-white/70 px-2 py-0.5">
+                        {carbonTotals.areaHectares.toLocaleString(undefined, {
+                          maximumFractionDigits: 1,
+                        })}{" "}
+                        ha
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Finance Receipts */}
+                  <div className="flex flex-col gap-1 rounded-2xl border border-cream-200 bg-gradient-to-br from-purple-50/80 to-pink-50/80 p-4 shadow-sm">
+                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                      Finance Receipts
+                    </span>
+                    <span className="text-3xl font-bold text-purple-700">
+                      {receiptTotals.count}
+                    </span>
+                    <span className="text-xs font-semibold text-purple-600">
+                      {receiptTotals.totalAmount > 0
+                        ? formatCurrency(
+                            receiptTotals.totalAmount,
+                            receiptTotals.currency
+                          )
+                        : "No receipts"}
+                    </span>
+                    {receiptTotals.latest && (
+                      <p className="mt-2 text-xs text-cocoa-500">
+                        Latest: {new Date(receiptTotals.latest.uploadedAt).toLocaleDateString()}
+                      </p>
+                    )}
+                  </div>
+                </motion.section>
+
+                {/* Quick Stats Summary */}
+                {widgetVisibility.quickStats && (
+                  <motion.section
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="grid gap-4 rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur sm:grid-cols-2 lg:grid-cols-4"
+                  >
                   <div className="flex flex-col gap-1">
                     <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
                       Total Plantations

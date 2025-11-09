@@ -162,6 +162,15 @@ export const buildAnalyticsSnapshot = (
       harvestDurations: number[];
     }
   >();
+  const geoClusters: GeoPlantationPoint[] = [];
+  const collaboratorMap = new Map<
+    string,
+    { collaborator: PlantationCollaborator; plantations: Set<string> }
+  >();
+  const forecastInputs: Array<{
+    plantation: Plantation;
+    timeline: YieldCheckpoint[];
+  }> = [];
 
   plantations.forEach((plantation) => {
     totals[plantation.stage] = (totals[plantation.stage] ?? 0) + 1;
@@ -214,6 +223,41 @@ export const buildAnalyticsSnapshot = (
       );
     }
     cohortMap.set(monthKey, cohortEntry);
+
+    if (plantation.coordinates) {
+      geoClusters.push({
+        id: plantation.id,
+        seedName: plantation.seedName,
+        stage: plantation.stage,
+        coordinates: plantation.coordinates,
+        treeCount: plantation.treeCount,
+        carbonOffsetTons: plantation.carbonOffsetTons,
+        areaHectares: plantation.areaHectares,
+        region,
+      });
+    }
+
+    plantation.collaborators.forEach((collaborator) => {
+      const existing = collaboratorMap.get(collaborator.id) ?? {
+        collaborator,
+        plantations: new Set<string>(),
+      };
+      existing.plantations.add(plantation.id);
+      if (
+        !existing.collaborator.lastUpdated ||
+        (collaborator.lastUpdated &&
+          new Date(collaborator.lastUpdated).getTime() >
+            new Date(existing.collaborator.lastUpdated).getTime())
+      ) {
+        existing.collaborator = collaborator;
+      }
+      collaboratorMap.set(collaborator.id, existing);
+    });
+
+    if (plantation.yieldTimeline.length) {
+      const timeline = [...plantation.yieldTimeline].sort(sortTimelineAsc);
+      forecastInputs.push({ plantation, timeline });
+    }
   });
 
   const total = plantations.length || 1;
@@ -282,6 +326,72 @@ export const buildAnalyticsSnapshot = (
       };
     });
 
+  const yieldForecasts = forecastInputs
+    .map(({ plantation, timeline }) => {
+      const projectionWindow =
+        projectionWindowByStage[plantation.stage] ?? 45;
+      const lastEntry = timeline[timeline.length - 1];
+      const previousEntry =
+        timeline.length > 1 ? timeline[timeline.length - 2] : null;
+      let projectedYield = lastEntry.yieldKg;
+      let basis = "Recent yield checkpoint";
+      let confidence: YieldForecastConfidence = "low";
+
+      if (previousEntry) {
+        const deltaYield = lastEntry.yieldKg - previousEntry.yieldKg;
+        const deltaDays = Math.max(
+          1,
+          differenceInDays(previousEntry.date, lastEntry.date)
+        );
+        const dailyGrowth = deltaYield / deltaDays;
+        projectedYield = Math.max(
+          lastEntry.yieldKg,
+          lastEntry.yieldKg + dailyGrowth * projectionWindow
+        );
+        confidence = determineForecastConfidence(dailyGrowth, plantation.stage);
+        basis = `Avg ${dailyGrowth.toFixed(2)} kg/day over last checkpoint`;
+      } else if (plantation.stage !== "harvested") {
+        const estimatedGrowth = plantation.treeCount * 0.12;
+        projectedYield = lastEntry.yieldKg + estimatedGrowth;
+        confidence = plantation.stage === "growing" ? "medium" : "low";
+        basis = "Heuristic based on tree count";
+      } else {
+        confidence = "medium";
+        basis = "Maintaining harvest plateau";
+      }
+
+      const projectionDate = new Date(
+        new Date(lastEntry.date).getTime() + projectionWindow * 24 * 60 * 60 * 1000
+      ).toISOString();
+
+      return {
+        id: plantation.id,
+        seedName: plantation.seedName,
+        stage: plantation.stage,
+        projectedYieldKg: Number(projectedYield.toFixed(1)),
+        projectionDate,
+        confidence,
+        basis,
+      };
+    })
+    .sort(
+      (a, b) =>
+        new Date(a.projectionDate).getTime() -
+        new Date(b.projectionDate).getTime()
+    );
+
+  const collaboratorInsights = Array.from(collaboratorMap.values())
+    .map(({ collaborator, plantations: collaboratorPlantations }) => ({
+      collaboratorId: collaborator.id,
+      name: collaborator.name,
+      role: collaborator.role,
+      plantations: collaboratorPlantations.size,
+      lastNote: collaborator.lastNote,
+      lastUpdated: collaborator.lastUpdated,
+    }))
+    .sort((a, b) => b.plantations - a.plantations || a.name.localeCompare(b.name))
+    .slice(0, 8);
+
   return {
     total,
     stageBreakdown,
@@ -298,6 +408,9 @@ export const buildAnalyticsSnapshot = (
       perRegion,
     },
     cohortPerformance,
+    geoClusters,
+    yieldForecasts,
+    collaboratorInsights,
   };
 };
 

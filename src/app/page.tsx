@@ -97,6 +97,29 @@ export default function DashboardPage() {
     }
   }, [status, address, setConnectedWallet]);
 
+  useEffect(() => {
+    const wasConnected = previousConnectionRef.current.connected;
+    const previousAddress = previousConnectionRef.current.address;
+    const isNowConnected = status === "connected" && Boolean(address);
+
+    if (isNowConnected && address && (!wasConnected || previousAddress !== address)) {
+      recordSecurityEvent({
+        type: "wallet_connected",
+        message: `Wallet ${address.slice(0, 6)}…${address.slice(-4)} connected.`,
+      });
+    } else if (!isNowConnected && wasConnected && previousAddress) {
+      recordSecurityEvent({
+        type: "wallet_disconnected",
+        message: `Wallet ${previousAddress.slice(0, 6)}…${previousAddress.slice(-4)} disconnected.`,
+      });
+    }
+
+    previousConnectionRef.current = {
+      connected: isNowConnected,
+      address: isNowConnected ? address ?? undefined : undefined,
+    };
+  }, [status, address, recordSecurityEvent]);
+
   const normalizedFilters = activeAddresses;
 
   const filteredPlantations = useMemo(() => {

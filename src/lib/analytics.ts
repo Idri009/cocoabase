@@ -61,6 +61,7 @@ export type AnalyticsSnapshot = {
   regionGeoMetrics: RegionGeoMetric[];
   scenarioForecasts: ScenarioForecast[];
   yieldTimeline: YieldTimelineEntry[];
+  walletPerformance: WalletPerformanceSummary[];
 };
 
 export type GeoPlantationPoint = {

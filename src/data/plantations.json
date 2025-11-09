@@ -34,14 +34,19 @@
     ],
     "collaborators": [
       {
+        "id": "collab-ama",
         "name": "Ama Boateng",
         "role": "Field Lead",
-        "contact": "ama@cocoacoop.org"
+        "contact": "ama@cocoacoop.org",
+        "lastUpdated": "2025-02-12T08:45:00.000Z"
       },
       {
+        "id": "collab-kwesi",
         "name": "Kwesi Mensah",
         "role": "Drone Analyst",
-        "contact": "@kwesimensah"
+        "contact": "@kwesimensah",
+        "lastNote": "Deploying canopy imaging on March 3",
+        "lastUpdated": "2025-02-14T11:12:00.000Z"
       }
     ],
     "tasks": [
@@ -94,11 +99,15 @@
     ],
     "collaborators": [
       {
+        "id": "collab-selina",
         "name": "Selina Owusu",
         "role": "Agronomist",
-        "contact": "selina@cocoacoop.org"
+        "contact": "selina@cocoacoop.org",
+        "lastNote": "Monitoring nutrient uptake weekly",
+        "lastUpdated": "2025-02-05T09:30:00.000Z"
       },
       {
+        "id": "collab-bright",
         "name": "Bright Tetteh",
         "role": "Community Liaison",
         "contact": "+233-555-0101"
@@ -154,11 +163,15 @@
     ],
     "collaborators": [
       {
+        "id": "collab-lucia",
         "name": "Lucia Fernandez",
         "role": "Supply Lead",
-        "contact": "lucia@pacificcacao.cr"
+        "contact": "lucia@pacificcacao.cr",
+        "lastNote": "Coordinating export certificates",
+        "lastUpdated": "2025-01-22T14:05:00.000Z"
       },
       {
+        "id": "collab-diego",
         "name": "Diego Ramirez",
         "role": "Quality Inspector",
         "contact": "@diego_tico"

@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useSecurityStore } from "@/store/security";
 import { cn } from "@/lib/cn";
@@ -13,6 +13,10 @@ function SecurityPanelBase() {
   const [phishingCodeInput, setPhishingCodeInput] = useState(
     settings.phishingCode ?? ""
   );
+
+  useEffect(() => {
+    setPhishingCodeInput(settings.phishingCode ?? "");
+  }, [settings.phishingCode]);
 
   const riskScore = useMemo(() => {
     let score = 0;

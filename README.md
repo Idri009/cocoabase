@@ -42,25 +42,121 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 
 ## Core Features
 
-- Wallet login via Reown AppKit + WalletConnect (wagmi)
-- Multi-wallet dashboard with watchlist, labels, and per-wallet filters
-- Growth analytics hub with charts (Chart.js) and regional insights
-- Yield forecast radar highlighting projected harvest windows
-- Global canopy map driven by d3-geo + world-atlas
-- Plantation management: plant seeds, update stages, track notes
-- Plantation task planner with due-date tracking and status transitions
-- Sustainability analytics tracking tree coverage, land use, and carbon offsets
-- Wallet performance table with carbon + task exposure per address
-- Collaboration hub for logging agronomist updates and adding new collaborators
-- Security hub with session guardrails, risk monitoring, and activity log
-- Automatic session auto-lock with countdown warnings
-- Finance receipts ledger with quick upload and history views
-- Community support centre for filing complaints and tracking resolutions
-- Cooperative loan pipeline with request workflow and status tracking
-- Activity timeline weaving stages, tasks, yield checkpoints, and field notes
-- Alerting engine for task deadlines, stage changes, and wallet activity (in-app, email, SMS stubs)
-- On-chain sync simulator to visualise transaction lifecycle
-- Social sharing panel for community updates
+### Plantation Management
+- **Plantation Dashboard**: Comprehensive dashboard with grid/list views, filtering, sorting, and search
+- **Plant Seed Modal**: Create new plantations with location, area, and initial stage configuration
+- **Stage Management**: Update growth stages (seedling → vegetative → flowering → fruiting → harvest)
+- **Bulk Operations**: Bulk stage advancement and multi-plantation selection
+- **Plantation Cards**: Rich cards displaying health scores, age, urgent tasks, and progress indicators
+- **Plantation Insights**: AI-powered insights and recommendations for plantation optimization
+- **Favorites System**: Star and spotlight favorite plantations with aggregated metrics
+- **Notes System**: Add and manage notes for individual plantations
+- **Plantation Templates**: Pre-configured templates for quick plantation creation
+- **Stage Gating**: Validation rules for stage transitions
+
+### Task Management
+- **Task Planner**: Create, assign, and track tasks with due dates and priorities
+- **Recurring Tasks**: Schedule recurring tasks with flexible intervals
+- **Task Kanban Board**: Visual task management with drag-and-drop
+- **Task Status Tracking**: Track pending, in-progress, completed, and cancelled tasks
+- **Urgent Task Detection**: Automatic detection and highlighting of overdue tasks
+- **Task Analytics**: Task completion rates and productivity metrics
+
+### Analytics & Reporting
+- **Growth Analytics Hub**: Charts and visualizations for plantation growth trends
+- **Yield Forecast**: Predictive analytics for harvest windows and yield estimates
+- **Cohort Analysis**: Track plantations by cohort and growth stage
+- **Dashboard Metrics**: Real-time KPIs including total seeds, harvested, growing, carbon offsets
+- **Statistics Summary**: Comprehensive statistical overview with distributions and trends
+- **Carbon Efficiency Metrics**: Per-tree and per-hectare carbon offset calculations
+- **Forecast Workspace**: Advanced forecasting tools with multiple scenarios
+- **Export Analytics**: Export data in CSV, JSON, and Excel formats
+
+### Sustainability & Environmental
+- **Sustainability Panel**: Track tree coverage, land use, and environmental impact
+- **Carbon Offset Tracking**: Calculate and visualize carbon offsets per plantation
+- **Tree Count Analytics**: Monitor tree protection and growth metrics
+- **Environmental Insights**: Geo-insights and regional environmental data
+
+### Collaboration & Community
+- **Collaboration Hub**: Add collaborators, assign roles, and manage permissions
+- **Shared Notes Panel**: Collaborative note-taking for plantations
+- **Community Share Panel**: Share updates and achievements with the community
+- **Farmer Chat Panel**: Communication tools for collaborators
+- **Help Requests**: Request and track help from the community
+- **Community Support**: File complaints and track resolution status
+
+### Financial Management
+- **Receipts Ledger**: Upload, store, and manage financial receipts
+- **Receipt History**: View and search receipt history
+- **Loan Tracker**: Request and track cooperative loans
+- **Loan Request Workflow**: Complete loan application and approval process
+- **Financial Dashboard**: Overview of financial transactions and expenses
+- **Market Prices**: Track commodity prices and market trends
+
+### Security & Monitoring
+- **Security Panel**: Comprehensive security monitoring and controls
+- **Session Guard**: Automatic session locking with countdown warnings
+- **Security Events Log**: Track and audit security-related events
+- **Security Monitor**: Real-time security monitoring and alerts
+- **Risk Detection**: Identify and flag potential security risks
+- **Activity Timeline**: Complete audit trail of user actions
+
+### Wallet Integration
+- **Wallet Manager**: Connect and manage multiple wallets
+- **Wallet Performance**: Track plantation counts, harvest conversion, and carbon footprint per wallet
+- **Wallet Reputation**: Reputation scoring based on plantation performance
+- **Multi-wallet Dashboard**: View plantations across multiple connected wallets
+- **Watchlist Management**: Add wallets to watchlist with custom labels
+
+### Operations & Planning
+- **Operations Calendar**: Calendar view for tasks, harvests, and events
+- **Harvest Planner**: Plan and schedule harvest operations
+- **Resource Allocation**: Allocate resources across plantations
+- **Inventory Panel**: Track equipment and supplies
+- **Equipment Tracker**: Monitor equipment usage and maintenance
+- **Supply Chain Tracker**: Track supply chain operations
+- **Yield Journal**: Document and track yield data over time
+
+### Data Management
+- **Data Export**: Export plantations, tasks, and analytics data
+- **Data Import**: Import data from various formats
+- **Data Management Panel**: Centralized data management interface
+- **Document Library**: Store and manage plantation-related documents
+- **Certification Manager**: Track and manage certifications
+
+### User Experience
+- **Dark Theme Support**: Full dark mode with system preference detection
+- **Keyboard Shortcuts**: Power user shortcuts for common actions
+- **Onboarding Tour**: Guided tour for new users
+- **Global Search**: Search across plantations, tasks, and notes
+- **Advanced Filters**: Multi-criteria filtering with presets
+- **Quick Actions**: Quick access to common operations
+- **Notification Preferences**: Customize alert and notification settings
+- **Settings Panel**: Comprehensive application settings
+
+### Alerts & Notifications
+- **Alert Manager**: Centralized alert management system
+- **Alert Toaster**: Toast notifications for real-time alerts
+- **Alert Insights**: Actionable insights from alert patterns
+- **Task Deadline Alerts**: Automatic alerts for upcoming and overdue tasks
+- **Stage Change Notifications**: Notify on plantation stage transitions
+- **Weather Alerts**: Weather-based alerts and recommendations
+
+### Geospatial Features
+- **Global Footprint Map**: Interactive map showing all plantations
+- **Geo Insights Panel**: Regional insights and analytics
+- **Location-based Filtering**: Filter plantations by location
+- **Carbon-weighted Markers**: Visualize carbon impact on map
+
+### Additional Features
+- **On-chain Sync**: Simulate and visualize blockchain transactions
+- **Status Indicators**: Visual status indicators for plantations and tasks
+- **Progress Tracking**: Visual progress bars and indicators
+- **Animated Counters**: Smooth number animations for metrics
+- **Loading States**: Skeleton loaders and spinners
+- **Empty States**: Helpful empty state messages
+- **Confirmation Dialogs**: User-friendly confirmation modals
 
 ## Tech Stack
 

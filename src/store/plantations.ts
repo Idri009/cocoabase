@@ -746,6 +746,15 @@ export const usePlantationsStore = create<PlantationState>()(
           return;
         }
 
+        const validation = get().validateStageTransition(previous, nextStage);
+        if (!validation.canProceed) {
+          console.warn(
+            `[plantations] Stage transition blocked for ${id}:`,
+            validation.blockingReasons
+          );
+          return;
+        }
+
         const now = new Date().toISOString();
         const stageTemplates = get().stageTemplates;
         const newStageTaskRefs: Array<{

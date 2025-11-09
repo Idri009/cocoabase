@@ -1114,18 +1114,127 @@ export default function DashboardPage() {
                       )}
                     </header>
 
-                    <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                      <AnimatePresence mode="popLayout">
-                        {filteredPlantations.map((plantation) => (
-                          <PlantationCard
-                            key={plantation.id}
-                            plantation={plantation}
-                            onUpdate={handleUpdateRequest}
-                            onAdvanceStage={handleAdvanceStage}
+                    {filteredPlantations.length > 0 && (
+                      <div className="mb-4 flex items-center gap-3">
+                        <label className="flex items-center gap-2 text-sm text-cocoa-600">
+                          <input
+                            type="checkbox"
+                            checked={
+                              selectedPlantations.size === filteredPlantations.length &&
+                              filteredPlantations.length > 0
+                            }
+                            onChange={handleSelectAll}
+                            className="h-4 w-4 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
                           />
-                        ))}
-                      </AnimatePresence>
-        </div>
+                          Select all ({selectedPlantations.size} selected)
+                        </label>
+                      </div>
+                    )}
+
+                    {viewMode === "grid" ? (
+                      <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                        <AnimatePresence mode="popLayout">
+                          {filteredPlantations.map((plantation) => (
+                            <div key={plantation.id} className="relative">
+                              <label className="absolute left-3 top-3 z-10">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedPlantations.has(plantation.id)}
+                                  onChange={() => handleToggleSelection(plantation.id)}
+                                  className="h-5 w-5 rounded border-cream-300 text-leaf-500 shadow-lg focus:ring-2 focus:ring-leaf-400"
+                                />
+                              </label>
+                              <button
+                                type="button"
+                                onClick={() => handleToggleFavorite(plantation.id)}
+                                className="absolute right-3 top-3 z-10 rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white"
+                                aria-label={
+                                  favorites.has(plantation.id)
+                                    ? "Remove from favorites"
+                                    : "Add to favorites"
+                                }
+                              >
+                                {favorites.has(plantation.id) ? "⭐" : "☆"}
+                              </button>
+                              <PlantationCard
+                                plantation={plantation}
+                                onUpdate={handleUpdateRequest}
+                                onAdvanceStage={handleAdvanceStage}
+                              />
+                            </div>
+                          ))}
+                        </AnimatePresence>
+                      </div>
+                    ) : (
+                      <div className="mt-6 space-y-3">
+                        <AnimatePresence mode="popLayout">
+                          {filteredPlantations.map((plantation) => (
+                            <motion.div
+                              key={plantation.id}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              exit={{ opacity: 0, x: 20 }}
+                              className="relative flex items-center gap-4 rounded-2xl border border-cream-200 bg-white/80 p-4 shadow-sm"
+                            >
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  checked={selectedPlantations.has(plantation.id)}
+                                  onChange={() => handleToggleSelection(plantation.id)}
+                                  className="h-4 w-4 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
+                                />
+                              </label>
+                              <button
+                                type="button"
+                                onClick={() => handleToggleFavorite(plantation.id)}
+                                className="text-lg"
+                                aria-label={
+                                  favorites.has(plantation.id)
+                                    ? "Remove from favorites"
+                                    : "Add to favorites"
+                                }
+                              >
+                                {favorites.has(plantation.id) ? "⭐" : "☆"}
+                              </button>
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-cocoa-900">
+                                  {plantation.seedName}
+                                </h3>
+                                <p className="text-sm text-cocoa-500">
+                                  {plantation.location} • {plantation.stage} •{" "}
+                                  {new Date(plantation.startDate).toLocaleDateString()}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => handleUpdateRequest(plantation)}
+                                  className="rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300"
+                                >
+                                  Update
+                                </button>
+                                {plantation.stage !== "harvested" && (
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleAdvanceStage(
+                                        plantation,
+                                        plantation.stage === "planted"
+                                          ? "growing"
+                                          : "harvested"
+                                      )
+                                    }
+                                    className="rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-leaf-600"
+                                  >
+                                    Advance
+                                  </button>
+                                )}
+                              </div>
+                            </motion.div>
+                          ))}
+                        </AnimatePresence>
+                      </div>
+                    )}
                   </section>
 
                   <aside className="space-y-6">

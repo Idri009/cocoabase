@@ -1,279 +1,169 @@
 "use client";
 
-import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/cn";
-import {
-  useFarmerNetworkStore,
-  type FarmerConnection,
-  type ConnectionStatus,
-} from "@/store/farmer-network";
+import { useState } from "react";
 
 export default function FarmerNetwork() {
-  const connections = useFarmerNetworkStore((state) => state.connections);
-  const addConnection = useFarmerNetworkStore((state) => state.addConnection);
-  const updateConnection = useFarmerNetworkStore(
-    (state) => state.updateConnection
-  );
-  const removeConnection = useFarmerNetworkStore(
-    (state) => state.removeConnection
-  );
-  const getConnectedFarmers = useFarmerNetworkStore(
-    (state) => state.getConnectedFarmers
-  );
-  const searchConnections = useFarmerNetworkStore(
-    (state) => state.searchConnections
+  const [selectedTab, setSelectedTab] = useState<"farmers" | "groups">(
+    "farmers"
   );
 
-  const [isAdding, setIsAdding] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [form, setForm] = useState<Partial<FarmerConnection>>({
-    status: "pending",
-    specialties: [],
-  });
+  const farmers = [
+    {
+      id: "1",
+      name: "John Doe",
+      location: "Ghana",
+      plantations: 15,
+      rating: 4.8,
+      specialty: "Organic Cocoa",
+      avatar: "👨‍🌾",
+    },
+    {
+      id: "2",
+      name: "Mary Smith",
+      location: "Ivory Coast",
+      plantations: 22,
+      rating: 4.9,
+      specialty: "Fair Trade",
+      avatar: "👩‍🌾",
+    },
+    {
+      id: "3",
+      name: "Ahmed Hassan",
+      location: "Nigeria",
+      plantations: 18,
+      rating: 4.7,
+      specialty: "Sustainable Farming",
+      avatar: "👨‍🌾",
+    },
+  ];
 
-  const connectedFarmers = getConnectedFarmers();
-  const filteredConnections = searchQuery
-    ? searchConnections(searchQuery)
-    : connections;
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!form.walletAddress) {
-      return;
-    }
-    addConnection({
-      walletAddress: form.walletAddress,
-      name: form.name,
-      bio: form.bio,
-      location: form.location,
-      specialties: form.specialties || [],
-      status: form.status ?? "pending",
-      notes: form.notes,
-    });
-    setForm({
-      status: "pending",
-      specialties: [],
-    });
-    setIsAdding(false);
-  };
-
-  const specialties = [
-    "organic_farming",
-    "sustainable_practices",
-    "crop_rotation",
-    "irrigation",
-    "pest_management",
-    "harvesting",
-    "equipment_maintenance",
+  const groups = [
+    {
+      id: "1",
+      name: "West Africa Cocoa Farmers",
+      members: 245,
+      description: "Sharing best practices",
+      icon: "🌍",
+    },
+    {
+      id: "2",
+      name: "Organic Cocoa Alliance",
+      members: 128,
+      description: "Organic certification support",
+      icon: "🌱",
+    },
+    {
+      id: "3",
+      name: "Sustainable Farming Network",
+      members: 189,
+      description: "Environmental practices",
+      icon: "♻️",
+    },
   ];
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
-      className="rounded-3xl border border-cocoa-800/60 bg-[#101f3c]/80 p-6 text-slate-100 shadow-xl shadow-black/20 backdrop-blur"
+      className="rounded-3xl border border-cream-200 bg-gradient-to-br from-purple-50/80 to-pink-50/80 p-6 shadow-sm backdrop-blur"
     >
-      <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Farmer network</h2>
-          <p className="text-sm text-slate-300/80">
-            Connect with other farmers and build your agricultural network.
-          </p>
-        </div>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-cocoa-900">
+          Farmer Network
+        </h2>
+        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+          Connect with other farmers
+        </p>
+      </div>
+
+      <div className="mb-4 flex gap-2">
         <button
           type="button"
-          onClick={() => setIsAdding(!isAdding)}
-          className="rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg transition hover:bg-leaf-400"
+          onClick={() => setSelectedTab("farmers")}
+          className={`flex-1 rounded-xl border px-4 py-2 text-sm font-semibold transition ${
+            selectedTab === "farmers"
+              ? "border-purple-600 bg-purple-600 text-white"
+              : "border-cream-300 bg-white text-cocoa-700 hover:border-purple-300"
+          }`}
         >
-          {isAdding ? "Cancel" : "+ Add connection"}
+          Farmers
         </button>
-      </header>
-
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
-        <div className="rounded-2xl border border-blue-500/40 bg-blue-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-blue-300/70">
-            Total connections
-          </p>
-          <p className="mt-2 text-2xl font-bold text-blue-300">
-            {connections.length}
-          </p>
-        </div>
-        <div className="rounded-2xl border border-purple-500/40 bg-purple-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-purple-300/70">
-            Connected farmers
-          </p>
-          <p className="mt-2 text-2xl font-bold text-purple-300">
-            {connectedFarmers.length}
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-4">
-        <input
-          type="text"
-          placeholder="Search connections..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-4 py-2 text-sm text-slate-100 placeholder:text-slate-400/50 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-        />
-      </div>
-
-      {isAdding && (
-        <motion.form
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          onSubmit={handleSubmit}
-          className="mt-4 space-y-3 rounded-2xl border border-slate-700/40 bg-slate-900/50 p-4"
+        <button
+          type="button"
+          onClick={() => setSelectedTab("groups")}
+          className={`flex-1 rounded-xl border px-4 py-2 text-sm font-semibold transition ${
+            selectedTab === "groups"
+              ? "border-purple-600 bg-purple-600 text-white"
+              : "border-cream-300 bg-white text-cocoa-700 hover:border-purple-300"
+          }`}
         >
-          <div className="grid gap-3 sm:grid-cols-2">
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Wallet address
-              <input
-                type="text"
-                value={form.walletAddress || ""}
-                onChange={(e) =>
-                  setForm({ ...form, walletAddress: e.target.value })
-                }
-                required
-                placeholder="0x..."
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Name (optional)
-              <input
-                type="text"
-                value={form.name || ""}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Location (optional)
-              <input
-                type="text"
-                value={form.location || ""}
-                onChange={(e) => setForm({ ...form, location: e.target.value })}
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70 sm:col-span-2">
-              Bio (optional)
-              <textarea
-                value={form.bio || ""}
-                onChange={(e) => setForm({ ...form, bio: e.target.value })}
-                rows={2}
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-          </div>
-          <button
-            type="submit"
-            className="w-full rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg transition hover:bg-leaf-400"
-          >
-            Add connection
-          </button>
-        </motion.form>
-      )}
+          Groups
+        </button>
+      </div>
 
-      <div className="mt-6 space-y-3">
-        {filteredConnections.length === 0 ? (
-          <div className="rounded-2xl border border-slate-700/40 bg-slate-900/50 p-8 text-center">
-            <p className="text-sm text-slate-300/80">
-              {searchQuery
-                ? "No connections found matching your search."
-                : "No connections yet. Add your first connection to get started."}
-            </p>
-          </div>
-        ) : (
-          filteredConnections.map((connection) => {
-            const getStatusColor = (status: ConnectionStatus) => {
-              switch (status) {
-                case "connected":
-                  return "border-emerald-500/40 bg-emerald-500/10";
-                case "pending":
-                  return "border-amber-500/40 bg-amber-500/10";
-                case "blocked":
-                  return "border-slate-500/40 bg-slate-500/10";
-              }
-            };
-
-            return (
+      <div className="space-y-3">
+        {selectedTab === "farmers" ? (
+          <>
+            {farmers.map((farmer) => (
               <div
-                key={connection.id}
-                className={cn(
-                  "rounded-xl border p-4",
-                  getStatusColor(connection.status)
-                )}
+                key={farmer.id}
+                className="flex items-center gap-3 rounded-xl border border-purple-200 bg-white/80 p-3"
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-semibold text-white">
-                        {connection.name || "Unknown Farmer"}
-                      </h3>
-                      <span className="rounded-full bg-slate-800/80 px-2 py-0.5 text-xs text-slate-300/70">
-                        {connection.status}
-                      </span>
-                    </div>
-                    <p className="mt-1 text-xs text-slate-300/70 font-mono">
-                      {connection.walletAddress.slice(0, 10)}...
-                      {connection.walletAddress.slice(-8)}
-                    </p>
-                    {connection.location && (
-                      <p className="mt-1 text-xs text-slate-300/70">
-                        📍 {connection.location}
-                      </p>
-                    )}
-                    {connection.bio && (
-                      <p className="mt-1 text-xs text-slate-300/70">
-                        {connection.bio}
-                      </p>
-                    )}
-                    {connection.specialties && connection.specialties.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-1">
-                        {connection.specialties.map((spec) => (
-                          <span
-                            key={spec}
-                            className="rounded-full bg-slate-800/80 px-2 py-0.5 text-xs text-slate-300/70"
-                          >
-                            {spec.replace("_", " ")}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                <span className="text-3xl">{farmer.avatar}</span>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-cocoa-900">
+                    {farmer.name}
+                  </h3>
+                  <p className="text-xs text-cocoa-600">
+                    {farmer.location} • {farmer.plantations} plantations
+                  </p>
+                  <p className="mt-1 text-xs text-cocoa-500">
+                    {farmer.specialty}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm font-bold text-purple-700">
+                    ⭐ {farmer.rating}
                   </div>
-                  <div className="flex items-center gap-2">
-                    {connection.status === "pending" && (
-                      <button
-                        type="button"
-                        onClick={() =>
-                          updateConnection(connection.id, {
-                            status: "connected",
-                          })
-                        }
-                        className="rounded-full bg-slate-800/70 px-3 py-1 text-xs font-semibold text-slate-200/90 transition hover:bg-slate-700/80"
-                      >
-                        Accept
-                      </button>
-                    )}
-                    <button
-                      type="button"
-                      onClick={() => removeConnection(connection.id)}
-                      className="rounded-full bg-slate-800/70 p-2 text-slate-200/90 transition hover:bg-slate-700/80"
-                    >
-                      ✕
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    className="mt-1 rounded-full border border-purple-300 bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-700 transition hover:bg-purple-100"
+                  >
+                    Connect
+                  </button>
                 </div>
               </div>
-            );
-          })
+            ))}
+          </>
+        ) : (
+          <>
+            {groups.map((group) => (
+              <div
+                key={group.id}
+                className="flex items-center gap-3 rounded-xl border border-pink-200 bg-white/80 p-3"
+              >
+                <span className="text-2xl">{group.icon}</span>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-cocoa-900">
+                    {group.name}
+                  </h3>
+                  <p className="text-xs text-cocoa-600">{group.description}</p>
+                  <p className="mt-1 text-xs text-cocoa-500">
+                    {group.members} members
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="rounded-full border border-pink-300 bg-pink-50 px-3 py-1 text-xs font-semibold text-pink-700 transition hover:bg-pink-100"
+                >
+                  Join
+                </button>
+              </div>
+            ))}
+          </>
         )}
       </div>
     </motion.section>
   );
 }
-

@@ -1053,6 +1053,63 @@ export default function DashboardPage() {
                     📤 Export analytics
                   </motion.button>
                 </div>
+                {/* Data Insights Panel */}
+                {showDataInsights && dataInsights.length > 0 && (
+                  <motion.section
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-r from-blue-50/80 via-purple-50/80 to-pink-50/80 p-6 shadow-sm backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Data Insights
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          AI-powered recommendations
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowDataInsights(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close insights"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                      {dataInsights.map((insight, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className={`rounded-2xl border p-4 ${
+                            insight.type === "success"
+                              ? "border-green-200 bg-green-50/80"
+                              : insight.type === "warning"
+                              ? "border-amber-200 bg-amber-50/80"
+                              : "border-blue-200 bg-blue-50/80"
+                          }`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <span className="text-2xl">{insight.icon}</span>
+                            <div className="flex-1">
+                              <h3 className="text-sm font-semibold text-cocoa-900">
+                                {insight.title}
+                              </h3>
+                              <p className="mt-1 text-xs text-cocoa-600">
+                                {insight.message}
+                              </p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.section>
+                )}
+
                 {/* Quick Filter Presets */}
                 <motion.section
                   initial={{ opacity: 0, y: 12 }}

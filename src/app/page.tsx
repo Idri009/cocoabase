@@ -156,6 +156,9 @@ export default function DashboardPage() {
   const [showTimelineView, setShowTimelineView] = useState(false);
   const [dashboardTheme, setDashboardTheme] = useState<"light" | "dark" | "auto">("light");
   const [showStatisticsComparison, setShowStatisticsComparison] = useState(false);
+  const [showQuickActionsPanel, setShowQuickActionsPanel] = useState(false);
+  const [showHelpCenter, setShowHelpCenter] = useState(false);
+  const [showAnalyticsDashboard, setShowAnalyticsDashboard] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;

@@ -1141,6 +1141,7 @@ export default function DashboardPage() {
                                   type="checkbox"
                                   checked={selectedPlantations.has(plantation.id)}
                                   onChange={() => handleToggleSelection(plantation.id)}
+                                  aria-label={`Select ${plantation.seedName}`}
                                   className="h-5 w-5 rounded border-cream-300 text-leaf-500 shadow-lg focus:ring-2 focus:ring-leaf-400"
                                 />
                               </label>

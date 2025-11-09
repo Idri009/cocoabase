@@ -2926,6 +2926,58 @@ export default function DashboardPage() {
                       </span>
                     )}
                   </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowBudgetPlanner(!showBudgetPlanner)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showBudgetPlanner
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    💵 Budget Planner
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowInventoryAlerts(!showInventoryAlerts)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showInventoryAlerts
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    📦 Inventory Alerts
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowPerformanceReports(!showPerformanceReports)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showPerformanceReports
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    📊 Performance Reports
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowExportManager(!showExportManager)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showExportManager
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    📤 Export Manager
+                  </motion.button>
                 </div>
                 {/* Achievements Panel */}
                 {showAchievements && (

@@ -361,6 +361,58 @@ export const buildAnalyticsSnapshot = (
     });
     regionGeoMap.set(region, geoRegionEntry);
 
+    const walletKey = plantation.walletAddress.toLowerCase();
+    plantationWalletMap.set(plantation.id, walletKey);
+    const walletEntry =
+      walletAggregation.get(walletKey) ?? {
+        address: plantation.walletAddress,
+        stageCounts: {
+          planted: 0,
+          growing: 0,
+          harvested: 0,
+        },
+        totalPlantations: 0,
+        activeTasks: 0,
+        completedTasks: 0,
+        carbonOffsetTons: 0,
+        treeCount: 0,
+        areaHectares: 0,
+        harvestByMonth: new Map<string, number>(),
+        yieldSum: 0,
+        yieldSamples: 0,
+        forecastTotal: 0,
+        forecastSamples: 0,
+        lastUpdated: undefined,
+      };
+
+    walletEntry.totalPlantations += 1;
+    walletEntry.stageCounts[plantation.stage] += 1;
+
+    const activeTaskCount = plantation.tasks.filter(
+      (task) => task.status !== "completed"
+    ).length;
+    walletEntry.activeTasks += activeTaskCount;
+    walletEntry.completedTasks += plantation.tasks.length - activeTaskCount;
+    walletEntry.carbonOffsetTons += plantation.carbonOffsetTons;
+    walletEntry.treeCount += plantation.treeCount;
+    walletEntry.areaHectares += plantation.areaHectares;
+
+    if (
+      !walletEntry.lastUpdated ||
+      new Date(plantation.updatedAt).getTime() >
+        new Date(walletEntry.lastUpdated).getTime()
+    ) {
+      walletEntry.lastUpdated = plantation.updatedAt;
+    }
+
+    if (plantation.stage === "harvested") {
+      const harvestKey = getMonthKey(plantation.updatedAt ?? plantation.startDate);
+      walletEntry.harvestByMonth.set(
+        harvestKey,
+        (walletEntry.harvestByMonth.get(harvestKey) ?? 0) + 1
+      );
+    }
+
     if (plantation.yieldTimeline.length) {
       const timeline = [...plantation.yieldTimeline].sort(sortTimelineAsc);
       forecastInputs.push({ plantation, timeline });
@@ -374,7 +426,15 @@ export const buildAnalyticsSnapshot = (
           yieldKg: checkpoint.yieldKg,
         });
       });
+
+      const latestCheckpoint = timeline[timeline.length - 1];
+      if (latestCheckpoint) {
+        walletEntry.yieldSum += latestCheckpoint.yieldKg;
+        walletEntry.yieldSamples += 1;
+      }
     }
+
+    walletAggregation.set(walletKey, walletEntry);
   });
 
   const total = plantations.length || 1;

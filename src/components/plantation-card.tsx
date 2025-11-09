@@ -96,22 +96,64 @@ export default function PlantationCard({
         <div className="flex items-center justify-between text-sm">
           <span className="font-medium text-cocoa-600">{meta.label}</span>
           <span className="text-cocoa-500">
-            Started {formatter.format(new Date(plantation.startDate))}
+            {formatPlantationAge(age)} old
           </span>
         </div>
 
-        <div className="h-2 rounded-full bg-cream-200">
-          <div
-            className={cn(
-              "h-2 rounded-full bg-gradient-to-r transition-all duration-500 ease-out",
-              meta.gradient
-            )}
-            style={{ width: `${meta.progress}%` }}
-          />
+        <div className="space-y-2">
+          <div className="h-2 rounded-full bg-cream-200">
+            <div
+              className={cn(
+                "h-2 rounded-full bg-gradient-to-r transition-all duration-500 ease-out",
+                meta.gradient
+              )}
+              style={{ width: `${meta.progress}%` }}
+            />
+          </div>
+          <div className="flex items-center justify-between text-xs">
+            <span className="text-cocoa-400">Health score</span>
+            <div className="flex items-center gap-2">
+              <div className="h-1.5 w-16 rounded-full bg-cream-200">
+                <div
+                  className={cn(
+                    "h-1.5 rounded-full transition-all",
+                    healthScore >= 70
+                      ? "bg-green-500"
+                      : healthScore >= 50
+                      ? "bg-yellow-500"
+                      : "bg-red-500"
+                  )}
+                  style={{ width: `${healthScore}%` }}
+                />
+              </div>
+              <span className="font-semibold text-cocoa-600">{healthScore}</span>
+            </div>
+          </div>
         </div>
 
-        <p className="text-sm text-cocoa-500">
-          Last updated: {formatter.format(new Date(plantation.updatedAt))}
+        {urgentTasks.length > 0 && (
+          <div className="rounded-lg bg-amber-50/80 px-3 py-2 text-xs text-amber-800">
+            ⚠️ {urgentTasks.length} urgent task{urgentTasks.length !== 1 ? "s" : ""}
+          </div>
+        )}
+
+        <div className="flex flex-wrap gap-2 text-xs text-cocoa-500">
+          {plantation.tasks.length > 0 && (
+            <span>
+              {plantation.tasks.filter((t) => t.status === "completed").length}/
+              {plantation.tasks.length} tasks
+            </span>
+          )}
+          {plantation.collaborators.length > 0 && (
+            <span>{plantation.collaborators.length} collaborator{plantation.collaborators.length !== 1 ? "s" : ""}</span>
+          )}
+          {plantation.yieldTimeline.length > 0 && (
+            <span>{plantation.yieldTimeline.length} yield checkpoint{plantation.yieldTimeline.length !== 1 ? "s" : ""}</span>
+          )}
+        </div>
+
+        <p className="text-xs text-cocoa-400">
+          {summary}
         </p>
       </div>
 

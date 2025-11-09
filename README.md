@@ -195,6 +195,198 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - State is persisted to `localStorage` via Zustand so dashboard changes survive reloads.
 - Reset behaviour: clearing browser storage reverts to seed data.
 
+## Utility Libraries
+
+The codebase includes a comprehensive set of utility libraries for common operations:
+
+### Core Utilities
+- **`api-utils.ts`**: HTTP client with error handling and response types
+- **`integration.ts`**: Service layer combining API calls with monitoring and error handling
+- **`logger.ts`**: Structured logging with levels, subscriptions, and export/import
+- **`constants.ts`**: Application-wide constants and configuration
+- **`cn.ts`**: Tailwind CSS class name utility
+
+### Data Processing
+- **`data-pipeline.ts`**: Functional data transformation pipeline with filter, map, sort, group operations
+- **`array-utils.ts`**: Array manipulation (groupBy, partition, unique, chunk, flatten, zip, etc.)
+- **`object-utils.ts`**: Object manipulation (pick, omit, deepClone, deepMerge, flatten, etc.)
+- **`transform-utils.ts`**: Data transformation utilities (mapArray, groupBy, partition, pluck, etc.)
+- **`comparison-utils.ts`**: Comparison utilities (diff, deepDiff, isEqual, min, max, sortBy, etc.)
+
+### Form & Validation
+- **`form-utils.ts`**: Form state management with validation rules and field tracking
+- **`validation.ts`**: Validation functions (email, wallet address, numbers, dates, URLs, etc.)
+- **`type-utils.ts`**: Type checking and assertion utilities
+
+### Date & Time
+- **`date-utils.ts`**: Date manipulation (formatRelativeTime, isOverdue, getDaysUntil, etc.)
+- **`time-utils.ts`**: Time formatting and calculations (formatDuration, getTimeAgo, isToday, etc.)
+- **`timer-utils.ts`**: Timer and interval utilities
+
+### Formatting & Display
+- **`format-utils.ts`**: Number, currency, percentage, carbon offset, area, yield formatting
+- **`number-utils.ts`**: Number manipulation (clamp, roundTo, formatNumber, formatCurrency, etc.)
+- **`string-utils.ts`**: String manipulation (camelCase, kebabCase, truncate, capitalize, etc.)
+- **`color-utils.ts`**: Color manipulation (hexToRgb, lighten, darken, generatePalette, etc.)
+
+### Search & Filtering
+- **`search-utils.ts`**: Search and ranking utilities for plantations
+- **`filter-utils.ts`**: Array filtering utilities with multiple operators
+- **`sort-utils.ts`**: Advanced sorting utilities (multi-field, natural sort, etc.)
+
+### Storage & Caching
+- **`storage-utils.ts`**: LocalStorage wrapper with TTL and size tracking
+- **`cache-utils.ts`**: Caching utilities (Cache, LRUCache, memoize)
+- **`queue-utils.ts`**: Queue implementations (Queue, PriorityQueue, CircularQueue)
+
+### Performance & Monitoring
+- **`performance-utils.ts`**: Performance monitoring (PerformanceMonitor, debounce, throttle, memoize)
+- **`error-handling.ts`**: Centralized error handling and reporting
+
+### Network & API
+- **`network-utils.ts`**: Network utilities
+- **`url-utils.ts`**: URL manipulation and parsing
+- **`query-utils.ts`**: Query string parsing and manipulation
+
+### Browser & DOM
+- **`browser-utils.ts`**: Browser detection, viewport, clipboard, fullscreen, etc.
+- **`dom-utils.ts`**: DOM manipulation utilities
+
+### File & Crypto
+- **`file-utils.ts`**: File manipulation (extension, name, size, validation, compression)
+- **`crypto-utils.ts`**: Cryptographic utilities (sha256, base64, random strings, etc.)
+
+### Export & Import
+- **`export-utils.ts`**: Export to CSV, JSON, Excel, images
+- **`data-export.ts`**: Data export functionality
+- **`exporter.ts`**: Export utilities
+
+### Statistics & Analytics
+- **`statistics.ts`**: Statistical calculations (mean, median, variance, correlation, outliers, etc.)
+- **`chart-utils.ts`**: Chart data preparation and visualization utilities
+
+### Event Management
+- **`event-utils.ts`**: Custom event emitter with debounce/throttle support
+
+### Promise Utilities
+- **`promise-utils.ts`**: Promise utilities (delay, timeout, retry, allSettled, sequential, parallel)
+
+### Regex Utilities
+- **`regex-utils.ts`**: Common regex patterns and utilities (email, URL, phone, wallet address)
+
+### State Management
+- **`state-utils.ts`**: State management utilities (createState, createReducer, combineStates)
+
+### Theme & UI
+- **`theme-utils.ts`**: Theme management (light/dark/auto) with system preference detection
+
+### Permissions
+- **`permissions.ts`**: Role-based access control (RBAC) system with permission management
+
+### Plantation-Specific
+- **`plantation-utils.ts`**: Plantation-specific utilities (age calculation, health scores, insights)
+
+### Testing
+- **`testing-utils.ts`**: Testing utilities (mock data, delays, assertions, localStorage mocking)
+
+## UI Components
+
+### Form Components
+- **`Input`**: Text input with label, error, and helper text
+- **`Select`**: Dropdown select with options
+- **`Textarea`**: Multi-line text input
+- **`Button`**: Button with variants (primary, secondary, outline, ghost, danger)
+- **`Checkbox`**: Checkbox input with label
+- **`Radio`**: Radio button input
+- **`Switch`**: Toggle switch component
+- **`Slider`**: Range slider input
+- **`Dropdown`**: Custom dropdown with search and icons
+
+### Display Components
+- **`Card`**: Card container with header, content, footer
+- **`Badge`**: Badge component with variants
+- **`Tag`**: Tag component for labels
+- **`Chip`**: Removable chip component
+- **`Avatar`**: User avatar with fallback initials
+- **`Progress`**: Progress bar with variants
+- **`ProgressIndicator`**: Animated progress indicator
+- **`LoadingSpinner`**: Loading spinner
+- **`SkeletonLoader`**: Skeleton loading state
+- **`EmptyState`**: Empty state message
+
+### Navigation Components
+- **`Tabs`**: Tab navigation component
+- **`Breadcrumb`**: Breadcrumb navigation
+- **`Pagination`**: Pagination controls
+- **`Stepper`**: Step indicator component
+- **`Accordion`**: Collapsible accordion sections
+- **`Timeline`**: Timeline component for events
+
+### Feedback Components
+- **`Alert`**: Alert message component
+- **`Tooltip`**: Tooltip component
+- **`ConfirmationDialog`**: Confirmation modal
+- **`Rating`**: Star rating component
+
+### Layout Components
+- **`Divider`**: Divider component
+- **`ExpandableSection`**: Collapsible content section
+- **`CopyButton`**: Copy to clipboard button
+
+### Specialized Components
+- **`PlantationCard`**: Plantation display card
+- **`PlantationInsights`**: Plantation insights display
+- **`QuickActions`**: Quick action buttons
+- **`StatisticsSummary`**: Statistics summary display
+- **`DashboardMetrics`**: Dashboard metrics display
+- **`CohortChart`**: Cohort analysis chart
+- **`AnimatedCounter`**: Animated number counter
+
+## Custom React Hooks
+
+### Form Management
+- **`useForm`**: Complete form state management with validation
+- **`useFilters`**: Dynamic filtering system for arrays
+
+### Data Management
+- **`usePagination`**: Pagination logic with navigation controls
+
+### General Hooks (from `hooks.ts`)
+- **`usePrevious`**: Get previous value
+- **`useDebounce`**: Debounce value changes
+- **`useThrottle`**: Throttle value changes
+- **`useLocalStorage`**: LocalStorage hook with sync
+- **`useSessionStorage`**: SessionStorage hook
+- **`useClickOutside`**: Detect clicks outside element
+- **`useKeyPress`**: Listen for key presses
+- **`useMediaQuery`**: React to media query changes
+- **`useWindowSize`**: Track window dimensions
+- **`useToggle`**: Toggle boolean state
+- **`useCounter`**: Counter with increment/decrement
+- **`useAsync`**: Handle async operations
+- **`useInterval`**: Set up intervals
+- **`useTimeout`**: Set up timeouts
+- **`useMount`**: Run on mount
+- **`useUnmount`**: Run on unmount
+- **`useUpdateEffect`**: Skip first render effect
+- **`useIsMounted`**: Check if component is mounted
+- **`useMemoizedCallback`**: Memoized callback hook
+
+## Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router pages
+├── components/            # React components
+│   ├── ui/               # Base UI components
+│   └── ...              # Feature components
+├── hooks/                # Custom React hooks
+├── lib/                  # Utility libraries
+├── store/                # Zustand state management
+├── data/                 # Mock data files
+└── types/                # TypeScript type definitions
+```
+
 ## Scripts
 
 - `npm run dev` – start the local dev server

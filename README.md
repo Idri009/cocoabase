@@ -613,6 +613,13 @@ The codebase includes a comprehensive set of utility libraries for common operat
 - **`analytics-utils.ts`**: Advanced analytics utilities (efficiency scores, productivity indices, growth metrics)
 - **`yield-optimizer.ts`**: Yield optimization utilities (tip generation, analysis, prioritization, ROI calculation)
 
+### Documents & Compliance
+- **`document-utils.ts`**: Document management utilities (type detection, validation, search, text extraction)
+- **`compliance-utils.ts`**: Compliance tracking utilities (compliance rate calculation, deadline monitoring, status tracking)
+- **`training-utils.ts`**: Training resources utilities (resource management, progress tracking, recommendations, search)
+- **`marketplace-utils.ts`**: Marketplace utilities (listing management, search, filtering, sorting, seller ratings)
+- **`weather-forecast-utils.ts`**: Weather forecast utilities (7-day forecast, impact assessment, recommendations, analysis)
+
 ### Testing
 - **`testing-utils.ts`**: Testing utilities (mock data, delays, assertions, localStorage mocking)
 

@@ -4636,6 +4636,12 @@ export default function DashboardPage() {
           </div>
         </Modal>
       )}
+
+      <SettingsPanel
+        plantations={plantations}
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+      />
     </div>
   );
 }

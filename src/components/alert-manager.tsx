@@ -17,8 +17,10 @@ import {
   dispatchAlert,
 } from "@/lib/alerts";
 
-const MS_IN_DAY = 1000 * 60 * 60 * 24;
+const MS_IN_MINUTE = 1000 * 60;
+const MS_IN_DAY = MS_IN_MINUTE * 60 * 24;
 const DEADLINE_THRESHOLD_MS = MS_IN_DAY; // 24 hours
+const SCAN_INTERVAL_MS = MS_IN_MINUTE * 5; // 5 minutes
 
 const handlePlantationEvent = (event: PlantationEvent) => {
   if (event.type === "stage_change") {
@@ -142,7 +144,7 @@ export default function AlertManager() {
 
   useEffect(() => {
     scanTaskDeadlines();
-    const interval = window.setInterval(scanTaskDeadlines, DEADLINE_THRESHOLD_MS);
+    const interval = window.setInterval(scanTaskDeadlines, SCAN_INTERVAL_MS);
 
     return () => {
       window.clearInterval(interval);

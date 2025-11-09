@@ -14,20 +14,10 @@ type TopBarProps = {
     perTreeKg: number | null;
     perHectareTons: number | null;
   };
-  taskStats?: {
-    pending: number;
-    inProgress: number;
-    completed: number;
-  };
-  alertCount?: number;
-  reputationScore?: number;
-  reputationRank?: number;
   onPlantSeed: () => void;
   onUploadReceipt: () => void;
   onFileComplaint: () => void;
   onRequestLoan: () => void;
-  onViewAlerts?: () => void;
-  onViewReputation?: () => void;
   welcomeNote?: string;
 };
 
@@ -44,16 +34,10 @@ export default function TopBar({
   carbonOffsetTons,
   treeCount,
   carbonEfficiency,
-  taskStats,
-  alertCount,
-  reputationScore,
-  reputationRank,
   onPlantSeed,
   onUploadReceipt,
   onFileComplaint,
   onRequestLoan,
-  onViewAlerts,
-  onViewReputation,
   welcomeNote,
 }: TopBarProps) {
   return (

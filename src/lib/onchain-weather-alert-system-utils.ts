@@ -29,3 +29,24 @@ export function createWeatherAlert(
     txHash: '',
   };
 }
+
+export function acknowledgeAlert(
+  alert: WeatherAlert
+): WeatherAlert {
+  return {
+    ...alert,
+    status: 'acknowledged',
+  };
+}
+
+export function getActiveAlerts(
+  alerts: WeatherAlert[]
+): WeatherAlert[] {
+  return alerts.filter((a) => a.status === 'active');
+}
+
+export function getCriticalAlerts(
+  alerts: WeatherAlert[]
+): WeatherAlert[] {
+  return alerts.filter((a) => a.severity === 'critical' && a.status === 'active');
+}

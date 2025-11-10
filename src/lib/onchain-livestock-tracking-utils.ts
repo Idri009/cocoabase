@@ -26,3 +26,26 @@ export function registerLivestock(
     txHash: '',
   };
 }
+
+export function updateLivestockStatus(
+  livestock: Livestock,
+  status: Livestock['status']
+): Livestock {
+  return {
+    ...livestock,
+    status,
+  };
+}
+
+export function getHealthyLivestock(
+  livestock: Livestock[]
+): Livestock[] {
+  return livestock.filter((l) => l.status === 'healthy');
+}
+
+export function getLivestockByType(
+  livestock: Livestock[],
+  animalType: string
+): Livestock[] {
+  return livestock.filter((l) => l.animalType === animalType);
+}

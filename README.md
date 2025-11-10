@@ -955,6 +955,28 @@ The codebase includes comprehensive utility libraries optimized for onchain oper
 ### Data Management
 - **`usePagination`**: Pagination logic for onchain records
 
+### Advanced Onchain Features (Powered by Reown)
+- **`useOnchainAuction`**: Auction system for NFT trading with Reown wallet integration
+- **`useOnchainBounty`**: Bounty system for task rewards with Reown wallet integration
+- **`useOnchainCrowdfunding`**: Crowdfunding system for project funding with Reown wallet integration
+- **`useOnchainDerivatives`**: Derivatives trading for commodities with Reown wallet integration
+- **`useOnchainFractionalization`**: NFT fractionalization for shared ownership with Reown wallet integration
+- **`useOnchainGovernance`**: Governance system for proposals and voting with Reown wallet integration
+- **`useOnchainIdentity`**: Decentralized identity management with Reown wallet integration
+- **`useOnchainLending`**: Lending protocol with collateral management and Reown wallet integration
+- **`useOnchainLiquidation`**: Liquidation system for undercollateralized positions with Reown wallet integration
+- **`useOnchainMatching`**: Order matching system for token trading with Reown wallet integration
+- **`useOnchainMerkle`**: Merkle tree proof generation and verification with Reown wallet integration
+- **`useOnchainNFTMarketplace`**: NFT marketplace for listing and trading with Reown wallet integration
+- **`useOnchainOptions`**: Options trading for call/put options with Reown wallet integration
+- **`useOnchainPaymentStream`**: Payment streaming for recurring payments with Reown wallet integration
+- **`useOnchainPriceFeed`**: Price feed oracle for real-time price updates with Reown wallet integration
+- **`useOnchainRental`**: Asset rental system for NFT rentals with Reown wallet integration
+- **`useOnchainSettlement`**: Settlement system for peer-to-peer transactions with Reown wallet integration
+- **`useOnchainSwap`**: Token swapping with slippage protection and Reown wallet integration
+- **`useOnchainTokenization`**: Asset tokenization for real-world assets with Reown wallet integration
+- **`useOnchainZKProof`**: Zero-knowledge proof generation and verification with Reown wallet integration
+
 ### General Hooks (from `hooks.ts`)
 - **`usePrevious`**: Get previous value
 - **`useDebounce`**: Debounce value changes for onchain queries

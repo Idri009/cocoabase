@@ -1,5 +1,10 @@
 import { type Address } from 'viem';
 
+/**
+ * Onchain limit order utilities
+ * Limit order system for token trading
+ */
+
 export interface LimitOrder {
   id: bigint;
   maker: Address;
@@ -7,8 +12,8 @@ export interface LimitOrder {
   tokenOut: Address;
   amountIn: bigint;
   limitPrice: bigint;
-  status: 'open' | 'filled' | 'cancelled' | 'expired';
   expiresAt: bigint;
+  filled: bigint;
 }
 
 export function createLimitOrder(
@@ -26,24 +31,7 @@ export function createLimitOrder(
     tokenOut,
     amountIn,
     limitPrice,
-    status: 'open',
     expiresAt,
+    filled: BigInt(0),
   };
 }
-
-export function fillLimitOrder(
-  order: LimitOrder,
-  currentPrice: bigint,
-  currentTime: bigint
-): LimitOrder | null {
-  if (order.status !== 'open') return null;
-  if (currentTime > order.expiresAt) return null;
-  if (currentPrice < order.limitPrice) return null;
-  return { ...order, status: 'filled' };
-}
-
-export function cancelLimitOrder(order: LimitOrder): LimitOrder | null {
-  if (order.status !== 'open') return null;
-  return { ...order, status: 'cancelled' };
-}
-

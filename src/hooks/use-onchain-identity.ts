@@ -3,10 +3,11 @@ import { useAccount } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createIdentity,
-  issueCredential,
-  verifyCredential,
+  addCredential,
+  verifyIdentity,
   updateReputation,
   type DecentralizedIdentity,
+  type Credential,
 } from '@/lib/onchain-identity-utils';
 
 export function useOnchainIdentity() {
@@ -17,27 +18,36 @@ export function useOnchainIdentity() {
     if (!address) throw new Error('Wallet not connected');
     const newIdentity = createIdentity(address);
     setIdentity(newIdentity);
-    return newIdentity;
+    console.log('Initializing identity:', newIdentity);
   };
 
-  const addCredential = (
-    issuer: Address,
-    credentialType: string,
-    data: string,
-    expiresAt?: bigint
-  ) => {
+  const addIdentityCredential = (credential: Credential) => {
     if (!identity) throw new Error('Identity not initialized');
-    const updated = issueCredential(identity, issuer, credentialType, data, expiresAt);
+    const updated = addCredential(identity, credential);
     setIdentity(updated);
+    console.log('Adding credential:', credential);
+  };
+
+  const verifyIdentityStatus = () => {
+    if (!identity) throw new Error('Identity not initialized');
+    const updated = verifyIdentity(identity);
+    setIdentity(updated);
+    console.log('Verifying identity:', updated);
+  };
+
+  const updateIdentityReputation = (score: number) => {
+    if (!identity) throw new Error('Identity not initialized');
+    const updated = updateReputation(identity, score);
+    setIdentity(updated);
+    console.log('Updating reputation:', updated);
   };
 
   return {
     identity,
     initializeIdentity,
-    addCredential,
-    verifyCredential,
-    updateReputation,
+    addIdentityCredential,
+    verifyIdentityStatus,
+    updateIdentityReputation,
     address,
   };
 }
-

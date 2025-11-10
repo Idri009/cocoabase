@@ -83,3 +83,10 @@ export function validateCollateralAmount(
 ): boolean {
   return amount > minAmount;
 }
+
+export function calculateMaxLoan(
+  collateral: Collateral,
+  ltv: number = 80
+): bigint {
+  return (collateral.value * BigInt(ltv)) / BigInt(100);
+}

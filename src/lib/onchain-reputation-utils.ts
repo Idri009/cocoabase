@@ -30,3 +30,20 @@ export function calculateReputationScore(
   return plantationScore + harvestScore + carbonScore + txScore;
 }
 
+/**
+ * Get reputation level from score
+ */
+export function getReputationLevel(score: number): ReputationScore['level'] {
+  if (score >= 1000) return 'platinum';
+  if (score >= 500) return 'gold';
+  if (score >= 200) return 'silver';
+  return 'bronze';
+}
+
+/**
+ * Calculate reputation boost from achievements
+ */
+export function calculateReputationBoost(achievements: number): number {
+  return Math.min(achievements * 5, 50);
+}
+

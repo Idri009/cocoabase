@@ -85,3 +85,11 @@ export function calculatePriceImpact(
   if (reserveIn === BigInt(0)) return 0;
   return (Number(amountIn) / Number(reserveIn)) * 100;
 }
+
+export function calculateSlippage(
+  expectedOut: bigint,
+  actualOut: bigint
+): number {
+  if (expectedOut === BigInt(0)) return 0;
+  return Math.abs(Number(expectedOut - actualOut) / Number(expectedOut)) * 100;
+}

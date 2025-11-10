@@ -43,3 +43,18 @@ export function compareAddresses(
   return addr1.toLowerCase() === addr2.toLowerCase();
 }
 
+/**
+ * Verify Ethereum address checksum
+ */
+export function isValidChecksumAddress(address: string): boolean {
+  // Simplified - in production use proper checksum validation
+  return verifyAddress(address);
+}
+
+/**
+ * Format address for display
+ */
+export function formatAddress(address: Address, chars: number = 4): string {
+  return `${address.slice(0, chars + 2)}...${address.slice(-chars)}`;
+}
+

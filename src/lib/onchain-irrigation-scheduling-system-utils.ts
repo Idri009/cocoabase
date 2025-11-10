@@ -26,3 +26,20 @@ export function scheduleIrrigation(
     txHash: '',
   };
 }
+
+export function completeIrrigation(
+  schedule: IrrigationSchedule
+): IrrigationSchedule {
+  return {
+    ...schedule,
+    status: 'completed',
+  };
+}
+
+export function getTotalWaterScheduled(
+  schedules: IrrigationSchedule[]
+): bigint {
+  return schedules
+    .filter((s) => s.status === 'scheduled')
+    .reduce((total, s) => total + s.waterAmount, BigInt(0));
+}

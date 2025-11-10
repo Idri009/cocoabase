@@ -1,30 +1,47 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain permissions utilities
- * Role-based access control and permission checks
- */
-
 export interface Permission {
-  address: Address;
-  role: 'owner' | 'admin' | 'operator' | 'viewer';
-  granted: boolean;
+  id: string;
+  grantee: Address;
+  contract: Address;
+  function: string;
+  allowed: boolean;
 }
 
-/**
- * Check if address has permission
- */
+export function createPermission(
+  grantee: Address,
+  contract: Address,
+  functionName: string,
+  allowed: boolean
+): Permission {
+  return {
+    id: `${contract}-${grantee}-${functionName}`,
+    grantee,
+    contract,
+    function: functionName,
+    allowed,
+  };
+}
+
+export function grantPermission(permission: Permission): Permission {
+  return { ...permission, allowed: true };
+}
+
+export function revokePermission(permission: Permission): Permission {
+  return { ...permission, allowed: false };
+}
+
 export function hasPermission(
   permissions: Permission[],
-  address: Address,
-  requiredRole: Permission['role']
+  grantee: Address,
+  contract: Address,
+  functionName: string
 ): boolean {
-  const perm = permissions.find(p => 
-    p.address.toLowerCase() === address.toLowerCase()
+  const permission = permissions.find(
+    (p) =>
+      p.grantee === grantee &&
+      p.contract === contract &&
+      p.function === functionName
   );
-  if (!perm || !perm.granted) return false;
-  
-  const roleHierarchy = { owner: 4, admin: 3, operator: 2, viewer: 1 };
-  return roleHierarchy[perm.role] >= roleHierarchy[requiredRole];
+  return permission?.allowed || false;
 }
-

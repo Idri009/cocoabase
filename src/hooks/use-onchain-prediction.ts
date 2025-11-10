@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createPredictionMarket,
@@ -8,6 +8,7 @@ import {
 
 export function useOnchainPrediction() {
   const { address } = useAccount();
+  const { writeContract } = useWriteContract();
   const [markets, setMarkets] = useState<PredictionMarket[]>([]);
 
   const placePrediction = async (
@@ -15,10 +16,14 @@ export function useOnchainPrediction() {
     outcome: 'yes' | 'no',
     amount: bigint
   ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
-    console.log('Placing prediction:', { marketId, outcome, amount });
+    if (!address) throw new Error('Wallet not connected via Reown');
+    await writeContract({
+      address: '0x0000000000000000000000000000000000000000' as Address,
+      abi: [],
+      functionName: 'placePrediction',
+      args: [marketId, outcome, amount],
+    });
   };
 
   return { markets, placePrediction, address };
 }
-

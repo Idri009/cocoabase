@@ -46,3 +46,14 @@ export function transferLand(
     owner: newOwner,
   };
 }
+
+export function verifyLandOwnership(
+  parcel: LandParcel,
+  address: Address
+): boolean {
+  return parcel.owner.toLowerCase() === address.toLowerCase();
+}
+
+export function getLandArea(parcel: LandParcel): bigint {
+  return parcel.area;
+}

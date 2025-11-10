@@ -24,3 +24,34 @@ export function createPriceOracle(
   };
 }
 
+export function updateOraclePrice(
+  oracle: PriceOracle,
+  newPrice: bigint,
+  confidence: number
+): PriceOracle {
+  return {
+    ...oracle,
+    price: newPrice,
+    confidence,
+    lastUpdated: BigInt(Date.now()),
+  };
+}
+
+export function isOracleStale(
+  oracle: PriceOracle,
+  maxAge: bigint,
+  currentTime: bigint
+): boolean {
+  return currentTime - oracle.lastUpdated > maxAge;
+}
+
+export function calculatePriceDeviation(
+  oracle: PriceOracle,
+  marketPrice: bigint
+): number {
+  if (oracle.price === BigInt(0)) return 0;
+  const diff = oracle.price > marketPrice
+    ? oracle.price - marketPrice
+    : marketPrice - oracle.price;
+  return Number((diff * BigInt(10000)) / oracle.price) / 100;
+}

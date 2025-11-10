@@ -29,3 +29,18 @@ export function allocateWaterRight(
     txHash: '',
   };
 }
+
+export function recordWaterUsage(
+  right: WaterRight,
+  amount: bigint
+): WaterRight | null {
+  if (right.usage + amount > right.allocation) return null;
+  return {
+    ...right,
+    usage: right.usage + amount,
+  };
+}
+
+export function getRemainingAllocation(right: WaterRight): bigint {
+  return right.allocation - right.usage;
+}

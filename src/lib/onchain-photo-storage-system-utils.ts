@@ -23,3 +23,20 @@ export function storePhoto(
     txHash: '',
   };
 }
+
+export function getPhotosByPlantation(
+  photos: Photo[],
+  plantationId: bigint
+): Photo[] {
+  return photos
+    .filter((p) => p.plantationId === plantationId)
+    .sort((a, b) => (a.uploadedDate > b.uploadedDate ? -1 : 1));
+}
+
+export function getRecentPhotos(
+  photos: Photo[],
+  days: number
+): Photo[] {
+  const cutoff = BigInt(Date.now() - days * 24 * 60 * 60 * 1000);
+  return photos.filter((p) => p.uploadedDate >= cutoff);
+}

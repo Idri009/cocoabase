@@ -30,3 +30,20 @@ export function createWeatherDerivative(
     txHash: '',
   };
 }
+
+export function isDerivativeExpired(
+  derivative: WeatherDerivative,
+  currentTime: bigint
+): boolean {
+  return currentTime > derivative.expiresAt;
+}
+
+export function calculatePayout(
+  derivative: WeatherDerivative,
+  actualValue: bigint
+): bigint {
+  if (actualValue >= derivative.threshold) {
+    return derivative.payout;
+  }
+  return BigInt(0);
+}

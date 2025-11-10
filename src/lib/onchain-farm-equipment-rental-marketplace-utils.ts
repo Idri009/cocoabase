@@ -29,3 +29,32 @@ export function listEquipmentForRental(
     txHash: '',
   };
 }
+
+export function rentEquipment(
+  rental: EquipmentRental,
+  renter: Address,
+  startDate: bigint,
+  endDate: bigint
+): EquipmentRental | null {
+  if (rental.status !== 'available') return null;
+  return {
+    ...rental,
+    renter,
+    startDate,
+    endDate,
+    status: 'rented',
+  };
+}
+
+export function getAvailableEquipment(
+  rentals: EquipmentRental[]
+): EquipmentRental[] {
+  return rentals.filter((r) => r.status === 'available');
+}
+
+export function calculateRentalCost(
+  rental: EquipmentRental,
+  days: number
+): bigint {
+  return rental.dailyRate * BigInt(days);
+}

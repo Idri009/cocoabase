@@ -45,3 +45,20 @@ export function decodeEventData(
   };
 }
 
+/**
+ * Validate contract address format
+ */
+export function isValidContractAddress(address: string): boolean {
+  return /^0x[a-fA-F0-9]{40}$/.test(address);
+}
+
+/**
+ * Get contract interface ID
+ */
+export function getInterfaceId(selectors: string[]): string {
+  // Simplified - XOR all function selectors
+  return selectors.reduce((acc, sel) => {
+    return (parseInt(acc, 16) ^ parseInt(sel, 16)).toString(16);
+  }, '0x0');
+}
+

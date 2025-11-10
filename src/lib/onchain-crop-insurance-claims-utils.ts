@@ -28,3 +28,13 @@ export function submitClaim(
     txHash: '',
   };
 }
+
+export function approveClaim(
+  claim: InsuranceClaim,
+  approver: Address
+): InsuranceClaim {
+  return {
+    ...claim,
+    status: 'approved',
+  };
+}

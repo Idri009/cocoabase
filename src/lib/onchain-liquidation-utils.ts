@@ -32,3 +32,21 @@ export function calculateLiquidationBonus(
   return (collateral * bonusPercent) / BigInt(10000);
 }
 
+export function executeLiquidation(
+  liquidatedUser: Address,
+  liquidator: Address,
+  collateral: bigint,
+  debt: bigint
+): Liquidation {
+  const bonus = calculateLiquidationBonus(collateral);
+  return {
+    id: BigInt(0),
+    liquidatedUser,
+    liquidator,
+    collateral,
+    debt,
+    bonus,
+    timestamp: BigInt(Date.now()),
+  };
+}
+

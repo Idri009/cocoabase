@@ -29,3 +29,25 @@ export function recordQualityAssurance(
     txHash: '',
   };
 }
+
+export function getQualityByPlantation(
+  records: QualityAssurance[],
+  plantationId: bigint
+): QualityAssurance[] {
+  return records.filter((r) => r.plantationId === plantationId);
+}
+
+export function calculateAverageQuality(
+  records: QualityAssurance[]
+): number {
+  if (records.length === 0) return 0;
+  const total = records.reduce((sum, r) => sum + r.qualityScore, 0);
+  return total / records.length;
+}
+
+export function getHighQualityHarvests(
+  records: QualityAssurance[],
+  minScore: number
+): QualityAssurance[] {
+  return records.filter((r) => r.qualityScore >= minScore);
+}

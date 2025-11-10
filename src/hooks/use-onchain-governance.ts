@@ -16,3 +16,19 @@ export function useOnchainGovernance() {
   const [isCreating, setIsCreating] = useState(false);
   const [isVoting, setIsVoting] = useState(false);
 
+  const createNewProposal = async (
+    title: string,
+    description: string,
+    duration: bigint,
+    quorum: bigint
+  ): Promise<void> => {
+    if (!address) throw new Error('Wallet not connected');
+    setIsCreating(true);
+    try {
+      const proposal = createProposal(address, title, description, duration, quorum);
+      console.log('Creating proposal:', proposal);
+    } finally {
+      setIsCreating(false);
+    }
+  };
+

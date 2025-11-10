@@ -21,3 +21,35 @@ export function createAllowlist(
     maxSize,
   };
 }
+
+export function addToAllowlist(
+  allowlist: Allowlist,
+  address: Address
+): Allowlist | null {
+  if (allowlist.addresses.size >= allowlist.maxSize) return null;
+  const newAddresses = new Set(allowlist.addresses);
+  newAddresses.add(address);
+  return {
+    ...allowlist,
+    addresses: newAddresses,
+  };
+}
+
+export function removeFromAllowlist(
+  allowlist: Allowlist,
+  address: Address
+): Allowlist {
+  const newAddresses = new Set(allowlist.addresses);
+  newAddresses.delete(address);
+  return {
+    ...allowlist,
+    addresses: newAddresses,
+  };
+}
+
+export function isAllowed(
+  allowlist: Allowlist,
+  address: Address
+): boolean {
+  return allowlist.addresses.has(address);
+}

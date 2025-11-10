@@ -1,16 +1,16 @@
 # 🌱 Cocoa Chain – Onchain Plantation Management Protocol
 
-**Cocoa Chain** is a decentralized, wallet-connected dApp for minting, tracking, and managing onchain cocoa plantations as verifiable digital assets. Built on Next.js with full Web3 integration, every plantation is tokenized, every transaction is onchain, and every harvest is immutable.
+**Cocoa Chain** is a decentralized, wallet-connected dApp for minting, tracking, and managing onchain cocoa plantations as verifiable digital assets. Built on Next.js with **Reown AppKit** (WalletConnect) integration, every plantation is tokenized, every transaction is onchain, and every harvest is immutable.
 
 ## 🔗 Onchain Architecture
 
-Cocoa Chain leverages blockchain technology to create a transparent, verifiable, and decentralized plantation management system. Each plantation is minted as an onchain asset, with all operations recorded immutably on the blockchain.
+Cocoa Chain leverages blockchain technology to create a transparent, verifiable, and decentralized plantation management system. Each plantation is minted as an onchain asset, with all operations recorded immutably on the blockchain. **Powered by Reown AppKit**, the dApp provides seamless wallet connectivity across 300+ wallets.
 
 ### Core Web3 Stack
 
 - **Next.js 16** (App Router) – Modern React framework
-- **Reown AppKit** (WalletConnect) – Multi-wallet connection layer
-- **wagmi + viem** – Ethereum interaction hooks and utilities
+- **Reown AppKit** (WalletConnect) – **Primary wallet connection layer** - Multi-wallet support via Reown
+- **wagmi + viem** – Ethereum interaction hooks and utilities (integrated with Reown)
 - **Zustand** – Decentralized state management
 - **Framer Motion** – Smooth onchain transaction animations
 - **TanStack Query** – Web3 data caching and synchronization
@@ -21,8 +21,8 @@ Cocoa Chain leverages blockchain technology to create a transparent, verifiable,
 
 - Node.js 18+
 - npm 9+
-- Web3 Wallet (MetaMask, WalletConnect, Coinbase Wallet, etc.)
-- Reown (WalletConnect) Project ID – [Get one here](https://reown.com/)
+- **Reown AppKit Project ID** – [Get one here](https://reown.com/) - **Required for wallet connectivity**
+- Web3 Wallet (Reown supports 300+ wallets including MetaMask, WalletConnect, Coinbase Wallet, etc.)
 
 ### Environment Setup
 
@@ -40,11 +40,13 @@ Cocoa Chain leverages blockchain technology to create a transparent, verifiable,
    cp env.example .env.local
    ```
 
-3. Add your Reown Project ID:
+3. Add your **Reown AppKit Project ID** (required for wallet connection):
 
 ```bash
    NEXT_PUBLIC_PROJECT_ID=your_reown_project_id_here
 ```
+
+   **Note:** Without a valid Reown Project ID, the dApp will not be able to connect wallets. Get your Project ID from [reown.com](https://reown.com/).
 
 4. Start the dApp:
 
@@ -52,7 +54,9 @@ Cocoa Chain leverages blockchain technology to create a transparent, verifiable,
    npm run dev
    ```
 
-5. Connect your wallet at [http://localhost:3000](http://localhost:3000/)
+5. **Connect your wallet via Reown** at [http://localhost:3000](http://localhost:3000/)
+   
+   The dApp uses **Reown AppKit** to provide seamless wallet connectivity. Click "Connect Wallet" to see all supported wallets.
 
 ## 🌐 Onchain Features
 
@@ -532,10 +536,12 @@ Cocoa Chain leverages blockchain technology to create a transparent, verifiable,
 - **Framer Motion** – Smooth animations for onchain transaction states
 
 ### Web3 & Blockchain
-- **Reown AppKit** (WalletConnect) – Multi-wallet connection layer
-- **wagmi** – React hooks for Ethereum interactions
+- **Reown AppKit** (WalletConnect) – **Primary wallet connection layer** - Multi-wallet support via Reown
+- **wagmi** – React hooks for Ethereum interactions (configured with Reown)
 - **viem** – TypeScript Ethereum library
 - **TanStack Query** – Web3 data caching and synchronization
+- **Reown Wallet Utils** – Custom utilities for Reown wallet integration (`src/lib/reown-wallet-utils.ts`)
+- **useReownWallet Hook** – React hook for Reown wallet connection (`src/hooks/use-reown-wallet.ts`)
 
 ### State Management
 - **Zustand** – Lightweight state management for onchain data
@@ -844,16 +850,33 @@ src/
 - `npm run start` – Run the compiled dApp
 - `npm run lint` – Run ESLint checks
 
-## 🔗 Connect Your Wallet
+## 🔗 Connect Your Wallet with Reown
 
-Cocoa Chain requires a Web3 wallet to interact with onchain features. Supported wallets include:
+Cocoa Chain uses **Reown AppKit** (formerly WalletConnect) as the primary wallet connection layer. All onchain features require a connected wallet via Reown.
 
-- MetaMask
-- WalletConnect
-- Coinbase Wallet
-- Trust Wallet
-- Rainbow Wallet
-- And 300+ more via WalletConnect
+### Supported Wallets (via Reown AppKit)
+
+Reown AppKit provides access to **300+ wallets** including:
+
+- **MetaMask** - Desktop and mobile
+- **WalletConnect** - Universal wallet connector
+- **Coinbase Wallet** - Coinbase's official wallet
+- **Trust Wallet** - Mobile-first wallet
+- **Rainbow Wallet** - Beautiful Ethereum wallet
+- **Argent** - Smart contract wallet
+- **Ledger** - Hardware wallet support
+- **Trezor** - Hardware wallet support
+- **And 290+ more wallets** - Full list at [reown.com](https://reown.com/)
+
+### Reown Wallet Integration
+
+The dApp includes dedicated Reown wallet utilities:
+
+- **`useReownWallet` hook** - React hook for Reown wallet connection
+- **`reown-wallet-utils.ts`** - Reown-specific wallet utilities
+- **Session management** - Automatic Reown session handling
+- **Multi-wallet support** - Connect and manage multiple wallets via Reown
+- **Chain switching** - Seamless chain switching with Reown
 
 ## 🌐 Onchain Benefits
 

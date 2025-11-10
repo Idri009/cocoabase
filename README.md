@@ -2,6 +2,10 @@
 
 **Cocoa Chain** is a decentralized, wallet-connected dApp for minting, tracking, and managing onchain cocoa plantations as verifiable digital assets. Built on Next.js with **Reown AppKit** (WalletConnect) integration, every plantation is tokenized, every transaction is onchain, and every harvest is immutable.
 
+**🚀 80+ Onchain Features Powered by Reown Wallet**
+
+All onchain features require **Reown AppKit** wallet connection. The dApp supports 300+ wallets through Reown, providing seamless Web3 connectivity for all operations.
+
 ## 🔗 Onchain Architecture
 
 Cocoa Chain leverages blockchain technology to create a transparent, verifiable, and decentralized plantation management system. Each plantation is minted as an onchain asset, with all operations recorded immutably on the blockchain. **Powered by Reown AppKit**, the dApp provides seamless wallet connectivity across 300+ wallets.

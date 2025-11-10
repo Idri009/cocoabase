@@ -26,3 +26,29 @@ export function createInvoice(
     txHash: '',
   };
 }
+
+export function markInvoicePaid(
+  invoice: Invoice
+): Invoice {
+  return {
+    ...invoice,
+    status: 'paid',
+  };
+}
+
+export function getOverdueInvoices(
+  invoices: Invoice[],
+  currentTime: bigint
+): Invoice[] {
+  return invoices.filter(
+    (i) => i.status === 'pending' && currentTime > i.dueDate
+  );
+}
+
+export function getTotalInvoiceAmount(
+  invoices: Invoice[]
+): bigint {
+  return invoices
+    .filter((i) => i.status === 'pending')
+    .reduce((total, i) => total + i.amount, BigInt(0));
+}

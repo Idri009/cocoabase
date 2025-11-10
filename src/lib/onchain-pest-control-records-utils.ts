@@ -26,3 +26,18 @@ export function recordPestControl(
     txHash: '',
   };
 }
+
+export function getPestRecordsByType(
+  records: PestControlRecord[],
+  pestType: string
+): PestControlRecord[] {
+  return records.filter((r) => r.pestType === pestType);
+}
+
+export function getRecentTreatments(
+  records: PestControlRecord[],
+  days: number
+): PestControlRecord[] {
+  const cutoff = BigInt(Date.now() - days * 24 * 60 * 60 * 1000);
+  return records.filter((r) => r.treatmentDate >= cutoff);
+}

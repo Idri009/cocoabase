@@ -25,3 +25,24 @@ export function createSupplyOrder(
     txHash: '',
   };
 }
+
+export function markOrderDelivered(
+  order: SupplyOrder
+): SupplyOrder {
+  return {
+    ...order,
+    status: 'delivered',
+  };
+}
+
+export function getPendingOrders(
+  orders: SupplyOrder[]
+): SupplyOrder[] {
+  return orders.filter((o) => o.status === 'pending');
+}
+
+export function getTotalOrderedQuantity(
+  orders: SupplyOrder[]
+): bigint {
+  return orders.reduce((total, o) => total + o.quantity, BigInt(0));
+}

@@ -32,3 +32,23 @@ export function createLease(
     txHash: '',
   };
 }
+
+export function isLeaseActive(
+  lease: EquipmentLease,
+  currentTime: bigint
+): boolean {
+  return (
+    lease.status === 'active' &&
+    currentTime >= lease.startDate &&
+    currentTime <= lease.endDate
+  );
+}
+
+export function calculateTotalRent(
+  lease: EquipmentLease,
+  currentTime: bigint
+): bigint {
+  if (currentTime < lease.startDate) return BigInt(0);
+  const months = Number((currentTime - lease.startDate) / BigInt(30 * 24 * 60 * 60 * 1000));
+  return lease.monthlyRent * BigInt(Math.max(1, months));
+}

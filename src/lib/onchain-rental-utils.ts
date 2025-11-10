@@ -22,3 +22,10 @@ export function calculateRentalCost(
 ): bigint {
   return pricePerDay * BigInt(days);
 }
+
+export function isRentalActive(
+  rental: Rental,
+  currentTime: bigint
+): boolean {
+  return rental.active && rental.lessee !== null;
+}

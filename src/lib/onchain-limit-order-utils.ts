@@ -35,3 +35,12 @@ export function createLimitOrder(
     filled: BigInt(0),
   };
 }
+
+export function fillLimitOrder(
+  order: LimitOrder,
+  fillAmount: bigint,
+  currentTime: bigint
+): LimitOrder {
+  if (currentTime > order.expiresAt) return order;
+  return { ...order, filled: order.filled + fillAmount };
+}

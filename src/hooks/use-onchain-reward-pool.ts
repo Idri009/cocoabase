@@ -3,44 +3,44 @@ import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createRewardPool,
-  claimReward,
+  addParticipant,
+  distributeRewards,
   calculateRemainingRewards,
-  isRewardPoolActive,
   type RewardPool,
-  type RewardClaim,
 } from '@/lib/onchain-reward-pool-utils';
 
 export function useOnchainRewardPool() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   const [pools, setPools] = useState<RewardPool[]>([]);
-  const [claims, setClaims] = useState<RewardClaim[]>([]);
-  const [isClaiming, setIsClaiming] = useState(false);
+  const [isDistributing, setIsDistributing] = useState(false);
 
-  const claim = async (poolId: bigint, amount: bigint): Promise<void> => {
+  const distribute = async (
+    poolId: bigint,
+    recipient: Address,
+    amount: bigint
+  ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsClaiming(true);
+    setIsDistributing(true);
     try {
       const currentTime = BigInt(Date.now());
       const pool = pools.find((p) => p.id === poolId);
       if (!pool) throw new Error('Pool not found');
-      const result = claimReward(pool, address, amount, currentTime);
-      if (result) {
-        console.log('Claiming reward:', result);
+      const updated = distributeRewards(pool, recipient, amount, currentTime);
+      if (updated) {
+        console.log('Distributing rewards:', { poolId, recipient, amount });
       }
     } finally {
-      setIsClaiming(false);
+      setIsDistributing(false);
     }
   };
 
   return {
     pools,
-    claims,
-    claim,
+    distribute,
+    addParticipant,
     calculateRemainingRewards,
-    isRewardPoolActive,
-    isClaiming,
+    isDistributing,
     address,
   };
 }
-

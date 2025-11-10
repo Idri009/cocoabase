@@ -23,3 +23,10 @@ export function isValidBid(
 ): boolean {
   return bidAmount > auction.highestBid;
 }
+
+export function isAuctionEnded(
+  auction: Auction,
+  currentTime: bigint
+): boolean {
+  return currentTime >= auction.endTime;
+}

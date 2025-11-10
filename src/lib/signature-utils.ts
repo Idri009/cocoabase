@@ -35,3 +35,24 @@ export function createTypedDataDomain(
   return { name, version, chainId, verifyingContract };
 }
 
+/**
+ * Create plantation signature types
+ */
+export function createPlantationSignatureTypes(): Record<string, TypedDataField[]> {
+  return {
+    Plantation: [
+      { name: 'id', type: 'string' },
+      { name: 'location', type: 'string' },
+      { name: 'area', type: 'uint256' },
+      { name: 'stage', type: 'string' },
+    ],
+  };
+}
+
+/**
+ * Format signature for display
+ */
+export function formatSignature(signature: string): string {
+  return `${signature.slice(0, 10)}...${signature.slice(-8)}`;
+}
+

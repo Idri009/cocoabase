@@ -33,3 +33,21 @@ export function calculateSuccessRate(
   return (successful / total) * 100;
 }
 
+/**
+ * Calculate average gas price
+ */
+export function calculateAverageGasPrice(
+  gasPrices: bigint[]
+): bigint {
+  if (gasPrices.length === 0) return BigInt(0);
+  const sum = gasPrices.reduce((acc, price) => acc + price, BigInt(0));
+  return sum / BigInt(gasPrices.length);
+}
+
+/**
+ * Calculate total volume
+ */
+export function calculateTotalVolume(amounts: bigint[]): bigint {
+  return amounts.reduce((acc, amount) => acc + amount, BigInt(0));
+}
+

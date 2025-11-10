@@ -1,25 +1,23 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain allowlist utilities
- * Whitelist management and access control
- */
-
 export interface Allowlist {
+  id: bigint;
   name: string;
-  addresses: Address[];
-  merkleRoot?: string;
+  addresses: Set<Address>;
+  merkleRoot: string;
+  maxSize: number;
 }
 
-/**
- * Check if address is in allowlist
- */
-export function isAddressAllowed(
-  allowlist: Allowlist,
-  address: Address
-): boolean {
-  return allowlist.addresses.some(
-    addr => addr.toLowerCase() === address.toLowerCase()
-  );
+export function createAllowlist(
+  name: string,
+  merkleRoot: string,
+  maxSize: number
+): Allowlist {
+  return {
+    id: BigInt(0),
+    name,
+    addresses: new Set(),
+    merkleRoot,
+    maxSize,
+  };
 }
-

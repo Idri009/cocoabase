@@ -49,3 +49,20 @@ export function calculateInterest(
   return (principal * interestRate * duration) / (BigInt(365) * BigInt(10000));
 }
 
+export function repayLoan(loan: Loan, currentTime: bigint): Loan | null {
+  if (loan.status !== 'active') return null;
+  return {
+    ...loan,
+    status: 'repaid',
+  };
+}
+
+export function isLoanDefaulted(loan: Loan, currentTime: bigint): boolean {
+  return loan.status === 'active' && currentTime > loan.dueDate;
+}
+
+export function calculateTotalRepayment(loan: Loan): bigint {
+  const interest = calculateInterest(loan.principal, loan.interestRate, loan.duration);
+  return loan.principal + interest;
+}
+

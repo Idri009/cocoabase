@@ -33,3 +33,20 @@ export function calculateVotingPower(
   return tokenBalance * BigInt(multiplier);
 }
 
+/**
+ * Check if proposal passed
+ */
+export function isProposalPassed(proposal: Proposal): boolean {
+  return proposal.votesFor > proposal.votesAgainst && !proposal.executed;
+}
+
+/**
+ * Calculate quorum threshold
+ */
+export function calculateQuorum(
+  totalSupply: bigint,
+  quorumPercent: number = 4
+): bigint {
+  return (totalSupply * BigInt(quorumPercent)) / BigInt(100);
+}
+

@@ -29,3 +29,20 @@ export function createRotationPlan(
     txHash: '',
   };
 }
+
+export function activateRotation(
+  plan: CropRotationPlan,
+  currentTime: bigint
+): CropRotationPlan | null {
+  if (currentTime < plan.rotationDate) return null;
+  return {
+    ...plan,
+    status: 'active',
+  };
+}
+
+export function getPlannedRotations(
+  plans: CropRotationPlan[]
+): CropRotationPlan[] {
+  return plans.filter((p) => p.status === 'planned');
+}

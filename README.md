@@ -985,6 +985,28 @@ The codebase includes comprehensive utility libraries optimized for onchain oper
 - **`labor-utils.ts`**: Labor management utilities with onchain payment records
 - **`maintenance-utils.ts`**: Maintenance management utilities with onchain asset tracking
 
+### Agricultural Onchain Utilities (Powered by Reown)
+- **`onchain-land-registry-utils.ts`**: Land registry utilities with ownership verification and area tracking
+- **`onchain-crop-insurance-claims-utils.ts`**: Crop insurance claims utilities with claim submission and approval
+- **`onchain-supply-chain-tracking-utils.ts`**: Supply chain tracking utilities with stage advancement and filtering
+- **`onchain-carbon-credits-trading-utils.ts`**: Carbon credits trading utilities with minting and value calculation
+- **`onchain-seed-certification-utils.ts`**: Seed certification utilities with validity checking and expiry monitoring
+- **`onchain-harvest-certification-utils.ts`**: Harvest certification utilities with quality grading and quantity tracking
+- **`onchain-weather-derivatives-utils.ts`**: Weather derivatives utilities with payout calculation and expiration checking
+- **`onchain-price-oracles-utils.ts`**: Price oracle utilities with price updates and history tracking
+- **`onchain-cooperative-governance-utils.ts`**: Cooperative governance utilities with proposal creation and voting
+- **`onchain-equipment-leasing-utils.ts`**: Equipment leasing utilities with lease management and rent calculation
+- **`onchain-labor-contracts-utils.ts`**: Labor contract utilities with wage calculation and active contract filtering
+- **`onchain-fertilizer-tracking-utils.ts`**: Fertilizer tracking utilities with usage tracking and type filtering
+- **`onchain-pest-control-records-utils.ts`**: Pest control records utilities with treatment tracking and type filtering
+- **`onchain-water-rights-utils.ts`**: Water rights utilities with allocation management and usage recording
+- **`onchain-land-lease-agreements-utils.ts`**: Land lease agreements utilities with lease cancellation and duration calculation
+- **`onchain-crop-futures-utils.ts`**: Crop futures utilities with future filling and value calculation
+- **`onchain-trade-finance-utils.ts`**: Trade finance utilities with finance approval and interest calculation
+- **`onchain-quality-certification-utils.ts`**: Quality certification utilities with validity checking and grade filtering
+- **`onchain-farm-subsidy-claims-utils.ts`**: Farm subsidy claims utilities with claim approval and total amount calculation
+- **`onchain-agricultural-data-marketplace-utils.ts`**: Agricultural data marketplace utilities with listing cancellation and available listings filtering
+
 ### Risk & Performance
 - **`risk-utils.ts`**: Risk management utilities with onchain scoring
 - **`benchmark-utils.ts`**: Performance benchmarking utilities with onchain metrics

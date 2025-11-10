@@ -23,3 +23,17 @@ export function recordCompliance(
     txHash: '',
   };
 }
+
+export function getNonCompliantRecords(
+  records: ComplianceRecord[]
+): ComplianceRecord[] {
+  return records.filter((r) => r.status === 'non-compliant');
+}
+
+export function getComplianceRate(
+  records: ComplianceRecord[]
+): number {
+  if (records.length === 0) return 0;
+  const compliant = records.filter((r) => r.status === 'compliant').length;
+  return (compliant / records.length) * 100;
+}

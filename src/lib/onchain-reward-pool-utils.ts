@@ -9,6 +9,12 @@ export interface RewardPool {
   endTime: bigint;
 }
 
+export interface RewardClaim {
+  claimant: Address;
+  amount: bigint;
+  claimedAt: bigint;
+}
+
 export function createRewardPool(
   rewardToken: Address,
   totalRewards: bigint,
@@ -25,3 +31,34 @@ export function createRewardPool(
   };
 }
 
+export function claimReward(
+  pool: RewardPool,
+  claimant: Address,
+  amount: bigint,
+  currentTime: bigint
+): { pool: RewardPool; claim: RewardClaim } | null {
+  if (currentTime < pool.startTime || currentTime > pool.endTime) return null;
+  if (pool.distributed + amount > pool.totalRewards) return null;
+  return {
+    pool: {
+      ...pool,
+      distributed: pool.distributed + amount,
+    },
+    claim: {
+      claimant,
+      amount,
+      claimedAt: currentTime,
+    },
+  };
+}
+
+export function calculateRemainingRewards(pool: RewardPool): bigint {
+  return pool.totalRewards - pool.distributed;
+}
+
+export function isRewardPoolActive(
+  pool: RewardPool,
+  currentTime: bigint
+): boolean {
+  return currentTime >= pool.startTime && currentTime <= pool.endTime;
+}

@@ -83,3 +83,10 @@ export function getRequiredConfirmations(
 ): number {
   return Math.max(0, tx.threshold - tx.confirmations.length);
 }
+
+export function hasConfirmed(
+  tx: MultisigTransaction,
+  owner: Address
+): boolean {
+  return tx.confirmations.includes(owner);
+}

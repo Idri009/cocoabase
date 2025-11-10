@@ -56,3 +56,28 @@ export function hasBridgeRoute(
   return fromChain !== toChain;
 }
 
+/**
+ * Calculate total bridge cost including fees
+ */
+export function calculateTotalBridgeCost(
+  amount: bigint,
+  feePercent: number = 0.1
+): bigint {
+  return amount + calculateBridgeFee(amount, feePercent);
+}
+
+/**
+ * Format bridge transaction status
+ */
+export function formatBridgeStatus(
+  status: BridgeTransaction['status']
+): string {
+  const statusMap = {
+    pending: 'Pending',
+    processing: 'Processing',
+    completed: 'Completed',
+    failed: 'Failed',
+  };
+  return statusMap[status];
+}
+

@@ -26,3 +26,20 @@ export function createYieldForecast(
     txHash: '',
   };
 }
+
+export function getForecastsByPlantation(
+  forecasts: YieldForecast[],
+  plantationId: bigint
+): YieldForecast[] {
+  return forecasts
+    .filter((f) => f.plantationId === plantationId)
+    .sort((a, b) => (a.forecastDate > b.forecastDate ? -1 : 1));
+}
+
+export function calculateAverageYield(
+  forecasts: YieldForecast[]
+): bigint {
+  if (forecasts.length === 0) return BigInt(0);
+  const total = forecasts.reduce((sum, f) => sum + f.predictedYield, BigInt(0));
+  return total / BigInt(forecasts.length);
+}

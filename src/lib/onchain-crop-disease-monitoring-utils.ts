@@ -28,3 +28,24 @@ export function recordDisease(
     txHash: '',
   };
 }
+
+export function markDiseaseTreated(
+  record: DiseaseRecord
+): DiseaseRecord {
+  return {
+    ...record,
+    status: 'treated',
+  };
+}
+
+export function getActiveDiseases(
+  records: DiseaseRecord[]
+): DiseaseRecord[] {
+  return records.filter((r) => r.status === 'active');
+}
+
+export function getCriticalDiseases(
+  records: DiseaseRecord[]
+): DiseaseRecord[] {
+  return records.filter((r) => r.severity === 'critical' && r.status === 'active');
+}

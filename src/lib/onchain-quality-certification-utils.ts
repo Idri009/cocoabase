@@ -30,3 +30,17 @@ export function certifyQuality(
     txHash: '',
   };
 }
+
+export function isQualityCertValid(
+  cert: QualityCertification,
+  currentTime: bigint
+): boolean {
+  return currentTime < cert.expiresAt;
+}
+
+export function getCertificationsByGrade(
+  certs: QualityCertification[],
+  grade: string
+): QualityCertification[] {
+  return certs.filter((c) => c.qualityGrade === grade);
+}

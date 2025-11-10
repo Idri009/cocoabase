@@ -38,3 +38,42 @@ export function recordWaterQualityTest(
     txHash: '',
   };
 }
+
+export function getSafeWaterTests(
+  tests: WaterQualityTest[]
+): WaterQualityTest[] {
+  return tests.filter((t) => t.status === 'safe');
+}
+
+export function getUnsafeWaterTests(
+  tests: WaterQualityTest[]
+): WaterQualityTest[] {
+  return tests.filter((t) => t.status === 'unsafe');
+}
+
+export function getRecentTests(
+  tests: WaterQualityTest[],
+  days: number
+): WaterQualityTest[] {
+  const cutoff = BigInt(Date.now() - days * 24 * 60 * 60 * 1000);
+  return tests.filter((t) => t.testDate >= cutoff);
+}
+
+export function calculateAverageQuality(
+  tests: WaterQualityTest[]
+): { pH: number; turbidity: number; dissolvedOxygen: number } {
+  if (tests.length === 0) return { pH: 0, turbidity: 0, dissolvedOxygen: 0 };
+  const total = tests.reduce(
+    (acc, t) => ({
+      pH: acc.pH + t.pH,
+      turbidity: acc.turbidity + t.turbidity,
+      dissolvedOxygen: acc.dissolvedOxygen + t.dissolvedOxygen,
+    }),
+    { pH: 0, turbidity: 0, dissolvedOxygen: 0 }
+  );
+  return {
+    pH: total.pH / tests.length,
+    turbidity: total.turbidity / tests.length,
+    dissolvedOxygen: total.dissolvedOxygen / tests.length,
+  };
+}

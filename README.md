@@ -12,7 +12,6 @@ Cocoa Chain leverages blockchain technology to create a transparent, verifiable,
 - **Reown AppKit** (WalletConnect) – **Primary wallet connection layer** - Multi-wallet support via Reown
 - **wagmi + viem** – Ethereum interaction hooks and utilities (integrated with Reown)
 - **Zustand** – Decentralized state management
-- **Framer Motion** – Smooth onchain transaction animations
 - **TanStack Query** – Web3 data caching and synchronization
 
 ## 🚀 Quick Start
@@ -826,7 +825,6 @@ Cocoa Chain includes 20 specialized agricultural onchain features, all integrate
 ### Frontend & UI
 - **Next.js 16** (App Router) – React framework with SSR/SSG
 - **Tailwind CSS v4** – Utility-first CSS with custom Cocoa Chain theme
-- **Framer Motion** – Smooth animations for onchain transaction states
 
 ### Web3 & Blockchain
 - **Reown AppKit** (WalletConnect) – **Primary wallet connection layer** - Multi-wallet support via Reown

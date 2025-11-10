@@ -23,3 +23,10 @@ export function calculateStreamedAmount(
   const elapsed = currentTime - stream.startTime;
   return stream.amountPerSecond * elapsed;
 }
+
+export function canCancelStream(
+  stream: PaymentStream,
+  requester: Address
+): boolean {
+  return requester === stream.payer || requester === stream.payee;
+}

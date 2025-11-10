@@ -44,3 +44,10 @@ export function fillLimitOrder(
   if (currentTime > order.expiresAt) return order;
   return { ...order, filled: order.filled + fillAmount };
 }
+
+export function cancelLimitOrder(
+  order: LimitOrder,
+  maker: Address
+): boolean {
+  return order.maker === maker && order.filled === BigInt(0);
+}

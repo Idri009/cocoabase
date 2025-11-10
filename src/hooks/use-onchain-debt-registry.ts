@@ -4,8 +4,8 @@ import type { Address } from 'viem';
 import {
   createDebtRegistry,
   repayDebt,
-  calculateTotalOwed,
-  isDebtOverdue,
+  defaultDebt,
+  calculateTotalDebt,
   type DebtRegistry,
 } from '@/lib/onchain-debt-registry-utils';
 
@@ -32,10 +32,9 @@ export function useOnchainDebtRegistry() {
   return {
     debts,
     repay,
-    calculateTotalOwed,
-    isDebtOverdue,
+    defaultDebt,
+    calculateTotalDebt,
     isRepaying,
     address,
   };
 }
-

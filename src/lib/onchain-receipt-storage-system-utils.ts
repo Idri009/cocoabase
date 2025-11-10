@@ -23,3 +23,19 @@ export function storeReceipt(
     txHash: '',
   };
 }
+
+export function getReceiptsByDateRange(
+  receipts: Receipt[],
+  startDate: bigint,
+  endDate: bigint
+): Receipt[] {
+  return receipts.filter(
+    (r) => r.receiptDate >= startDate && r.receiptDate <= endDate
+  );
+}
+
+export function getTotalReceiptAmount(
+  receipts: Receipt[]
+): bigint {
+  return receipts.reduce((total, r) => total + r.amount, BigInt(0));
+}

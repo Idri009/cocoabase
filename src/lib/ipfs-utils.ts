@@ -49,3 +49,17 @@ export function prepareIPFSJSON(data: IPFSMetadata): string {
   return JSON.stringify(data, null, 2);
 }
 
+/**
+ * Get IPFS gateway URL
+ */
+export function getIPFSGateway(gateway?: string): string {
+  return gateway || 'https://ipfs.io/ipfs/';
+}
+
+/**
+ * Format IPFS content hash
+ */
+export function formatContentHash(hash: string): string {
+  return hash.startsWith('Qm') || hash.startsWith('baf') ? hash : `Qm${hash}`;
+}
+

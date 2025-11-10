@@ -3,9 +3,9 @@ import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createProposal,
-  castVote,
-  finalizeProposal,
-  hasQuorum,
+  voteOnProposal,
+  executeProposal,
+  calculateVoteMargin,
   type GovernanceProposal,
 } from '@/lib/onchain-governance-utils';
 
@@ -20,22 +20,28 @@ export function useOnchainGovernance() {
     title: string,
     description: string,
     duration: bigint,
-    quorum: bigint
+    executionData?: string
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected');
     setIsCreating(true);
     try {
-      const proposal = createProposal(address, title, description, duration, quorum);
+      const proposal = createProposal(
+        address,
+        title,
+        description,
+        duration,
+        executionData
+      );
       console.log('Creating proposal:', proposal);
     } finally {
       setIsCreating(false);
     }
   };
 
-  const voteOnProposal = async (
+  const vote = async (
     proposalId: bigint,
     support: boolean,
-    votingPower: bigint
+    weight: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected');
     setIsVoting(true);
@@ -43,7 +49,7 @@ export function useOnchainGovernance() {
       const currentTime = BigInt(Date.now());
       const proposal = proposals.find((p) => p.id === proposalId);
       if (!proposal) throw new Error('Proposal not found');
-      const updated = castVote(proposal, address, support, votingPower, currentTime);
+      const updated = voteOnProposal(proposal, address, support, weight, currentTime);
       if (updated) {
         console.log('Voting on proposal:', { proposalId, support, address });
       }
@@ -55,12 +61,11 @@ export function useOnchainGovernance() {
   return {
     proposals,
     createNewProposal,
-    voteOnProposal,
+    vote,
+    executeProposal,
+    calculateVoteMargin,
     isCreating,
     isVoting,
-    finalizeProposal,
-    hasQuorum,
     address,
   };
 }
-

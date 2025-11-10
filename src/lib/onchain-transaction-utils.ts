@@ -56,3 +56,31 @@ export function estimateConfirmationTime(
   return blockTime * 12; // ~12 blocks for finality
 }
 
+/**
+ * Format transaction status
+ */
+export function formatTransactionStatus(
+  status: TransactionStatus['status']
+): string {
+  const statusMap = {
+    pending: 'Pending',
+    confirmed: 'Confirmed',
+    failed: 'Failed',
+  };
+  return statusMap[status];
+}
+
+/**
+ * Get transaction status color
+ */
+export function getTransactionStatusColor(
+  status: TransactionStatus['status']
+): string {
+  const colorMap = {
+    pending: 'yellow',
+    confirmed: 'green',
+    failed: 'red',
+  };
+  return colorMap[status];
+}
+

@@ -36,3 +36,23 @@ export function isTransactionConfirmed(
   return receipt?.status === 'success';
 }
 
+/**
+ * Calculate transaction age in blocks
+ */
+export function getTransactionAge(
+  receipt: TransactionReceipt | null,
+  currentBlock: bigint
+): bigint | null {
+  if (!receipt?.blockNumber) return null;
+  return currentBlock - receipt.blockNumber;
+}
+
+/**
+ * Estimate transaction confirmation time
+ */
+export function estimateConfirmationTime(
+  blockTime: number = 12
+): number {
+  return blockTime * 12; // ~12 blocks for finality
+}
+

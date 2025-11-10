@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createDispute,
@@ -8,6 +8,7 @@ import {
 
 export function useOnchainDispute() {
   const { address } = useAccount();
+  const { writeContract } = useWriteContract();
   const [disputes, setDisputes] = useState<Dispute[]>([]);
 
   const fileDispute = async (
@@ -15,10 +16,14 @@ export function useOnchainDispute() {
     respondent: Address,
     reason: string
   ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
-    console.log('Filing dispute:', { escrowId, respondent, reason });
+    if (!address) throw new Error('Wallet not connected via Reown');
+    await writeContract({
+      address: '0x0000000000000000000000000000000000000000' as Address,
+      abi: [],
+      functionName: 'fileDispute',
+      args: [escrowId, respondent, reason],
+    });
   };
 
   return { disputes, fileDispute, address };
 }
-

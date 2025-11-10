@@ -1,20 +1,40 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain proxy utilities
- * Proxy contracts and upgradeable contracts
- */
-
 export interface ProxyContract {
-  proxy: Address;
+  id: bigint;
+  owner: Address;
   implementation: Address;
-  admin: Address;
+  proxyType: 'transparent' | 'uups' | 'beacon';
+  upgraded: boolean;
 }
 
-/**
- * Check if address is proxy
- */
-export function isProxyContract(proxy: ProxyContract): boolean {
-  return proxy.proxy !== proxy.implementation;
+export function createProxy(
+  owner: Address,
+  implementation: Address,
+  proxyType: 'transparent' | 'uups' | 'beacon'
+): ProxyContract {
+  return {
+    id: BigInt(0),
+    owner,
+    implementation,
+    proxyType,
+    upgraded: false,
+  };
 }
 
+export function upgradeProxy(
+  proxy: ProxyContract,
+  newImplementation: Address
+): ProxyContract {
+  return {
+    ...proxy,
+    implementation: newImplementation,
+    upgraded: true,
+  };
+}
+
+export function isValidProxyType(
+  type: string
+): type is 'transparent' | 'uups' | 'beacon' {
+  return ['transparent', 'uups', 'beacon'].includes(type);
+}

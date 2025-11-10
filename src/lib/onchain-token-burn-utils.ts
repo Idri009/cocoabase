@@ -24,3 +24,23 @@ export function createTokenBurn(
     reason,
   };
 }
+
+export function calculateTotalBurned(
+  burns: TokenBurn[]
+): bigint {
+  return burns.reduce((total, burn) => total + burn.amount, BigInt(0));
+}
+
+export function getBurnsByToken(
+  burns: TokenBurn[],
+  token: Address
+): TokenBurn[] {
+  return burns.filter((burn) => burn.token === token);
+}
+
+export function getBurnsByBurner(
+  burns: TokenBurn[],
+  burner: Address
+): TokenBurn[] {
+  return burns.filter((burn) => burn.burner === burner);
+}

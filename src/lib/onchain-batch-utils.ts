@@ -1,26 +1,39 @@
-import { type Address, type Hash } from 'viem';
+import { type Address } from 'viem';
 
-/**
- * Onchain batch transaction utilities
- * Batch multiple operations in single transaction
- */
+export interface BatchTransaction {
+  id: bigint;
+  sender: Address;
+  transactions: Transaction[];
+  status: 'pending' | 'executed' | 'failed';
+  gasEstimate: bigint;
+}
 
-export interface BatchOperation {
-  target: Address;
+export interface Transaction {
+  to: Address;
   value: bigint;
   data: string;
 }
 
-export interface BatchTransaction {
-  operations: BatchOperation[];
-  txHash?: Hash;
-  executed: boolean;
+export function createBatchTransaction(
+  sender: Address,
+  transactions: Transaction[]
+): BatchTransaction {
+  return {
+    id: BigInt(0),
+    sender,
+    transactions,
+    status: 'pending',
+    gasEstimate: BigInt(0),
+  };
 }
 
-/**
- * Validate batch transaction
- */
-export function validateBatchTransaction(batch: BatchTransaction): boolean {
-  return batch.operations.length > 0 && batch.operations.length <= 100;
+export function estimateBatchGas(
+  batch: BatchTransaction,
+  gasPerTx: bigint
+): bigint {
+  return BigInt(batch.transactions.length) * gasPerTx;
 }
 
+export function executeBatch(batch: BatchTransaction): BatchTransaction {
+  return { ...batch, status: 'executed' };
+}

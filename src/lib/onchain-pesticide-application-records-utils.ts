@@ -26,3 +26,27 @@ export function recordPesticideApplication(
     txHash: '',
   };
 }
+
+export function getApplicationsByType(
+  applications: PesticideApplication[],
+  pesticideType: string
+): PesticideApplication[] {
+  return applications.filter((a) => a.pesticideType === pesticideType);
+}
+
+export function getTotalPesticideUsed(
+  applications: PesticideApplication[],
+  plantationId: bigint
+): bigint {
+  return applications
+    .filter((a) => a.plantationId === plantationId)
+    .reduce((total, a) => total + a.quantity, BigInt(0));
+}
+
+export function getRecentApplications(
+  applications: PesticideApplication[],
+  days: number
+): PesticideApplication[] {
+  const cutoff = BigInt(Date.now() - days * 24 * 60 * 60 * 1000);
+  return applications.filter((a) => a.applicationDate >= cutoff);
+}

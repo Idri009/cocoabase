@@ -20,3 +20,17 @@ export function createTimeWeightedPosition(
   };
 }
 
+export function calculateTimeWeightedAverage(
+  positions: TimeWeightedPosition[],
+  currentTime: bigint
+): bigint {
+  let totalWeighted = BigInt(0);
+  let totalAmount = BigInt(0);
+  for (const position of positions) {
+    const timeDiff = currentTime - position.entryTime;
+    totalWeighted += position.amount * timeDiff;
+    totalAmount += position.amount;
+  }
+  if (totalAmount === BigInt(0)) return BigInt(0);
+  return totalWeighted / totalAmount;
+}

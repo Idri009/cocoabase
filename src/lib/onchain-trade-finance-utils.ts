@@ -29,3 +29,21 @@ export function createTradeFinance(
     txHash: '',
   };
 }
+
+export function approveFinance(
+  finance: TradeFinance,
+  approver: Address
+): TradeFinance | null {
+  if (finance.lender.toLowerCase() !== approver.toLowerCase()) return null;
+  return {
+    ...finance,
+    status: 'approved',
+  };
+}
+
+export function calculateInterest(
+  finance: TradeFinance,
+  principal: bigint
+): bigint {
+  return (principal * finance.interestRate) / BigInt(10000);
+}

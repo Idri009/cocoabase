@@ -29,3 +29,17 @@ export function createCropFuture(
     txHash: '',
   };
 }
+
+export function fillFuture(
+  future: CropFuture,
+  buyer: Address
+): CropFuture {
+  return {
+    ...future,
+    status: 'filled',
+  };
+}
+
+export function getTotalValue(future: CropFuture): bigint {
+  return future.quantity * future.price;
+}

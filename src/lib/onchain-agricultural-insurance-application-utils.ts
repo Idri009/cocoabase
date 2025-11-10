@@ -31,3 +31,34 @@ export function createInsuranceApplication(
     txHash: '',
   };
 }
+
+export function approveInsurance(
+  application: InsuranceApplication
+): InsuranceApplication {
+  return {
+    ...application,
+    status: 'approved',
+  };
+}
+
+export function activateInsurance(
+  application: InsuranceApplication
+): InsuranceApplication {
+  return {
+    ...application,
+    status: 'active',
+  };
+}
+
+export function getActiveInsurance(
+  applications: InsuranceApplication[]
+): InsuranceApplication[] {
+  return applications.filter((a) => a.status === 'active');
+}
+
+export function getInsuranceByType(
+  applications: InsuranceApplication[],
+  insuranceType: InsuranceApplication['insuranceType']
+): InsuranceApplication[] {
+  return applications.filter((a) => a.insuranceType === insuranceType);
+}

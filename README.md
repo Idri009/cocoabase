@@ -358,6 +358,46 @@ Cocoa Chain now includes 20+ advanced onchain features, all integrated with **Re
 - **Range Proofs**: Create range proofs for values
 - **Privacy Preservation**: Preserve privacy with ZK proofs
 
+#### 🛡️ Insurance & Risk Management (Powered by Reown Wallet)
+- **Insurance Pool**: Create insurance pools for risk coverage with onchain policies
+- **Policy Purchase**: Purchase insurance policies with premium calculation
+- **Claim Processing**: Process insurance claims with onchain verification
+- **Coverage Management**: Manage coverage amounts and premiums onchain
+- **Risk Assessment**: Assess risk levels with onchain data
+
+#### 💰 Lending & Borrowing (Powered by Reown Wallet)
+- **Lending Pool**: Create lending pools for borrowing and lending
+- **Interest Calculation**: Calculate interest rates with onchain formulas
+- **Utilization Tracking**: Track pool utilization rates in real-time
+- **Collateral Management**: Manage collateral for loans with onchain tracking
+- **Debt Registry**: Register and track debts with onchain records
+- **Repayment Tracking**: Track debt repayments with automatic status updates
+- **Liquidation Triggers**: Automatic liquidation for undercollateralized positions
+
+#### 📊 Price & Token Management (Powered by Reown Wallet)
+- **Price Stabilizer**: Stabilize token prices with reserve mechanisms
+- **Price Deviation**: Calculate price deviations from target prices
+- **Stability Range**: Maintain prices within stability ranges
+- **Token Lock**: Lock tokens with time-based release mechanisms
+- **Unlock Scheduling**: Schedule token unlocks with onchain timestamps
+- **Lock Status**: Check lock status and time until unlock
+
+#### 🎁 Rewards & Staking (Powered by Reown Wallet)
+- **Reward Pool**: Create reward pools for token distribution
+- **Reward Claiming**: Claim rewards with onchain verification
+- **Staking Rewards**: Calculate staking rewards based on duration and amount
+- **Reward Distribution**: Distribute rewards proportionally to stakers
+- **Pool Status**: Check reward pool active status and remaining rewards
+
+#### 🗳️ Governance & Fees (Powered by Reown Wallet)
+- **Governance Token**: Create governance tokens with voting power
+- **Voting Power Assignment**: Assign voting power based on token holdings
+- **Voting Percentage**: Calculate voting percentages for governance
+- **Fee Collector**: Collect fees from transactions with configurable rates
+- **Fee Withdrawal**: Withdraw collected fees with onchain verification
+- **Revenue Share**: Share revenue among shareholders with percentage-based distribution
+- **Shareholder Management**: Add and manage shareholders with onchain records
+
 ### 🚜 Agricultural Onchain Features (Powered by Reown Wallet)
 
 Cocoa Chain includes 20 specialized agricultural onchain features, all integrated with **Reown AppKit** for seamless wallet connectivity. Every feature requires a connected wallet via Reown to execute onchain transactions.
@@ -1173,6 +1213,17 @@ The codebase includes comprehensive utility libraries optimized for onchain oper
 - **`useOnchainGasOptimization`**: Gas optimization utilities (Reown wallet)
 - **`useOnchainMultisigWallet`**: Multi-signature wallet management (Reown wallet)
 - **`useOnchainAllowlist`**: Allowlist management with Merkle trees (Reown wallet)
+- **`useOnchainInsurancePool`**: Insurance pool for risk coverage (Reown wallet)
+- **`useOnchainLendingPool`**: Lending pool for borrowing and lending (Reown wallet)
+- **`useOnchainCollateralManager`**: Collateral management for loans (Reown wallet)
+- **`useOnchainDebtRegistry`**: Debt registry for tracking obligations (Reown wallet)
+- **`useOnchainPriceStabilizer`**: Price stabilization mechanism (Reown wallet)
+- **`useOnchainTokenLock`**: Token locking with time-based release (Reown wallet)
+- **`useOnchainRewardPool`**: Reward pool for distribution (Reown wallet)
+- **`useOnchainStakingRewards`**: Staking rewards calculation (Reown wallet)
+- **`useOnchainGovernanceToken`**: Governance token with voting power (Reown wallet)
+- **`useOnchainFeeCollector`**: Fee collection and distribution (Reown wallet)
+- **`useOnchainRevenueShare`**: Revenue sharing system (Reown wallet)
 
 ### Agricultural Onchain Hooks (Powered by Reown)
 - **`useOnchainLandRegistry`**: Land registry system for registering and transferring land parcels with Reown wallet integration

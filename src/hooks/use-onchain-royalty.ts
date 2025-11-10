@@ -1,24 +1,29 @@
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createRoyalty,
-  type Royalty,
+  calculateRoyalty,
+  type RoyaltyInfo,
 } from '@/lib/onchain-royalty-utils';
 
 export function useOnchainRoyalty() {
   const { address } = useAccount();
-  const [royalties, setRoyalties] = useState<Royalty[]>([]);
+  const { writeContract } = useWriteContract();
+  const [royalties, setRoyalties] = useState<RoyaltyInfo[]>([]);
 
   const setRoyalty = async (
     nft: Address,
     tokenId: bigint,
     percentage: number
   ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
-    console.log('Setting royalty:', { nft, tokenId, percentage });
+    if (!address) throw new Error('Wallet not connected via Reown');
+    await writeContract({
+      address: nft,
+      abi: [],
+      functionName: 'setRoyalty',
+      args: [tokenId, percentage],
+    });
   };
 
   return { royalties, setRoyalty, address };
 }
-

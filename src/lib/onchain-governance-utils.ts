@@ -59,3 +59,24 @@ export function castVote(
   };
 }
 
+export function finalizeProposal(
+  proposal: GovernanceProposal,
+  currentTime: bigint
+): GovernanceProposal | null {
+  if (proposal.status !== 'active') return null;
+  if (currentTime < proposal.endTime) return null;
+
+  const totalVotes = proposal.votesFor + proposal.votesAgainst;
+  const passed = totalVotes >= proposal.quorum && proposal.votesFor > proposal.votesAgainst;
+
+  return {
+    ...proposal,
+    status: passed ? 'passed' : 'rejected',
+  };
+}
+
+export function hasQuorum(proposal: GovernanceProposal): boolean {
+  const totalVotes = proposal.votesFor + proposal.votesAgainst;
+  return totalVotes >= proposal.quorum;
+}
+

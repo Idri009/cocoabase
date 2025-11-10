@@ -84,3 +84,15 @@ export function distributeReferralRewards(
   });
   return rewards;
 }
+
+export function getReferralStats(
+  referrals: Referral[]
+): { totalReferrals: number; totalRewards: bigint; activeReferrals: number } {
+  const active = referrals.filter(r => r.active);
+  const totalRewards = referrals.reduce((sum, r) => sum + r.rewardEarned, BigInt(0));
+  return {
+    totalReferrals: referrals.length,
+    totalRewards,
+    activeReferrals: active.length,
+  };
+}

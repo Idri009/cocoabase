@@ -21,3 +21,31 @@ export function createRewardDistribution(
   };
 }
 
+export function distributeReward(
+  distribution: RewardDistribution,
+  recipient: Address,
+  amount: bigint
+): RewardDistribution | null {
+  if (distribution.distributed + amount > distribution.totalRewards) return null;
+  const newRecipients = new Map(distribution.recipients);
+  const existing = newRecipients.get(recipient) || BigInt(0);
+  newRecipients.set(recipient, existing + amount);
+  return {
+    ...distribution,
+    distributed: distribution.distributed + amount,
+    recipients: newRecipients,
+  };
+}
+
+export function calculateRemainingRewards(
+  distribution: RewardDistribution
+): bigint {
+  return distribution.totalRewards - distribution.distributed;
+}
+
+export function getRecipientReward(
+  distribution: RewardDistribution,
+  recipient: Address
+): bigint {
+  return distribution.recipients.get(recipient) || BigInt(0);
+}

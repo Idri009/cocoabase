@@ -4,7 +4,7 @@ import type { Address } from 'viem';
 import {
   createInsurancePool,
   purchasePolicy,
-  calculatePremium,
+  fileClaim,
   type InsurancePool,
   type InsurancePolicy,
 } from '@/lib/onchain-insurance-pool-utils';
@@ -26,8 +26,8 @@ export function useOnchainInsurancePool() {
     try {
       const pool = pools.find((p) => p.id === poolId);
       if (!pool) throw new Error('Pool not found');
-      const result = purchasePolicy(pool, address, coverage, duration);
-      console.log('Purchasing insurance policy:', result);
+      const { policy } = purchasePolicy(pool, address, coverage, duration);
+      console.log('Purchasing policy:', policy);
     } finally {
       setIsPurchasing(false);
     }
@@ -37,9 +37,8 @@ export function useOnchainInsurancePool() {
     pools,
     policies,
     purchase,
-    calculatePremium,
+    fileClaim,
     isPurchasing,
     address,
   };
 }
-

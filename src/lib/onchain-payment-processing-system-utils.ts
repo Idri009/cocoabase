@@ -25,3 +25,27 @@ export function processPayment(
     txHash: '',
   };
 }
+
+export function completePayment(
+  payment: Payment
+): Payment {
+  return {
+    ...payment,
+    status: 'completed',
+  };
+}
+
+export function getPendingPayments(
+  payments: Payment[]
+): Payment[] {
+  return payments.filter((p) => p.status === 'pending');
+}
+
+export function getTotalPayments(
+  payments: Payment[],
+  address: Address
+): bigint {
+  return payments
+    .filter((p) => p.payee.toLowerCase() === address.toLowerCase() && p.status === 'completed')
+    .reduce((total, p) => total + p.amount, BigInt(0));
+}

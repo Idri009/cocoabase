@@ -32,3 +32,22 @@ export function createLaborContract(
     txHash: '',
   };
 }
+
+export function calculateWage(
+  contract: LaborContract,
+  hoursWorked: bigint
+): bigint {
+  return contract.hourlyRate * hoursWorked;
+}
+
+export function getActiveContracts(
+  contracts: LaborContract[],
+  currentTime: bigint
+): LaborContract[] {
+  return contracts.filter(
+    (c) =>
+      c.status === 'active' &&
+      currentTime >= c.startDate &&
+      currentTime <= c.endDate
+  );
+}

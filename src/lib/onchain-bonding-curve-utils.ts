@@ -26,3 +26,36 @@ export function createBondingCurve(
   };
 }
 
+export function buyTokens(
+  curve: BondingCurve,
+  reserveAmount: bigint
+): { curve: BondingCurve; tokensOut: bigint } {
+  const newReserve = curve.virtualReserve + reserveAmount;
+  const newSupply = curve.k / newReserve;
+  const tokensOut = curve.virtualSupply - newSupply;
+  return {
+    curve: {
+      ...curve,
+      virtualReserve: newReserve,
+      virtualSupply: newSupply,
+    },
+    tokensOut,
+  };
+}
+
+export function sellTokens(
+  curve: BondingCurve,
+  tokenAmount: bigint
+): { curve: BondingCurve; reserveOut: bigint } {
+  const newSupply = curve.virtualSupply + tokenAmount;
+  const newReserve = curve.k / newSupply;
+  const reserveOut = curve.virtualReserve - newReserve;
+  return {
+    curve: {
+      ...curve,
+      virtualReserve: newReserve,
+      virtualSupply: newSupply,
+    },
+    reserveOut,
+  };
+}

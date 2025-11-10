@@ -26,3 +26,16 @@ export function certifyHarvest(
     txHash: '',
   };
 }
+
+export function getTotalHarvestQuantity(
+  certs: HarvestCertification[]
+): bigint {
+  return certs.reduce((total, cert) => total + cert.quantity, BigInt(0));
+}
+
+export function getHarvestsByGrade(
+  certs: HarvestCertification[],
+  grade: string
+): HarvestCertification[] {
+  return certs.filter((cert) => cert.qualityGrade === grade);
+}

@@ -54,3 +54,23 @@ export function calculateTransferFee(
   return (amount * BigInt(feePercent * 100)) / BigInt(10000);
 }
 
+/**
+ * Calculate amount after fee
+ */
+export function calculateAmountAfterFee(
+  amount: bigint,
+  feePercent: number = 0.25
+): bigint {
+  return amount - calculateTransferFee(amount, feePercent);
+}
+
+/**
+ * Check if balance is sufficient
+ */
+export function hasSufficientBalance(
+  balance: bigint,
+  amount: bigint
+): boolean {
+  return balance >= amount;
+}
+

@@ -65,3 +65,7 @@ export function validateReward(
 ): boolean {
   return amount > minAmount;
 }
+
+export function calculateTotalRewards(rewards: Reward[]): bigint {
+  return rewards.reduce((total, reward) => total + reward.amount, BigInt(0));
+}

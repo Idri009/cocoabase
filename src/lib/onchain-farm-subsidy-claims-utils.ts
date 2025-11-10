@@ -28,3 +28,21 @@ export function submitSubsidyClaim(
     txHash: '',
   };
 }
+
+export function approveSubsidy(
+  claim: FarmSubsidyClaim,
+  approver: Address
+): FarmSubsidyClaim {
+  return {
+    ...claim,
+    status: 'approved',
+  };
+}
+
+export function getTotalSubsidyAmount(
+  claims: FarmSubsidyClaim[]
+): bigint {
+  return claims
+    .filter((c) => c.status === 'approved')
+    .reduce((total, claim) => total + claim.amount, BigInt(0));
+}

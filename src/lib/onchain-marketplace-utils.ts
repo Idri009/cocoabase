@@ -50,3 +50,26 @@ export function isOfferValid(offer: MarketplaceOffer): boolean {
   return offer.expiresAt > Date.now();
 }
 
+/**
+ * Calculate total cost including fees
+ */
+export function calculateTotalCost(
+  price: bigint,
+  feePercent: number = 2.5
+): bigint {
+  return price + calculateMarketplaceFee(price, feePercent);
+}
+
+/**
+ * Format listing price
+ */
+export function formatListingPrice(
+  price: bigint,
+  decimals: number = 18
+): string {
+  const divisor = BigInt(10 ** decimals);
+  const whole = price / divisor;
+  const fraction = price % divisor;
+  return `${whole.toString()}.${fraction.toString().padStart(decimals, '0').slice(0, 4)}`;
+}
+

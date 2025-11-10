@@ -30,3 +30,24 @@ export function calculateStorageSlot(
   return BigInt(Math.abs(hash)) + BigInt(position);
 }
 
+/**
+ * Pack multiple values into storage slot
+ */
+export function packStorageSlot(values: bigint[]): bigint {
+  return values.reduce((acc, val, idx) => {
+    return acc | (val << BigInt(idx * 64));
+  }, BigInt(0));
+}
+
+/**
+ * Unpack storage slot into values
+ */
+export function unpackStorageSlot(
+  slot: bigint,
+  count: number
+): bigint[] {
+  return Array.from({ length: count }, (_, idx) => {
+    return (slot >> BigInt(idx * 64)) & BigInt('0xFFFFFFFFFFFFFFFF');
+  });
+}
+

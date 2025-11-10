@@ -26,3 +26,20 @@ export function verifyTxHash(hash: string): boolean {
   return /^0x[a-fA-F0-9]{64}$/.test(hash);
 }
 
+/**
+ * Verify signature format
+ */
+export function verifySignature(signature: string): boolean {
+  return /^0x[a-fA-F0-9]{130}$/.test(signature);
+}
+
+/**
+ * Compare addresses (case-insensitive)
+ */
+export function compareAddresses(
+  addr1: Address,
+  addr2: Address
+): boolean {
+  return addr1.toLowerCase() === addr2.toLowerCase();
+}
+

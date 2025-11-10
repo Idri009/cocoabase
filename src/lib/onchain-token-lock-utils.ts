@@ -26,3 +26,26 @@ export function createTokenLock(
   };
 }
 
+export function unlockTokens(
+  lock: TokenLock,
+  currentTime: bigint
+): TokenLock | null {
+  if (lock.status !== 'locked') return null;
+  if (currentTime < lock.unlockTime) return null;
+  return {
+    ...lock,
+    status: 'unlocked',
+  };
+}
+
+export function isLocked(lock: TokenLock, currentTime: bigint): boolean {
+  return lock.status === 'locked' && currentTime < lock.unlockTime;
+}
+
+export function getTimeUntilUnlock(
+  lock: TokenLock,
+  currentTime: bigint
+): bigint {
+  if (lock.unlockTime <= currentTime) return BigInt(0);
+  return lock.unlockTime - currentTime;
+}

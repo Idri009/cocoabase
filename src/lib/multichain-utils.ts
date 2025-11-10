@@ -47,3 +47,23 @@ export function getChainInfo(chainId: number): ChainInfo | null {
   return chains[chainId] || null;
 }
 
+/**
+ * Format explorer URL for address
+ */
+export function formatExplorerURL(
+  chainId: number,
+  address: Address,
+  type: 'address' | 'tx' = 'address'
+): string | null {
+  const chain = getChainInfo(chainId);
+  if (!chain) return null;
+  return `${chain.explorerUrl}/${type}/${address}`;
+}
+
+/**
+ * Check if chain is supported
+ */
+export function isChainSupported(chainId: number): boolean {
+  return getChainInfo(chainId) !== null;
+}
+

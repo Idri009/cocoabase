@@ -10,6 +10,13 @@ export interface PredictionMarket {
   totalVolume: bigint;
 }
 
+export interface Prediction {
+  predictor: Address;
+  outcome: 'A' | 'B';
+  amount: bigint;
+  odds: number;
+}
+
 export function createPredictionMarket(
   question: string,
   outcomeA: string,
@@ -27,3 +34,32 @@ export function createPredictionMarket(
   };
 }
 
+export function placePrediction(
+  market: PredictionMarket,
+  predictor: Address,
+  outcome: 'A' | 'B',
+  amount: bigint
+): { market: PredictionMarket; prediction: Prediction } {
+  return {
+    market: {
+      ...market,
+      totalVolume: market.totalVolume + amount,
+    },
+    prediction: {
+      predictor,
+      outcome,
+      amount,
+      odds: 50,
+    },
+  };
+}
+
+export function resolveMarket(
+  market: PredictionMarket,
+  winningOutcome: 'A' | 'B'
+): PredictionMarket {
+  return {
+    ...market,
+    status: 'resolved',
+  };
+}

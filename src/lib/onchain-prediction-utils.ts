@@ -107,3 +107,9 @@ export function isMarketResolvable(
 ): boolean {
   return currentTime >= market.resolutionTime && market.outcome === 'pending';
 }
+
+export function getMarketTotalPool(
+  market: PredictionMarket
+): bigint {
+  return market.totalYes + market.totalNo;
+}

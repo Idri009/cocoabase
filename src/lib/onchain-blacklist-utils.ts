@@ -16,3 +16,22 @@ export function createBlacklist(name: string): Blacklist {
   };
 }
 
+export function addToBlacklist(
+  blacklist: Blacklist,
+  address: Address
+): Blacklist {
+  const newAddresses = new Set(blacklist.addresses);
+  newAddresses.add(address);
+  return {
+    ...blacklist,
+    addresses: newAddresses,
+  };
+}
+
+export function isBlacklisted(
+  blacklist: Blacklist,
+  address: Address
+): boolean {
+  if (!blacklist.enabled) return false;
+  return blacklist.addresses.has(address);
+}

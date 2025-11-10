@@ -69,3 +69,20 @@ export function generateTokenId(plantationId: string): bigint {
   return BigInt(Math.abs(hash));
 }
 
+/**
+ * Format NFT metadata URI for onchain storage
+ */
+export function formatMetadataURI(ipfsHash: string): string {
+  return `ipfs://${ipfsHash}`;
+}
+
+/**
+ * Parse metadata URI to extract IPFS hash
+ */
+export function parseMetadataURI(uri: string): string | null {
+  if (uri.startsWith('ipfs://')) {
+    return uri.replace('ipfs://', '');
+  }
+  return null;
+}
+

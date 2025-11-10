@@ -36,3 +36,14 @@ export function tradeCarbonCredit(
     owner: to,
   };
 }
+
+export function calculateCarbonValue(
+  amount: bigint,
+  pricePerTon: bigint
+): bigint {
+  return (amount * pricePerTon) / BigInt(1000000);
+}
+
+export function getTotalCredits(credits: CarbonCredit[]): bigint {
+  return credits.reduce((total, credit) => total + credit.amount, BigInt(0));
+}

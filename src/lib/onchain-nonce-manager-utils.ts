@@ -16,3 +16,23 @@ export function createNonceManager(address: Address): NonceManager {
   };
 }
 
+export function getNextNonce(manager: NonceManager): {
+  manager: NonceManager;
+  nonce: bigint;
+} {
+  const nextNonce = manager.nonce + BigInt(1);
+  const newUsed = new Set(manager.usedNonces);
+  newUsed.add(nextNonce);
+  return {
+    manager: {
+      ...manager,
+      nonce: nextNonce,
+      usedNonces: newUsed,
+    },
+    nonce: nextNonce,
+  };
+}
+
+export function isNonceUsed(manager: NonceManager, nonce: bigint): boolean {
+  return manager.usedNonces.has(nonce);
+}

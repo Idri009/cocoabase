@@ -48,3 +48,10 @@ export function removeFromAllowlist(
     addresses: allowlist.addresses.filter(addr => addr !== address),
   };
 }
+
+export function isAllowed(
+  allowlist: Allowlist,
+  address: Address
+): boolean {
+  return allowlist.addresses.includes(address);
+}

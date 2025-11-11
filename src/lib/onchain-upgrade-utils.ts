@@ -22,3 +22,16 @@ export function createUpgrade(
   };
 }
 
+export function validateUpgrade(
+  upgrade: Upgrade,
+  authorized: Address
+): boolean {
+  return upgrade.upgradedBy === authorized;
+}
+
+export function getUpgradeHistory(
+  upgrades: Upgrade[],
+  contract: Address
+): Upgrade[] {
+  return upgrades.filter((u) => u.contract === contract);
+}

@@ -23,3 +23,16 @@ export function createRewardDistribution(
     recipients,
   };
 }
+
+export function distributeReward(
+  distribution: RewardDistribution,
+  recipient: Address,
+  amount: bigint
+): RewardDistribution | null {
+  if (!distribution.recipients.includes(recipient)) return null;
+  if (distribution.distributed + amount > distribution.totalAmount) return null;
+  return {
+    ...distribution,
+    distributed: distribution.distributed + amount,
+  };
+}

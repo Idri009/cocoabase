@@ -1027,6 +1027,28 @@ The codebase includes comprehensive utility libraries optimized for onchain oper
 - **`onchain-crop-rotation-history-utils.ts`**: Crop rotation history utilities with rotation history filtering functions
 - **`onchain-weather-data-collection-utils.ts`**: Weather data collection utilities with weather data filtering and average calculation
 
+### Latest Onchain Utilities (Powered by Reown)
+- **`onchain-agricultural-marketplace-system-utils.ts`**: Agricultural marketplace system utilities with listing management and purchase functions
+- **`onchain-farm-asset-tokenization-utils.ts`**: Farm asset tokenization utilities with token redemption and value calculation
+- **`onchain-agricultural-research-data-sharing-utils.ts`**: Agricultural research data sharing utilities with data filtering and integrity verification
+- **`onchain-crop-insurance-premium-calculator-utils.ts`**: Crop insurance premium calculator utilities with premium calculation and filtering
+- **`onchain-farm-equipment-marketplace-utils.ts`**: Farm equipment marketplace utilities with equipment listing and purchase functions
+- **`onchain-agricultural-commodity-exchange-utils.ts`**: Agricultural commodity exchange utilities with order creation and filling
+- **`onchain-farm-labor-marketplace-utils.ts`**: Farm labor marketplace utilities with job posting and wage calculation
+- **`onchain-agricultural-supply-chain-finance-utils.ts`**: Agricultural supply chain finance utilities with finance approval and repayment calculation
+- **`onchain-farm-land-valuation-system-utils.ts`**: Farm land valuation system utilities with valuation filtering and average calculation
+- **`onchain-agricultural-impact-measurement-utils.ts`**: Agricultural impact measurement utilities with impact filtering and total calculation
+- **`onchain-crop-disease-prevention-system-utils.ts`**: Crop disease prevention system utilities with prevention completion and filtering
+- **`onchain-farm-sustainability-scoring-utils.ts`**: Farm sustainability scoring utilities with score filtering and average calculation
+- **`onchain-agricultural-credit-scoring-utils.ts`**: Agricultural credit scoring utilities with credit score filtering and average calculation
+- **`onchain-farm-risk-assessment-system-utils.ts`**: Farm risk assessment system utilities with risk assessment filtering functions
+- **`onchain-agricultural-commodity-pricing-utils.ts`**: Agricultural commodity pricing utilities with price query and history functions
+- **`onchain-farm-equipment-maintenance-records-utils.ts`**: Farm equipment maintenance records utilities with maintenance filtering and cost calculation
+- **`onchain-agricultural-export-documentation-utils.ts`**: Agricultural export documentation utilities with document approval and filtering
+- **`onchain-farm-investment-tracking-utils.ts`**: Farm investment tracking utilities with investment filtering and return calculation
+- **`onchain-agricultural-weather-risk-insurance-utils.ts`**: Agricultural weather risk insurance utilities with insurance claim and expiry check
+- **`onchain-farm-production-analytics-utils.ts`**: Farm production analytics utilities with analytics filtering and average calculation
+
 ### Risk & Performance
 - **`risk-utils.ts`**: Risk management utilities with onchain scoring
 - **`benchmark-utils.ts`**: Performance benchmarking utilities with onchain metrics

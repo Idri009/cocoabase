@@ -16,3 +16,31 @@ export function createTokenFreeze(token: Address): TokenFreeze {
   };
 }
 
+export function freezeAddress(
+  freeze: TokenFreeze,
+  address: Address
+): TokenFreeze {
+  const newFrozen = new Set(freeze.frozen);
+  newFrozen.add(address);
+  return {
+    ...freeze,
+    frozen: newFrozen,
+  };
+}
+
+export function unfreezeAddress(
+  freeze: TokenFreeze,
+  address: Address
+): TokenFreeze {
+  const newFrozen = new Set(freeze.frozen);
+  newFrozen.delete(address);
+  return {
+    ...freeze,
+    frozen: newFrozen,
+  };
+}
+
+export function isFrozen(freeze: TokenFreeze, address: Address): boolean {
+  if (!freeze.enabled) return false;
+  return freeze.frozen.has(address);
+}

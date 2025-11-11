@@ -39,3 +39,9 @@ export function delegateVotingPower(
     },
   };
 }
+
+export function calculateTotalVotingPower(
+  powers: VotingPower[]
+): bigint {
+  return powers.reduce((total, p) => total + p.power, BigInt(0));
+}

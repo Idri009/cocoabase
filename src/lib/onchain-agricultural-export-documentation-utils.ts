@@ -31,3 +31,25 @@ export function createExportDocument(
     txHash: '',
   };
 }
+
+export function approveExportDocument(
+  document: ExportDocument
+): ExportDocument {
+  return {
+    ...document,
+    status: 'approved',
+  };
+}
+
+export function getPendingDocuments(
+  documents: ExportDocument[]
+): ExportDocument[] {
+  return documents.filter((d) => d.status === 'pending');
+}
+
+export function getDocumentsByDestination(
+  documents: ExportDocument[],
+  destination: string
+): ExportDocument[] {
+  return documents.filter((d) => d.destination === destination);
+}

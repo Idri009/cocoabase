@@ -29,3 +29,24 @@ export function createRiskAssessment(
     txHash: '',
   };
 }
+
+export function getHighRiskAssessments(
+  assessments: RiskAssessment[]
+): RiskAssessment[] {
+  return assessments.filter((a) => a.riskLevel === 'high' || a.riskLevel === 'critical');
+}
+
+export function getAssessmentsByType(
+  assessments: RiskAssessment[],
+  riskType: RiskAssessment['riskType']
+): RiskAssessment[] {
+  return assessments.filter((a) => a.riskType === riskType);
+}
+
+export function getRecentAssessments(
+  assessments: RiskAssessment[],
+  days: number
+): RiskAssessment[] {
+  const cutoff = BigInt(Date.now() - days * 24 * 60 * 60 * 1000);
+  return assessments.filter((a) => a.assessmentDate >= cutoff);
+}

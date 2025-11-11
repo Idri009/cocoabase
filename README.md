@@ -57,6 +57,100 @@ Cocoa Chain leverages blockchain technology to create a transparent, verifiable,
    
    The dApp uses **Reown AppKit** to provide seamless wallet connectivity. Click "Connect Wallet" to see all supported wallets.
 
+## 📜 Smart Contract Deployment
+
+### PlantationNFT Contract
+
+The **PlantationNFT** contract is an ERC-721 NFT contract that tokenizes cocoa plantations as verifiable onchain assets.
+
+#### Contract Address
+
+**Local Hardhat Network:**
+- Contract Address: `0x5FbDB2315678afecb367f032d93F642f64180aa3`
+- Network: Hardhat Local Network
+- Chain ID: 1337
+
+#### Deploy Contract
+
+To deploy the contract to a local Hardhat network:
+
+```bash
+npm run deploy:hardhat
+```
+
+To deploy to Sepolia testnet:
+
+```bash
+# Set up your .env.local with:
+# SEPOLIA_RPC_URL=your_sepolia_rpc_url
+# PRIVATE_KEY=your_private_key
+npm run deploy:sepolia
+```
+
+#### Contract Operations
+
+The contract supports the following operations:
+
+1. **Mint Plantation NFT**: Mint a new plantation NFT with metadata (location, area, stage, tree count, carbon offset)
+2. **Update Stage**: Update the growth stage of a plantation
+3. **Update Plantation Data**: Update tree count and carbon offset
+4. **Get Plantation Data**: Retrieve plantation information
+5. **Transfer NFTs**: Transfer plantation NFTs between addresses
+
+#### Interact with Contract
+
+To perform operations on the deployed contract:
+
+```bash
+# Local network
+npm run interact:local
+
+# Sepolia testnet
+npm run interact:sepolia
+```
+
+#### Contract Features
+
+- **ERC-721 Standard**: Full ERC-721 NFT compliance
+- **Onchain Metadata**: Plantation data stored onchain (location, area, stage, tree count, carbon offset)
+- **IPFS Integration**: Token URIs support IPFS for offchain metadata
+- **Ownership Tracking**: Track plantation ownership and counts per address
+- **Event Logging**: Emit events for all plantation operations (mint, stage update, data update)
+- **Access Control**: Only owners can update their plantation data
+
+#### Contract Functions
+
+- `mintPlantation()`: Mint a new plantation NFT
+- `updateStage()`: Update the growth stage of a plantation
+- `updatePlantationData()`: Update tree count and carbon offset
+- `getPlantationData()`: Get plantation data by token ID
+- `totalSupply()`: Get total number of plantations minted
+- `balanceOfPlantations()`: Get number of plantations owned by an address
+
+#### Example Usage
+
+```solidity
+// Mint a plantation
+uint256 tokenId = plantationNFT.mintPlantation(
+    ownerAddress,
+    "ipfs://Qm...", // token URI
+    "Ghana, West Africa", // location
+    5000, // area in hectares (scaled by 1000)
+    "vegetative", // stage
+    1000, // tree count
+    25000 // carbon offset in tons (scaled by 1000)
+);
+
+// Update stage
+plantationNFT.updateStage(tokenId, "flowering");
+
+// Update plantation data
+plantationNFT.updatePlantationData(tokenId, 1200, 30000);
+
+// Get plantation data
+PlantationData memory data = plantationNFT.getPlantationData(tokenId);
+```
+
 ## 🌐 Onchain Features
 
 ### 🪙 Tokenized Plantation Management
@@ -128,6 +222,7 @@ Cocoa Chain leverages blockchain technology to create a transparent, verifiable,
 - **Wallet Analytics**: Deep analytics on wallet activity and plantation performance
 - **ENS Integration**: Support for Ethereum Name Service (ENS) domains
 - **Wallet Disconnect**: Secure wallet disconnection with onchain session management
+- **All Onchain Features Require Reown Wallet**: Every onchain feature in Cocoa Chain requires a connected wallet via Reown AppKit. All 80+ onchain features use `useAccount` from wagmi (powered by Reown) for wallet authentication and transaction signing. This includes 20 core agricultural features, 20 operational features, 20 additional agricultural features, and 20 latest features - all seamlessly integrated with Reown wallet connectivity
 
 ### 🤝 Decentralized Collaboration & DAO
 

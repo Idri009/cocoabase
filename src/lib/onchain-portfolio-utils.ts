@@ -38,3 +38,11 @@ export function addAsset(
     totalValue: portfolio.totalValue + (amount * price) / BigInt(10 ** 18),
   };
 }
+
+export function calculatePortfolioValue(
+  portfolio: Portfolio
+): bigint {
+  return portfolio.assets.reduce((total, asset) => {
+    return total + (asset.amount * asset.price) / BigInt(10 ** 18);
+  }, BigInt(0));
+}

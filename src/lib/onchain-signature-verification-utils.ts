@@ -22,3 +22,18 @@ export function createSignatureVerification(
   };
 }
 
+export function verifySignature(
+  verification: SignatureVerification,
+  isValid: boolean
+): SignatureVerification {
+  return {
+    ...verification,
+    verified: isValid,
+  };
+}
+
+export function isSignatureValid(
+  verification: SignatureVerification
+): boolean {
+  return verification.verified;
+}

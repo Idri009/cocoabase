@@ -24,3 +24,17 @@ export function createPortfolio(owner: Address): Portfolio {
     totalValue: BigInt(0),
   };
 }
+
+export function addAsset(
+  portfolio: Portfolio,
+  token: Address,
+  amount: bigint,
+  price: bigint
+): Portfolio {
+  const asset: PortfolioAsset = { token, amount, price };
+  return {
+    ...portfolio,
+    assets: [...portfolio.assets, asset],
+    totalValue: portfolio.totalValue + (amount * price) / BigInt(10 ** 18),
+  };
+}

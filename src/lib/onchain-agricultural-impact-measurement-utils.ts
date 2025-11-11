@@ -29,3 +29,27 @@ export function recordImpact(
     txHash: '',
   };
 }
+
+export function getImpactsByType(
+  measurements: ImpactMeasurement[],
+  impactType: ImpactMeasurement['impactType']
+): ImpactMeasurement[] {
+  return measurements.filter((m) => m.impactType === impactType);
+}
+
+export function getTotalImpact(
+  measurements: ImpactMeasurement[],
+  metric: string
+): bigint {
+  return measurements
+    .filter((m) => m.metric === metric)
+    .reduce((total, m) => total + m.value, BigInt(0));
+}
+
+export function getRecentMeasurements(
+  measurements: ImpactMeasurement[],
+  days: number
+): ImpactMeasurement[] {
+  const cutoff = BigInt(Date.now() - days * 24 * 60 * 60 * 1000);
+  return measurements.filter((m) => m.measurementDate >= cutoff);
+}

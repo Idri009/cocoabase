@@ -24,3 +24,31 @@ export function createRateLimiter(
   };
 }
 
+export function checkRateLimit(
+  limiter: RateLimiter,
+  currentTime: bigint
+): { limiter: RateLimiter; allowed: boolean } {
+  if (currentTime >= limiter.resetTime) {
+    return {
+      limiter: {
+        ...limiter,
+        count: BigInt(1),
+        resetTime: currentTime + limiter.window,
+      },
+      allowed: true,
+    };
+  }
+  if (limiter.count >= limiter.limit) {
+    return {
+      limiter,
+      allowed: false,
+    };
+  }
+  return {
+    limiter: {
+      ...limiter,
+      count: limiter.count + BigInt(1),
+    },
+    allowed: true,
+  };
+}

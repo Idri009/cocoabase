@@ -26,3 +26,28 @@ export function createIntelligence(
     txHash: '',
   };
 }
+
+export function getIntelligenceByCommodity(
+  intelligence: MarketIntelligence[],
+  commodity: string
+): MarketIntelligence[] {
+  return intelligence.filter((i) => i.commodity === commodity);
+}
+
+export function getLatestIntelligence(
+  intelligence: MarketIntelligence[]
+): MarketIntelligence | null {
+  if (intelligence.length === 0) return null;
+  return intelligence.reduce((latest, current) =>
+    current.timestamp > latest.timestamp ? current : latest
+  );
+}
+
+export function getTrendingCommodities(
+  intelligence: MarketIntelligence[]
+): string[] {
+  const upTrending = intelligence
+    .filter((i) => i.trend === 'up')
+    .map((i) => i.commodity);
+  return [...new Set(upTrending)];
+}

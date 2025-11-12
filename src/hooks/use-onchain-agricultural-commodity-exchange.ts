@@ -13,31 +13,27 @@ export function useOnchainAgriculturalCommodityExchange() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   const [orders, setOrders] = useState<CommodityOrder[]>([]);
-  const [isCreating, setIsCreating] = useState(false);
+  const [isFilling, setIsFilling] = useState(false);
 
-  const create = async (
-    commodity: string,
-    orderType: 'buy' | 'sell',
-    quantity: bigint,
-    price: bigint
-  ): Promise<void> => {
+  const fill = async (orderId: bigint): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsCreating(true);
+    setIsFilling(true);
     try {
-      const order = createOrder(address, commodity, orderType, quantity, price);
-      console.log('Creating order:', order);
+      const order = orders.find((o) => o.id === orderId);
+      if (!order) throw new Error('Order not found');
+      const updated = fillOrder(order, address);
+      console.log('Filling order:', { orderId });
     } finally {
-      setIsCreating(false);
+      setIsFilling(false);
     }
   };
 
   return {
     orders,
-    create,
-    fillOrder,
+    fill,
     getOpenOrders,
     getOrdersByCommodity,
-    isCreating,
+    isFilling,
     address,
   };
 }

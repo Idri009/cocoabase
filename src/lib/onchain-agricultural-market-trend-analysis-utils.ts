@@ -26,3 +26,23 @@ export function createTrendAnalysis(
     txHash: '',
   };
 }
+
+export function getAnalysesByCommodity(
+  analyses: TrendAnalysis[],
+  commodity: string
+): TrendAnalysis[] {
+  return analyses.filter((a) => a.commodity === commodity);
+}
+
+export function getBullishAnalyses(
+  analyses: TrendAnalysis[]
+): TrendAnalysis[] {
+  return analyses.filter((a) => a.trend === 'bullish');
+}
+
+export function getHighConfidenceAnalyses(
+  analyses: TrendAnalysis[],
+  threshold: number
+): TrendAnalysis[] {
+  return analyses.filter((a) => a.confidence >= threshold);
+}

@@ -28,3 +28,25 @@ export function registerWarranty(
     txHash: '',
   };
 }
+
+export function claimWarranty(
+  warranty: WarrantyRecord
+): WarrantyRecord {
+  return {
+    ...warranty,
+    status: 'claimed',
+  };
+}
+
+export function getActiveWarranties(
+  warranties: WarrantyRecord[]
+): WarrantyRecord[] {
+  return warranties.filter((w) => w.status === 'active');
+}
+
+export function checkWarrantyExpiry(
+  warranty: WarrantyRecord,
+  currentTime: bigint
+): boolean {
+  return currentTime > warranty.endDate;
+}

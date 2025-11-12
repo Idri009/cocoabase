@@ -3,46 +3,22 @@ import { type Address } from 'viem';
 export interface ResearchData {
   id: bigint;
   owner: Address;
-  researchType: string;
-  dataHash: string;
-  sharedDate: bigint;
+  dataType: string;
   accessLevel: 'public' | 'private' | 'restricted';
-  txHash: string;
+  hash: string;
 }
 
-export function shareResearchData(
+export function createResearchData(
   owner: Address,
-  researchType: string,
-  dataHash: string,
-  accessLevel: ResearchData['accessLevel']
+  dataType: string,
+  accessLevel: 'public' | 'private' | 'restricted',
+  hash: string
 ): ResearchData {
   return {
-    id: BigInt(Date.now()),
+    id: BigInt(0),
     owner,
-    researchType,
-    dataHash,
-    sharedDate: BigInt(Date.now()),
+    dataType,
     accessLevel,
-    txHash: '',
+    hash,
   };
-}
-
-export function getPublicResearchData(
-  data: ResearchData[]
-): ResearchData[] {
-  return data.filter((d) => d.accessLevel === 'public');
-}
-
-export function getResearchByType(
-  data: ResearchData[],
-  researchType: string
-): ResearchData[] {
-  return data.filter((d) => d.researchType === researchType);
-}
-
-export function verifyDataIntegrity(
-  data: ResearchData,
-  dataHash: string
-): boolean {
-  return data.dataHash === dataHash;
 }

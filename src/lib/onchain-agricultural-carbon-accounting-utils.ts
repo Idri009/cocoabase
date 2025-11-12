@@ -25,3 +25,16 @@ export function createCarbonRecord(
   };
 }
 
+export function calculateNetEmissions(record: CarbonRecord): bigint {
+  return record.emissions > record.offset
+    ? record.emissions - record.offset
+    : BigInt(0);
+}
+
+export function calculateTotalEmissions(records: CarbonRecord[]): bigint {
+  return records.reduce((total, r) => total + r.emissions, BigInt(0));
+}
+
+export function calculateTotalOffset(records: CarbonRecord[]): bigint {
+  return records.reduce((total, r) => total + r.offset, BigInt(0));
+}

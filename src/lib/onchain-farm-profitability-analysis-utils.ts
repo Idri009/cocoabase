@@ -32,3 +32,24 @@ export function createProfitabilityAnalysis(
     txHash: '',
   };
 }
+
+export function isProfitable(
+  analysis: ProfitabilityAnalysis
+): boolean {
+  return analysis.profit > BigInt(0);
+}
+
+export function getAnalysesByPeriod(
+  analyses: ProfitabilityAnalysis[],
+  period: string
+): ProfitabilityAnalysis[] {
+  return analyses.filter((a) => a.period === period);
+}
+
+export function getAverageProfitMargin(
+  analyses: ProfitabilityAnalysis[]
+): number {
+  if (analyses.length === 0) return 0;
+  const total = analyses.reduce((sum, a) => sum + a.profitMargin, 0);
+  return total / analyses.length;
+}

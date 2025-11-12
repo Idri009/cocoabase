@@ -222,7 +222,7 @@ PlantationData memory data = plantationNFT.getPlantationData(tokenId);
 - **Wallet Analytics**: Deep analytics on wallet activity and plantation performance
 - **ENS Integration**: Support for Ethereum Name Service (ENS) domains
 - **Wallet Disconnect**: Secure wallet disconnection with onchain session management
-- **All Onchain Features Require Reown Wallet**: Every onchain feature in Cocoa Chain requires a connected wallet via Reown AppKit. All 80+ onchain features use `useAccount` from wagmi (powered by Reown) for wallet authentication and transaction signing. This includes 20 core agricultural features, 20 operational features, 20 additional agricultural features, and 20 latest features - all seamlessly integrated with Reown wallet connectivity
+- **All Onchain Features Require Reown Wallet**: Every onchain feature in Cocoa Chain requires a connected wallet via Reown AppKit. All 100+ onchain features use `useAccount` from wagmi (powered by Reown) for wallet authentication and transaction signing. This includes 20 core agricultural features, 20 operational features, 20 additional agricultural features, 20 latest features, and 20 additional latest features - all seamlessly integrated with Reown wallet connectivity
 
 ### 🤝 Decentralized Collaboration & DAO
 

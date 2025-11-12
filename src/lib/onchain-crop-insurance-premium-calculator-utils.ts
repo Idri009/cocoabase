@@ -1,52 +1,26 @@
 import { type Address } from 'viem';
 
-export interface InsurancePremium {
+export interface PremiumCalculation {
   id: bigint;
-  owner: Address;
   plantationId: bigint;
-  coverageAmount: bigint;
-  premiumRate: bigint;
-  calculatedPremium: bigint;
-  calculationDate: bigint;
-  txHash: string;
+  coverage: bigint;
+  rate: number;
+  premium: bigint;
+  timestamp: bigint;
 }
 
 export function calculatePremium(
-  owner: Address,
   plantationId: bigint,
-  coverageAmount: bigint,
-  premiumRate: bigint
-): InsurancePremium {
-  const calculatedPremium = (coverageAmount * premiumRate) / BigInt(10000);
+  coverage: bigint,
+  rate: number
+): PremiumCalculation {
+  const premium = (coverage * BigInt(Math.floor(rate * 100))) / BigInt(10000);
   return {
-    id: BigInt(Date.now()),
-    owner,
+    id: BigInt(0),
     plantationId,
-    coverageAmount,
-    premiumRate,
-    calculatedPremium,
-    calculationDate: BigInt(Date.now()),
-    txHash: '',
+    coverage,
+    rate,
+    premium,
+    timestamp: BigInt(Date.now()),
   };
-}
-
-export function getPremiumsByPlantation(
-  premiums: InsurancePremium[],
-  plantationId: bigint
-): InsurancePremium[] {
-  return premiums.filter((p) => p.plantationId === plantationId);
-}
-
-export function calculateTotalPremium(
-  premiums: InsurancePremium[]
-): bigint {
-  return premiums.reduce((total, p) => total + p.calculatedPremium, BigInt(0));
-}
-
-export function getRecentCalculations(
-  premiums: InsurancePremium[],
-  days: number
-): InsurancePremium[] {
-  const cutoff = BigInt(Date.now() - days * 24 * 60 * 60 * 1000);
-  return premiums.filter((p) => p.calculationDate >= cutoff);
 }

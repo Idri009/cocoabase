@@ -12,21 +12,15 @@ import {
 export function useOnchainFarmSustainabilityScoring() {
   const { address } = useAccount();
   const [scores, setScores] = useState<SustainabilityScore[]>([]);
-  const [isRecording, setIsRecording] = useState(false);
 
-  const record = async (
+  const record = (
     category: 'environmental' | 'social' | 'economic' | 'overall',
     score: number
-  ): Promise<void> => {
+  ) => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsRecording(true);
-    try {
-      const sustainabilityScore = createSustainabilityScore(address, category, score);
-      setScores((prev) => [...prev, sustainabilityScore]);
-      console.log('Recording sustainability score:', sustainabilityScore);
-    } finally {
-      setIsRecording(false);
-    }
+    const sustainabilityScore = createSustainabilityScore(address, category, score);
+    setScores((prev) => [...prev, sustainabilityScore]);
+    console.log('Recording sustainability score:', { category, score });
   };
 
   return {
@@ -35,7 +29,6 @@ export function useOnchainFarmSustainabilityScoring() {
     getScoresByCategory,
     calculateAverageScore,
     getHighScores,
-    isRecording,
     address,
   };
 }

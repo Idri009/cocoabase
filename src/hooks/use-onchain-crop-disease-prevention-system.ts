@@ -12,21 +12,12 @@ import {
 export function useOnchainCropDiseasePreventionSystem() {
   const { address } = useAccount();
   const [plans, setPlans] = useState<PreventionPlan[]>([]);
-  const [isCreating, setIsCreating] = useState(false);
 
-  const create = async (
-    diseaseType: string,
-    scheduledDate: bigint
-  ): Promise<void> => {
+  const create = (diseaseType: string, scheduledDate: bigint) => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsCreating(true);
-    try {
-      const plan = createPreventionPlan(address, diseaseType, scheduledDate);
-      setPlans((prev) => [...prev, plan]);
-      console.log('Creating prevention plan:', plan);
-    } finally {
-      setIsCreating(false);
-    }
+    const plan = createPreventionPlan(address, diseaseType, scheduledDate);
+    setPlans((prev) => [...prev, plan]);
+    console.log('Creating prevention plan:', { diseaseType, scheduledDate });
   };
 
   return {
@@ -35,7 +26,6 @@ export function useOnchainCropDiseasePreventionSystem() {
     completePrevention,
     getScheduledPreventions,
     getPreventionsByDisease,
-    isCreating,
     address,
   };
 }

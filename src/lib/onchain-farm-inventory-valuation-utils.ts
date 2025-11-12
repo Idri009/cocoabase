@@ -24,3 +24,23 @@ export function createInventoryItem(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function calculateItemValue(item: InventoryItem): bigint {
+  return item.quantity * item.unitPrice;
+}
+
+export function calculateTotalInventoryValue(
+  items: InventoryItem[]
+): bigint {
+  return items.reduce(
+    (total, item) => total + calculateItemValue(item),
+    BigInt(0)
+  );
+}
+
+export function getItemsByName(
+  items: InventoryItem[],
+  itemName: string
+): InventoryItem[] {
+  return items.filter((i) => i.itemName === itemName);
+}

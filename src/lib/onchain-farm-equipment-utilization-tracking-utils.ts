@@ -26,3 +26,24 @@ export function recordUtilization(
     txHash: '',
   };
 }
+
+export function getUtilizationByEquipment(
+  records: UtilizationRecord[],
+  equipmentId: bigint
+): UtilizationRecord[] {
+  return records.filter((r) => r.equipmentId === equipmentId);
+}
+
+export function getAverageUtilizationRate(
+  records: UtilizationRecord[]
+): number {
+  if (records.length === 0) return 0;
+  const total = records.reduce((sum, r) => sum + r.utilizationRate, 0);
+  return total / records.length;
+}
+
+export function getTotalHoursUsed(
+  records: UtilizationRecord[]
+): number {
+  return records.reduce((total, r) => total + r.hoursUsed, 0);
+}

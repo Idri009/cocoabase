@@ -24,3 +24,33 @@ export function createListing(
     status: 'active',
   };
 }
+
+export function purchaseListing(
+  listing: MarketplaceListing,
+  buyer: Address,
+  quantity: bigint
+): MarketplaceListing | null {
+  if (listing.status !== 'active') return null;
+  if (quantity > listing.quantity) return null;
+  const remaining = listing.quantity - quantity;
+  return {
+    ...listing,
+    quantity: remaining,
+    status: remaining === BigInt(0) ? 'sold' : 'active',
+  };
+}
+
+export function getActiveListings(
+  listings: MarketplaceListing[]
+): MarketplaceListing[] {
+  return listings.filter((l) => l.status === 'active');
+}
+
+export function calculateTotalValue(
+  listings: MarketplaceListing[]
+): bigint {
+  return listings.reduce(
+    (total, listing) => total + listing.price * listing.quantity,
+    BigInt(0)
+  );
+}

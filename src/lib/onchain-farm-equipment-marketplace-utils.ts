@@ -3,52 +3,24 @@ import { type Address } from 'viem';
 export interface EquipmentListing {
   id: bigint;
   seller: Address;
-  equipmentName: string;
-  price: bigint;
+  equipment: string;
   condition: 'new' | 'used' | 'refurbished';
-  listingDate: bigint;
-  status: 'available' | 'sold' | 'cancelled';
-  txHash: string;
+  price: bigint;
+  available: boolean;
 }
 
-export function listEquipment(
+export function createEquipmentListing(
   seller: Address,
-  equipmentName: string,
-  price: bigint,
-  condition: EquipmentListing['condition']
+  equipment: string,
+  condition: 'new' | 'used' | 'refurbished',
+  price: bigint
 ): EquipmentListing {
   return {
-    id: BigInt(Date.now()),
+    id: BigInt(0),
     seller,
-    equipmentName,
-    price,
+    equipment,
     condition,
-    listingDate: BigInt(Date.now()),
-    status: 'available',
-    txHash: '',
+    price,
+    available: true,
   };
-}
-
-export function purchaseEquipment(
-  listing: EquipmentListing,
-  buyer: Address
-): EquipmentListing | null {
-  if (listing.status !== 'available') return null;
-  return {
-    ...listing,
-    status: 'sold',
-  };
-}
-
-export function getAvailableEquipment(
-  listings: EquipmentListing[]
-): EquipmentListing[] {
-  return listings.filter((l) => l.status === 'available');
-}
-
-export function getEquipmentByCondition(
-  listings: EquipmentListing[],
-  condition: EquipmentListing['condition']
-): EquipmentListing[] {
-  return listings.filter((l) => l.condition === condition);
 }

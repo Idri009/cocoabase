@@ -5,8 +5,8 @@ export interface CommodityOrder {
   trader: Address;
   commodity: string;
   orderType: 'buy' | 'sell';
-  quantity: bigint;
   price: bigint;
+  quantity: bigint;
   status: 'open' | 'filled' | 'cancelled';
 }
 
@@ -14,34 +14,16 @@ export function createOrder(
   trader: Address,
   commodity: string,
   orderType: 'buy' | 'sell',
-  quantity: bigint,
-  price: bigint
+  price: bigint,
+  quantity: bigint
 ): CommodityOrder {
   return {
     id: BigInt(0),
     trader,
     commodity,
     orderType,
-    quantity,
     price,
+    quantity,
     status: 'open',
   };
-}
-
-export function fillOrder(order: CommodityOrder): CommodityOrder {
-  return {
-    ...order,
-    status: 'filled',
-  };
-}
-
-export function getOpenOrders(orders: CommodityOrder[]): CommodityOrder[] {
-  return orders.filter((o) => o.status === 'open');
-}
-
-export function getOrdersByCommodity(
-  orders: CommodityOrder[],
-  commodity: string
-): CommodityOrder[] {
-  return orders.filter((o) => o.commodity === commodity);
 }

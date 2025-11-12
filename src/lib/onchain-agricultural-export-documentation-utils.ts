@@ -6,7 +6,6 @@ export interface ExportDocument {
   destination: string;
   documentType: string;
   status: 'pending' | 'approved' | 'rejected';
-  timestamp: bigint;
 }
 
 export function createExportDocument(
@@ -20,6 +19,28 @@ export function createExportDocument(
     destination,
     documentType,
     status: 'pending',
-    timestamp: BigInt(Date.now()),
   };
+}
+
+export function approveDocument(
+  document: ExportDocument,
+  approver: Address
+): ExportDocument {
+  return {
+    ...document,
+    status: 'approved',
+  };
+}
+
+export function getPendingDocuments(
+  documents: ExportDocument[]
+): ExportDocument[] {
+  return documents.filter((d) => d.status === 'pending');
+}
+
+export function getDocumentsByDestination(
+  documents: ExportDocument[],
+  destination: string
+): ExportDocument[] {
+  return documents.filter((d) => d.destination === destination);
 }

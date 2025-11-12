@@ -4,6 +4,7 @@ import type { Address } from 'viem';
 import {
   createListing,
   purchaseListing,
+  getActiveListings,
   calculateTotalValue,
   type MarketplaceListing,
 } from '@/lib/onchain-agricultural-marketplace-system-utils';
@@ -12,29 +13,32 @@ export function useOnchainAgriculturalMarketplaceSystem() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   const [listings, setListings] = useState<MarketplaceListing[]>([]);
-  const [isCreating, setIsCreating] = useState(false);
+  const [isPurchasing, setIsPurchasing] = useState(false);
 
-  const create = async (
-    product: string,
-    price: bigint,
+  const purchase = async (
+    listingId: bigint,
     quantity: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsCreating(true);
+    setIsPurchasing(true);
     try {
-      const listing = createListing(address, product, price, quantity);
-      console.log('Creating listing:', listing);
+      const listing = listings.find((l) => l.id === listingId);
+      if (!listing) throw new Error('Listing not found');
+      const updated = purchaseListing(listing, address, quantity);
+      if (updated) {
+        console.log('Purchasing listing:', { listingId, quantity });
+      }
     } finally {
-      setIsCreating(false);
+      setIsPurchasing(false);
     }
   };
 
   return {
     listings,
-    create,
-    purchaseListing,
+    purchase,
+    getActiveListings,
     calculateTotalValue,
-    isCreating,
+    isPurchasing,
     address,
   };
 }

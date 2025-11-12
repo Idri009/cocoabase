@@ -28,3 +28,29 @@ export function createSettlement(
     txHash: '',
   };
 }
+
+export function settleTrade(
+  settlement: TradeSettlement
+): TradeSettlement {
+  return {
+    ...settlement,
+    status: 'settled',
+  };
+}
+
+export function getPendingSettlements(
+  settlements: TradeSettlement[]
+): TradeSettlement[] {
+  return settlements.filter((s) => s.status === 'pending');
+}
+
+export function getSettlementsByParty(
+  settlements: TradeSettlement[],
+  party: Address
+): TradeSettlement[] {
+  return settlements.filter(
+    (s) =>
+      s.buyer.toLowerCase() === party.toLowerCase() ||
+      s.seller.toLowerCase() === party.toLowerCase()
+  );
+}

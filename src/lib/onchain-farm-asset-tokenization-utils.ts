@@ -2,40 +2,22 @@ import { type Address } from 'viem';
 
 export interface TokenizedAsset {
   id: bigint;
+  assetType: 'land' | 'equipment' | 'crop' | 'livestock';
   owner: Address;
-  assetType: string;
   tokenAmount: bigint;
-  active: boolean;
+  status: 'active' | 'redeemed';
 }
 
 export function createTokenizedAsset(
+  assetType: 'land' | 'equipment' | 'crop' | 'livestock',
   owner: Address,
-  assetType: string,
   tokenAmount: bigint
 ): TokenizedAsset {
   return {
     id: BigInt(0),
-    owner,
     assetType,
+    owner,
     tokenAmount,
-    active: true,
+    status: 'active',
   };
-}
-
-export function redeemTokens(
-  asset: TokenizedAsset,
-  amount: bigint
-): TokenizedAsset | null {
-  if (!asset.active || amount > asset.tokenAmount) return null;
-  return {
-    ...asset,
-    tokenAmount: asset.tokenAmount - amount,
-    active: asset.tokenAmount - amount > BigInt(0),
-  };
-}
-
-export function calculateTotalValue(assets: TokenizedAsset[]): bigint {
-  return assets
-    .filter((a) => a.active)
-    .reduce((total, a) => total + a.tokenAmount, BigInt(0));
 }

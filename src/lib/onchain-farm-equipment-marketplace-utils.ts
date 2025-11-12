@@ -24,3 +24,26 @@ export function createEquipmentListing(
     available: true,
   };
 }
+
+export function purchaseEquipment(
+  listing: EquipmentListing,
+  buyer: Address
+): EquipmentListing {
+  return {
+    ...listing,
+    available: false,
+  };
+}
+
+export function getAvailableEquipment(
+  listings: EquipmentListing[]
+): EquipmentListing[] {
+  return listings.filter((l) => l.available);
+}
+
+export function getEquipmentByCondition(
+  listings: EquipmentListing[],
+  condition: 'new' | 'used' | 'refurbished'
+): EquipmentListing[] {
+  return listings.filter((l) => l.condition === condition);
+}

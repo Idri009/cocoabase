@@ -3,7 +3,8 @@ import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createTokenizedAsset,
-  redeemTokens,
+  redeemAsset,
+  getActiveAssets,
   calculateTotalValue,
   type TokenizedAsset,
 } from '@/lib/onchain-farm-asset-tokenization-utils';
@@ -12,28 +13,20 @@ export function useOnchainFarmAssetTokenization() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   const [assets, setAssets] = useState<TokenizedAsset[]>([]);
-  const [isTokenizing, setIsTokenizing] = useState(false);
 
-  const tokenize = async (
-    assetType: string,
-    tokenAmount: bigint
-  ): Promise<void> => {
+  const redeem = async (assetId: bigint): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsTokenizing(true);
-    try {
-      const asset = createTokenizedAsset(address, assetType, tokenAmount);
-      console.log('Tokenizing asset:', asset);
-    } finally {
-      setIsTokenizing(false);
-    }
+    const asset = assets.find((a) => a.id === assetId);
+    if (!asset) throw new Error('Asset not found');
+    const updated = redeemAsset(asset);
+    console.log('Redeeming asset:', { assetId });
   };
 
   return {
     assets,
-    tokenize,
-    redeemTokens,
+    redeem,
+    getActiveAssets,
     calculateTotalValue,
-    isTokenizing,
     address,
   };
 }

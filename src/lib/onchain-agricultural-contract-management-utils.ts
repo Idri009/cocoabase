@@ -28,3 +28,25 @@ export function createContract(
     txHash: '',
   };
 }
+
+export function terminateContract(
+  contract: Contract
+): Contract {
+  return {
+    ...contract,
+    status: 'terminated',
+  };
+}
+
+export function getActiveContracts(
+  contracts: Contract[]
+): Contract[] {
+  return contracts.filter((c) => c.status === 'active');
+}
+
+export function checkContractExpiry(
+  contract: Contract,
+  currentTime: bigint
+): boolean {
+  return currentTime > contract.endDate;
+}

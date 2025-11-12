@@ -12,21 +12,12 @@ import {
 export function useOnchainAgriculturalCreditScoring() {
   const { address } = useAccount();
   const [scores, setScores] = useState<CreditScore[]>([]);
-  const [isCalculating, setIsCalculating] = useState(false);
 
-  const calculate = async (
-    score: number,
-    factors: string[]
-  ): Promise<void> => {
+  const calculate = (score: number, factors: string[]) => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsCalculating(true);
-    try {
-      const creditScore = calculateCreditScore(address, score, factors);
-      setScores((prev) => [...prev, creditScore]);
-      console.log('Calculating credit score:', creditScore);
-    } finally {
-      setIsCalculating(false);
-    }
+    const creditScore = calculateCreditScore(address, score, factors);
+    setScores((prev) => [...prev, creditScore]);
+    console.log('Calculating credit score:', { score, factors });
   };
 
   return {
@@ -35,7 +26,6 @@ export function useOnchainAgriculturalCreditScoring() {
     getGoodCredit,
     getRecentScores,
     calculateAverageScore,
-    isCalculating,
     address,
   };
 }

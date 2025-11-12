@@ -1,25 +1,42 @@
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createFinanceRequest,
-  type SupplyChainFinance,
+  approveRequest,
+  calculateRepayment,
+  getPendingRequests,
+  type FinanceRequest,
 } from '@/lib/onchain-agricultural-supply-chain-finance-utils';
 
 export function useOnchainAgriculturalSupplyChainFinance() {
   const { address } = useAccount();
-  const [finances, setFinances] = useState<SupplyChainFinance[]>([]);
+  const { writeContract } = useWriteContract();
+  const [requests, setRequests] = useState<FinanceRequest[]>([]);
+  const [isRequesting, setIsRequesting] = useState(false);
 
-  const create = async (
-    lender: Address,
+  const request = async (
     amount: bigint,
-    interestRate: bigint,
-    collateral: string
+    collateral: bigint,
+    interestRate: number
   ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
-    const finance = createFinanceRequest(address, lender, amount, interestRate, collateral);
-    setFinances([...finances, finance]);
+    if (!address) throw new Error('Wallet not connected via Reown');
+    setIsRequesting(true);
+    try {
+      const financeRequest = createFinanceRequest(address, amount, collateral, interestRate);
+      console.log('Creating finance request:', financeRequest);
+    } finally {
+      setIsRequesting(false);
+    }
   };
 
-  return { finances, create, address };
+  return {
+    requests,
+    request,
+    approveRequest,
+    calculateRepayment,
+    getPendingRequests,
+    isRequesting,
+    address,
+  };
 }

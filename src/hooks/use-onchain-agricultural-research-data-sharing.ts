@@ -12,22 +12,16 @@ import {
 export function useOnchainAgriculturalResearchDataSharing() {
   const { address } = useAccount();
   const [data, setData] = useState<ResearchData[]>([]);
-  const [isSharing, setIsSharing] = useState(false);
 
-  const share = async (
+  const share = (
     dataType: string,
     accessLevel: 'public' | 'private' | 'restricted',
-    hash: string
-  ): Promise<void> => {
+    dataHash: string
+  ) => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsSharing(true);
-    try {
-      const researchData = createResearchData(address, dataType, accessLevel, hash);
-      setData((prev) => [...prev, researchData]);
-      console.log('Sharing research data:', researchData);
-    } finally {
-      setIsSharing(false);
-    }
+    const researchData = createResearchData(address, dataType, accessLevel, dataHash);
+    setData((prev) => [...prev, researchData]);
+    console.log('Sharing research data:', { dataType, accessLevel });
   };
 
   return {
@@ -36,7 +30,6 @@ export function useOnchainAgriculturalResearchDataSharing() {
     getPublicData,
     getDataByType,
     verifyDataIntegrity,
-    isSharing,
     address,
   };
 }

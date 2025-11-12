@@ -2,46 +2,28 @@ import { type Address } from 'viem';
 
 export interface DepreciationRecord {
   id: bigint;
-  owner: Address;
-  assetId: bigint;
-  originalValue: bigint;
+  recorder: Address;
+  asset: string;
+  initialValue: bigint;
   currentValue: bigint;
-  depreciationDate: bigint;
-  txHash: string;
+  depreciationRate: bigint;
+  timestamp: bigint;
 }
 
-export function recordDepreciation(
-  owner: Address,
-  assetId: bigint,
-  originalValue: bigint,
-  currentValue: bigint
+export function createDepreciationRecord(
+  recorder: Address,
+  asset: string,
+  initialValue: bigint,
+  currentValue: bigint,
+  depreciationRate: bigint
 ): DepreciationRecord {
   return {
-    id: BigInt(Date.now()),
-    owner,
-    assetId,
-    originalValue,
+    id: BigInt(0),
+    recorder,
+    asset,
+    initialValue,
     currentValue,
-    depreciationDate: BigInt(Date.now()),
-    txHash: '',
+    depreciationRate,
+    timestamp: BigInt(Date.now()),
   };
-}
-
-export function calculateDepreciationAmount(
-  record: DepreciationRecord
-): bigint {
-  return record.originalValue - record.currentValue;
-}
-
-export function calculateDepreciationRate(
-  record: DepreciationRecord
-): number {
-  return Number(calculateDepreciationAmount(record)) / Number(record.originalValue);
-}
-
-export function getDepreciationByAsset(
-  records: DepreciationRecord[],
-  assetId: bigint
-): DepreciationRecord[] {
-  return records.filter((r) => r.assetId === assetId);
 }

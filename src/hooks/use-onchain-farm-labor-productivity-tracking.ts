@@ -2,7 +2,10 @@ import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  recordProductivity,
+  createProductivityRecord,
+  getRecordsByWorker,
+  calculateProductivity,
+  getRecentRecords,
   type ProductivityRecord,
 } from '@/lib/onchain-farm-labor-productivity-tracking-utils';
 
@@ -10,16 +13,30 @@ export function useOnchainFarmLaborProductivityTracking() {
   const { address } = useAccount();
   const [records, setRecords] = useState<ProductivityRecord[]>([]);
 
-  const record = async (
-    workerAddress: Address,
-    taskType: string,
+  const record = (
+    worker: Address,
+    task: string,
     output: bigint,
-    hoursWorked: number
-  ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
-    const record = recordProductivity(address, workerAddress, taskType, output, hoursWorked);
-    setRecords([...records, record]);
+    hours: bigint
+  ) => {
+    if (!address) throw new Error('Wallet not connected via Reown');
+    const productivityRecord = createProductivityRecord(
+      address,
+      worker,
+      task,
+      output,
+      hours
+    );
+    setRecords((prev) => [...prev, productivityRecord]);
+    console.log('Recording productivity:', { worker, task, output });
   };
 
-  return { records, record, address };
+  return {
+    records,
+    record,
+    getRecordsByWorker,
+    calculateProductivity,
+    getRecentRecords,
+    address,
+  };
 }

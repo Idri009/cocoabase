@@ -5,7 +5,7 @@ import {
   createJob,
   fillJob,
   getOpenJobs,
-  calculateTotalWage,
+  calculateTotalWages,
   type LaborJob,
 } from '@/lib/onchain-farm-labor-marketplace-utils';
 
@@ -13,30 +13,27 @@ export function useOnchainFarmLaborMarketplace() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   const [jobs, setJobs] = useState<LaborJob[]>([]);
-  const [isPosting, setIsPosting] = useState(false);
+  const [isFilling, setIsFilling] = useState(false);
 
-  const post = async (
-    jobTitle: string,
-    wage: bigint,
-    duration: bigint
-  ): Promise<void> => {
+  const fill = async (jobId: bigint): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsPosting(true);
+    setIsFilling(true);
     try {
-      const job = createJob(address, jobTitle, wage, duration);
-      console.log('Posting job:', job);
+      const job = jobs.find((j) => j.id === jobId);
+      if (!job) throw new Error('Job not found');
+      const updated = fillJob(job, address);
+      console.log('Filling job:', { jobId });
     } finally {
-      setIsPosting(false);
+      setIsFilling(false);
     }
   };
 
   return {
     jobs,
-    post,
-    fillJob,
+    fill,
     getOpenJobs,
-    calculateTotalWage,
-    isPosting,
+    calculateTotalWages,
+    isFilling,
     address,
   };
 }

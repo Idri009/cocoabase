@@ -27,3 +27,25 @@ export function createProductivityRecord(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getRecordsByWorker(
+  records: ProductivityRecord[],
+  worker: Address
+): ProductivityRecord[] {
+  return records.filter((r) => r.worker === worker);
+}
+
+export function calculateProductivity(
+  record: ProductivityRecord
+): bigint {
+  if (record.hours === BigInt(0)) return BigInt(0);
+  return record.output / record.hours;
+}
+
+export function getRecentRecords(
+  records: ProductivityRecord[],
+  days: number
+): ProductivityRecord[] {
+  const cutoff = BigInt(Date.now()) - BigInt(days * 24 * 60 * 60 * 1000);
+  return records.filter((r) => r.timestamp >= cutoff);
+}

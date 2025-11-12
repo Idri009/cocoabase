@@ -27,3 +27,21 @@ export function createOrder(
     status: 'open',
   };
 }
+
+export function fillOrder(order: CommodityOrder): CommodityOrder {
+  return {
+    ...order,
+    status: 'filled',
+  };
+}
+
+export function getOpenOrders(orders: CommodityOrder[]): CommodityOrder[] {
+  return orders.filter((o) => o.status === 'open');
+}
+
+export function getOrdersByCommodity(
+  orders: CommodityOrder[],
+  commodity: string
+): CommodityOrder[] {
+  return orders.filter((o) => o.commodity === commodity);
+}

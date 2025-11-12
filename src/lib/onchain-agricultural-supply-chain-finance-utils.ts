@@ -24,3 +24,24 @@ export function createFinanceRequest(
     status: 'pending',
   };
 }
+
+export function approveRequest(request: FinanceRequest): FinanceRequest {
+  return {
+    ...request,
+    status: 'approved',
+  };
+}
+
+export function calculateRepayment(
+  request: FinanceRequest,
+  duration: bigint
+): bigint {
+  const interest = (request.amount * BigInt(Math.floor(request.interestRate * 100)) * duration) / BigInt(10000 * 365);
+  return request.amount + interest;
+}
+
+export function getPendingRequests(
+  requests: FinanceRequest[]
+): FinanceRequest[] {
+  return requests.filter((r) => r.status === 'pending');
+}

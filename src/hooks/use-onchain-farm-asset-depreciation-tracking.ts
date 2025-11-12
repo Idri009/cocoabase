@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
+import type { Address } from 'viem';
 import {
-  recordDepreciation,
+  createDepreciationRecord,
+  calculateDepreciation,
+  getRecordsByAsset,
+  calculateTotalDepreciation,
   type DepreciationRecord,
 } from '@/lib/onchain-farm-asset-depreciation-tracking-utils';
 
@@ -9,15 +13,30 @@ export function useOnchainFarmAssetDepreciationTracking() {
   const { address } = useAccount();
   const [records, setRecords] = useState<DepreciationRecord[]>([]);
 
-  const record = async (
-    assetId: bigint,
-    originalValue: bigint,
-    currentValue: bigint
-  ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
-    const record = recordDepreciation(address, assetId, originalValue, currentValue);
-    setRecords([...records, record]);
+  const record = (
+    asset: string,
+    initialValue: bigint,
+    currentValue: bigint,
+    depreciationRate: bigint
+  ) => {
+    if (!address) throw new Error('Wallet not connected via Reown');
+    const depreciationRecord = createDepreciationRecord(
+      address,
+      asset,
+      initialValue,
+      currentValue,
+      depreciationRate
+    );
+    setRecords((prev) => [...prev, depreciationRecord]);
+    console.log('Recording depreciation:', { asset, initialValue });
   };
 
-  return { records, record, address };
+  return {
+    records,
+    record,
+    calculateDepreciation,
+    getRecordsByAsset,
+    calculateTotalDepreciation,
+    address,
+  };
 }

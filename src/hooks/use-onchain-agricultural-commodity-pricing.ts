@@ -12,22 +12,12 @@ import {
 export function useOnchainAgriculturalCommodityPricing() {
   const { address } = useAccount();
   const [prices, setPrices] = useState<CommodityPrice[]>([]);
-  const [isUpdating, setIsUpdating] = useState(false);
 
-  const update = async (
-    commodity: string,
-    price: bigint,
-    market: string
-  ): Promise<void> => {
+  const update = (commodity: string, price: bigint, market: string) => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsUpdating(true);
-    try {
-      const commodityPrice = updatePrice(address, commodity, price, market);
-      setPrices((prev) => [...prev, commodityPrice]);
-      console.log('Updating price:', commodityPrice);
-    } finally {
-      setIsUpdating(false);
-    }
+    const priceUpdate = updatePrice(address, commodity, price, market);
+    setPrices((prev) => [...prev, priceUpdate]);
+    console.log('Updating price:', { commodity, price, market });
   };
 
   return {
@@ -36,7 +26,6 @@ export function useOnchainAgriculturalCommodityPricing() {
     getLatestPrice,
     getPricesByMarket,
     getPriceHistory,
-    isUpdating,
     address,
   };
 }

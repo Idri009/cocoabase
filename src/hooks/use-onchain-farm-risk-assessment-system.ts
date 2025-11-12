@@ -12,21 +12,15 @@ import {
 export function useOnchainFarmRiskAssessmentSystem() {
   const { address } = useAccount();
   const [assessments, setAssessments] = useState<RiskAssessment[]>([]);
-  const [isAssessing, setIsAssessing] = useState(false);
 
-  const assess = async (
+  const assess = (
     riskType: 'weather' | 'market' | 'disease' | 'financial',
     level: 'low' | 'medium' | 'high' | 'critical'
-  ): Promise<void> => {
+  ) => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsAssessing(true);
-    try {
-      const assessment = createRiskAssessment(address, riskType, level);
-      setAssessments((prev) => [...prev, assessment]);
-      console.log('Creating risk assessment:', assessment);
-    } finally {
-      setIsAssessing(false);
-    }
+    const assessment = createRiskAssessment(address, riskType, level);
+    setAssessments((prev) => [...prev, assessment]);
+    console.log('Creating risk assessment:', { riskType, level });
   };
 
   return {
@@ -35,7 +29,6 @@ export function useOnchainFarmRiskAssessmentSystem() {
     getHighRisk,
     getAssessmentsByType,
     getRecentAssessments,
-    isAssessing,
     address,
   };
 }

@@ -1,54 +1,26 @@
 import { type Address } from 'viem';
 
-export interface InventoryValuation {
+export interface InventoryItem {
   id: bigint;
-  owner: Address;
-  itemId: bigint;
+  recorder: Address;
+  itemName: string;
   quantity: bigint;
   unitPrice: bigint;
-  totalValue: bigint;
-  valuationDate: bigint;
-  txHash: string;
+  timestamp: bigint;
 }
 
-export function createValuation(
-  owner: Address,
-  itemId: bigint,
+export function createInventoryItem(
+  recorder: Address,
+  itemName: string,
   quantity: bigint,
   unitPrice: bigint
-): InventoryValuation {
+): InventoryItem {
   return {
-    id: BigInt(Date.now()),
-    owner,
-    itemId,
+    id: BigInt(0),
+    recorder,
+    itemName,
     quantity,
     unitPrice,
-    totalValue: quantity * unitPrice,
-    valuationDate: BigInt(Date.now()),
-    txHash: '',
-  };
-}
-
-export function getTotalInventoryValue(
-  valuations: InventoryValuation[]
-): bigint {
-  return valuations.reduce((total, v) => total + v.totalValue, BigInt(0));
-}
-
-export function getValuationsByItem(
-  valuations: InventoryValuation[],
-  itemId: bigint
-): InventoryValuation[] {
-  return valuations.filter((v) => v.itemId === itemId);
-}
-
-export function updateValuation(
-  valuation: InventoryValuation,
-  newUnitPrice: bigint
-): InventoryValuation {
-  return {
-    ...valuation,
-    unitPrice: newUnitPrice,
-    totalValue: valuation.quantity * newUnitPrice,
+    timestamp: BigInt(Date.now()),
   };
 }

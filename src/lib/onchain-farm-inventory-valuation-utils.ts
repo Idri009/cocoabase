@@ -28,3 +28,27 @@ export function createValuation(
     txHash: '',
   };
 }
+
+export function getTotalInventoryValue(
+  valuations: InventoryValuation[]
+): bigint {
+  return valuations.reduce((total, v) => total + v.totalValue, BigInt(0));
+}
+
+export function getValuationsByItem(
+  valuations: InventoryValuation[],
+  itemId: bigint
+): InventoryValuation[] {
+  return valuations.filter((v) => v.itemId === itemId);
+}
+
+export function updateValuation(
+  valuation: InventoryValuation,
+  newUnitPrice: bigint
+): InventoryValuation {
+  return {
+    ...valuation,
+    unitPrice: newUnitPrice,
+    totalValue: valuation.quantity * newUnitPrice,
+  };
+}

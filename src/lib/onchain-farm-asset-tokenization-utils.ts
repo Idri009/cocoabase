@@ -21,3 +21,25 @@ export function createTokenizedAsset(
     status: 'active',
   };
 }
+
+export function redeemAsset(asset: TokenizedAsset): TokenizedAsset {
+  return {
+    ...asset,
+    status: 'redeemed',
+  };
+}
+
+export function getActiveAssets(
+  assets: TokenizedAsset[]
+): TokenizedAsset[] {
+  return assets.filter((a) => a.status === 'active');
+}
+
+export function calculateTotalValue(
+  assets: TokenizedAsset[]
+): bigint {
+  return assets.reduce(
+    (total, asset) => total + asset.tokenAmount,
+    BigInt(0)
+  );
+}

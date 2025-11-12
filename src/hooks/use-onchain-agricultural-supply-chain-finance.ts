@@ -13,30 +13,27 @@ export function useOnchainAgriculturalSupplyChainFinance() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   const [requests, setRequests] = useState<FinanceRequest[]>([]);
-  const [isRequesting, setIsRequesting] = useState(false);
+  const [isApproving, setIsApproving] = useState(false);
 
-  const request = async (
-    amount: bigint,
-    collateral: bigint,
-    interestRate: number
-  ): Promise<void> => {
+  const approve = async (requestId: bigint): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsRequesting(true);
+    setIsApproving(true);
     try {
-      const financeRequest = createFinanceRequest(address, amount, collateral, interestRate);
-      console.log('Creating finance request:', financeRequest);
+      const request = requests.find((r) => r.id === requestId);
+      if (!request) throw new Error('Request not found');
+      const updated = approveRequest(request, address);
+      console.log('Approving finance request:', { requestId });
     } finally {
-      setIsRequesting(false);
+      setIsApproving(false);
     }
   };
 
   return {
     requests,
-    request,
-    approveRequest,
+    approve,
     calculateRepayment,
     getPendingRequests,
-    isRequesting,
+    isApproving,
     address,
   };
 }

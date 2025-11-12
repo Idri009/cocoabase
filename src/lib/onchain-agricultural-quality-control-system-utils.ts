@@ -25,3 +25,23 @@ export function performQualityCheck(
     txHash: '',
   };
 }
+
+export function getPassedChecks(
+  checks: QualityCheck[]
+): QualityCheck[] {
+  return checks.filter((c) => c.passed);
+}
+
+export function getFailedChecks(
+  checks: QualityCheck[]
+): QualityCheck[] {
+  return checks.filter((c) => !c.passed);
+}
+
+export function getAverageQualityScore(
+  checks: QualityCheck[]
+): number {
+  if (checks.length === 0) return 0;
+  const total = checks.reduce((sum, c) => sum + c.qualityScore, 0);
+  return total / checks.length;
+}

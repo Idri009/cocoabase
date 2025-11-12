@@ -28,3 +28,25 @@ export function createPaymentTerms(
     txHash: '',
   };
 }
+
+export function getActiveTerms(
+  terms: PaymentTerms[]
+): PaymentTerms[] {
+  return terms.filter((t) => t.status === 'active');
+}
+
+export function getTermsByCounterparty(
+  terms: PaymentTerms[],
+  counterparty: Address
+): PaymentTerms[] {
+  return terms.filter(
+    (t) => t.counterparty.toLowerCase() === counterparty.toLowerCase()
+  );
+}
+
+export function calculateDueDate(
+  terms: PaymentTerms
+): bigint {
+  const dueDate = Number(terms.createdDate) + terms.dueDays * 24 * 60 * 60 * 1000;
+  return BigInt(dueDate);
+}

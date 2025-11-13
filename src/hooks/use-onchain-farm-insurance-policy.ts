@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createInsurancePolicy,
+  type InsurancePolicy,
+} from '@/lib/onchain-farm-insurance-policy-utils';
 
 /**
  * Hook for onchain farm insurance policy management
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmInsurancePolicy() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [policies, setPolicies] = useState<any[]>([]);
+  const [policies, setPolicies] = useState<InsurancePolicy[]>([]);
 
   const fileClaim = async (
     contractAddress: Address,

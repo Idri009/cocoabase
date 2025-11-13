@@ -23,3 +23,16 @@ export function createCertification(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getActiveCertifications(
+  certifications: Certification[]
+): Certification[] {
+  return certifications.filter((c) => c.status === 'active');
+}
+
+export function checkCertificationExpiry(
+  cert: Certification,
+  currentTime: bigint
+): boolean {
+  return currentTime > cert.expiryDate;
+}

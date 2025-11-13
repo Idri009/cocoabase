@@ -21,3 +21,16 @@ export function createVerification(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getVerifiedProducts(
+  records: VerificationRecord[]
+): VerificationRecord[] {
+  return records.filter((r) => r.verified);
+}
+
+export function getVerificationsByProduct(
+  records: VerificationRecord[],
+  productId: bigint
+): VerificationRecord[] {
+  return records.filter((r) => r.productId === productId);
+}

@@ -1,47 +1,35 @@
 import { type Address } from 'viem';
 
 export interface SustainabilityScore {
-  id: bigint;
-  recorder: Address;
-  category: 'environmental' | 'social' | 'economic' | 'overall';
-  score: number;
-  timestamp: bigint;
+  id: string;
+  scoreId: bigint;
+  farmOwner: Address;
+  environmentalScore: bigint;
+  socialScore: bigint;
+  economicScore: bigint;
+  overallScore: bigint;
+  date: bigint;
+  verified: boolean;
 }
 
 export function createSustainabilityScore(
-  recorder: Address,
-  category: 'environmental' | 'social' | 'economic' | 'overall',
-  score: number
+  farmOwner: Address,
+  scoreId: bigint,
+  environmentalScore: bigint,
+  socialScore: bigint,
+  economicScore: bigint
 ): SustainabilityScore {
+  const overallScore = (environmentalScore + socialScore + economicScore) / BigInt(3);
+
   return {
-    id: BigInt(0),
-    recorder,
-    category,
-    score,
-    timestamp: BigInt(Date.now()),
+    id: `${Date.now()}-${Math.random()}`,
+    scoreId,
+    farmOwner,
+    environmentalScore,
+    socialScore,
+    economicScore,
+    overallScore,
+    date: BigInt(Date.now()),
+    verified: false,
   };
-}
-
-export function getScoresByCategory(
-  scores: SustainabilityScore[],
-  category: 'environmental' | 'social' | 'economic' | 'overall'
-): SustainabilityScore[] {
-  return scores.filter((s) => s.category === category);
-}
-
-export function calculateAverageScore(
-  scores: SustainabilityScore[]
-): number {
-  if (scores.length === 0) return 0;
-  const total = scores.reduce((sum, s) => sum + s.score, 0);
-  return total / scores.length;
-}
-
-export function getHighScores(
-  scores: SustainabilityScore[],
-  minimum: number
-): SustainabilityScore[] {
-  return scores.filter((s) => s.score >= minimum);
-}
-
 }

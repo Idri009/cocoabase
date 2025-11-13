@@ -26,3 +26,18 @@ export function createSuccessionPlan(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function activatePlan(
+  plan: SuccessionPlan
+): SuccessionPlan {
+  return {
+    ...plan,
+    status: 'active',
+  };
+}
+
+export function getActivePlans(
+  plans: SuccessionPlan[]
+): SuccessionPlan[] {
+  return plans.filter((p) => p.status === 'active');
+}

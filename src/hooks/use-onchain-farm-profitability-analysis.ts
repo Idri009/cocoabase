@@ -1,23 +1,49 @@
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
-import {
-  createProfitabilityAnalysis,
-  type ProfitabilityAnalysis,
-} from '@/lib/onchain-farm-profitability-analysis-utils';
+import { useAccount, useWriteContract } from 'wagmi';
+import type { Address } from 'viem';
 
+/**
+ * Hook for onchain farm profitability analysis
+ * Uses Reown wallet for all transactions
+ */
 export function useOnchainFarmProfitabilityAnalysis() {
   const { address } = useAccount();
-  const [analyses, setAnalyses] = useState<ProfitabilityAnalysis[]>([]);
+  const { writeContract } = useWriteContract();
+  const [reports, setReports] = useState<any[]>([]);
 
-  const create = async (
-    period: string,
+  const createReport = async (
+    contractAddress: Address,
     revenue: bigint,
-    costs: bigint
+    costs: bigint,
+    periodStart: bigint,
+    periodEnd: bigint
   ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
-    const analysis = createProfitabilityAnalysis(address, period, revenue, costs);
-    setAnalyses([...analyses, analysis]);
+    if (!address) throw new Error('Wallet not connected via Reown');
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'revenue', type: 'uint256' },
+            { name: 'costs', type: 'uint256' },
+            { name: 'periodStart', type: 'uint256' },
+            { name: 'periodEnd', type: 'uint256' }
+          ],
+          name: 'createReport',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'createReport',
+      args: [revenue, costs, periodStart, periodEnd],
+    });
   };
 
-  return { analyses, create, address };
+  return { 
+    reports, 
+    createReport, 
+    address 
+  };
 }

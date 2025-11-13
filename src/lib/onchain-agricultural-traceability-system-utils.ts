@@ -21,3 +21,17 @@ export function createTraceabilityRecord(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getRecordsByProduct(
+  records: TraceabilityRecord[],
+  productId: bigint
+): TraceabilityRecord[] {
+  return records.filter((r) => r.productId === productId);
+}
+
+export function getRecordsByLocation(
+  records: TraceabilityRecord[],
+  location: string
+): TraceabilityRecord[] {
+  return records.filter((r) => r.location === location);
+}

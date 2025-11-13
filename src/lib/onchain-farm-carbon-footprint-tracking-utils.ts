@@ -27,3 +27,15 @@ export function createCarbonFootprint(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getTotalNetEmissions(
+  footprints: CarbonFootprint[]
+): bigint {
+  return footprints.reduce((total, f) => total + f.netEmissions, BigInt(0));
+}
+
+export function isCarbonNeutral(
+  footprint: CarbonFootprint
+): boolean {
+  return footprint.netEmissions <= BigInt(0);
+}

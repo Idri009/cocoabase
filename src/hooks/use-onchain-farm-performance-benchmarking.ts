@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createBenchmark,
+  type Benchmark,
+} from '@/lib/onchain-farm-performance-benchmarking-utils';
 
 /**
  * Hook for onchain farm performance benchmarking
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmPerformanceBenchmarking() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [benchmarks, setBenchmarks] = useState<any[]>([]);
+  const [benchmarks, setBenchmarks] = useState<Benchmark[]>([]);
 
   const createBenchmark = async (
     contractAddress: Address,

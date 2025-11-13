@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createRiskAssessment,
+  type RiskAssessment,
+} from '@/lib/onchain-farm-risk-assessment-utils';
 
 /**
  * Hook for onchain farm risk assessment
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmRiskAssessment() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [assessments, setAssessments] = useState<any[]>([]);
+  const [assessments, setAssessments] = useState<RiskAssessment[]>([]);
 
   const createAssessment = async (
     contractAddress: Address,

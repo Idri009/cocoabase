@@ -26,3 +26,18 @@ export function createLoan(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function repayLoan(
+  loan: Loan
+): Loan {
+  return {
+    ...loan,
+    status: 'repaid',
+  };
+}
+
+export function getActiveLoans(
+  loans: Loan[]
+): Loan[] {
+  return loans.filter((l) => l.status === 'active');
+}

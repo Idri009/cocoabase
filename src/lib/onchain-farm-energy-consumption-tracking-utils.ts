@@ -21,3 +21,16 @@ export function createEnergyConsumption(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getTotalConsumption(
+  records: EnergyConsumption[]
+): bigint {
+  return records.reduce((total, r) => total + r.amount, BigInt(0));
+}
+
+export function getConsumptionBySource(
+  records: EnergyConsumption[],
+  source: string
+): EnergyConsumption[] {
+  return records.filter((r) => r.source === source);
+}

@@ -2,49 +2,25 @@ import { type Address } from 'viem';
 
 export interface CostAllocation {
   id: bigint;
-  owner: Address;
-  costType: string;
+  allocator: Address;
+  costCenter: string;
   amount: bigint;
-  allocatedTo: string;
-  allocationDate: bigint;
-  txHash: string;
+  category: string;
+  timestamp: bigint;
 }
 
-export function allocateCost(
-  owner: Address,
-  costType: string,
+export function createCostAllocation(
+  allocator: Address,
+  costCenter: string,
   amount: bigint,
-  allocatedTo: string
+  category: string
 ): CostAllocation {
   return {
-    id: BigInt(Date.now()),
-    owner,
-    costType,
+    id: BigInt(0),
+    allocator,
+    costCenter,
     amount,
-    allocatedTo,
-    allocationDate: BigInt(Date.now()),
-    txHash: '',
+    category,
+    timestamp: BigInt(Date.now()),
   };
-}
-
-export function getTotalCostByType(
-  allocations: CostAllocation[],
-  costType: string
-): bigint {
-  return allocations
-    .filter((a) => a.costType === costType)
-    .reduce((total, a) => total + a.amount, BigInt(0));
-}
-
-export function getCostsByAllocation(
-  allocations: CostAllocation[],
-  allocatedTo: string
-): CostAllocation[] {
-  return allocations.filter((a) => a.allocatedTo === allocatedTo);
-}
-
-export function getTotalAllocatedCosts(
-  allocations: CostAllocation[]
-): bigint {
-  return allocations.reduce((total, a) => total + a.amount, BigInt(0));
 }

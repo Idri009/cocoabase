@@ -26,3 +26,15 @@ export function createLaborContract(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function calculateTotalWage(
+  contract: LaborContract
+): bigint {
+  return contract.wage * contract.duration;
+}
+
+export function getActiveContracts(
+  contracts: LaborContract[]
+): LaborContract[] {
+  return contracts.filter((c) => c.status === 'active');
+}

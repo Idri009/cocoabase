@@ -1,45 +1,29 @@
 import { type Address } from 'viem';
 
-export interface TokenizedAsset {
-  id: bigint;
-  assetType: 'land' | 'equipment' | 'crop' | 'livestock';
+export interface Asset {
+  id: string;
+  assetId: bigint;
+  assetType: string;
+  value: bigint;
+  metadata: string;
+  tokenizationDate: bigint;
   owner: Address;
-  tokenAmount: bigint;
-  status: 'active' | 'redeemed';
 }
 
-export function createTokenizedAsset(
-  assetType: 'land' | 'equipment' | 'crop' | 'livestock',
+export function createAsset(
   owner: Address,
-  tokenAmount: bigint
-): TokenizedAsset {
+  assetId: bigint,
+  assetType: string,
+  value: bigint,
+  metadata: string
+): Asset {
   return {
-    id: BigInt(0),
+    id: `${Date.now()}-${Math.random()}`,
+    assetId,
     assetType,
+    value,
+    metadata,
+    tokenizationDate: BigInt(Date.now()),
     owner,
-    tokenAmount,
-    status: 'active',
   };
-}
-
-export function redeemAsset(asset: TokenizedAsset): TokenizedAsset {
-  return {
-    ...asset,
-    status: 'redeemed',
-  };
-}
-
-export function getActiveAssets(
-  assets: TokenizedAsset[]
-): TokenizedAsset[] {
-  return assets.filter((a) => a.status === 'active');
-}
-
-export function calculateTotalValue(
-  assets: TokenizedAsset[]
-): bigint {
-  return assets.reduce(
-    (total, asset) => total + asset.tokenAmount,
-    BigInt(0)
-  );
 }

@@ -1,47 +1,33 @@
 import { type Address } from 'viem';
 
 export interface Investment {
-  id: bigint;
+  id: string;
+  investmentId: bigint;
   investor: Address;
-  investmentType: string;
   amount: bigint;
+  date: bigint;
+  investmentType: string;
   expectedReturn: bigint;
-  status: 'active' | 'completed' | 'cancelled';
+  actualReturn: bigint;
+  completed: boolean;
 }
 
 export function createInvestment(
   investor: Address,
-  investmentType: string,
+  investmentId: bigint,
   amount: bigint,
+  investmentType: string,
   expectedReturn: bigint
 ): Investment {
   return {
-    id: BigInt(0),
+    id: `${Date.now()}-${Math.random()}`,
+    investmentId,
     investor,
-    investmentType,
     amount,
+    date: BigInt(Date.now()),
+    investmentType,
     expectedReturn,
-    status: 'active',
+    actualReturn: BigInt(0),
+    completed: false,
   };
-}
-
-export function getActiveInvestments(
-  investments: Investment[]
-): Investment[] {
-  return investments.filter((i) => i.status === 'active');
-}
-
-export function calculateTotalInvestment(
-  investments: Investment[]
-): bigint {
-  return investments.reduce((total, i) => total + i.amount, BigInt(0));
-}
-
-export function calculateExpectedReturn(
-  investments: Investment[]
-): bigint {
-  return investments.reduce(
-    (total, i) => total + i.expectedReturn,
-    BigInt(0)
-  );
 }

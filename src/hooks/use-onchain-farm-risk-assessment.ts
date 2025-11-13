@@ -3,19 +3,20 @@ import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 
 /**
- * Hook for onchain farm succession planning
+ * Hook for onchain farm risk assessment
  * Uses Reown wallet for all transactions
  */
-export function useOnchainFarmSuccessionPlanning() {
+export function useOnchainFarmRiskAssessment() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [plans, setPlans] = useState<any[]>([]);
+  const [assessments, setAssessments] = useState<any[]>([]);
 
-  const createSuccessionPlan = async (
+  const createAssessment = async (
     contractAddress: Address,
-    successor: Address,
-    transferDate: bigint,
-    planDetails: string
+    riskType: string,
+    riskLevel: bigint,
+    description: string,
+    mitigation: string
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
@@ -24,24 +25,25 @@ export function useOnchainFarmSuccessionPlanning() {
       abi: [
         {
           inputs: [
-            { name: 'successor', type: 'address' },
-            { name: 'transferDate', type: 'uint256' },
-            { name: 'planDetails', type: 'string' }
+            { name: 'riskType', type: 'string' },
+            { name: 'riskLevel', type: 'uint256' },
+            { name: 'description', type: 'string' },
+            { name: 'mitigation', type: 'string' }
           ],
-          name: 'createSuccessionPlan',
+          name: 'createAssessment',
           outputs: [{ name: '', type: 'uint256' }],
           stateMutability: 'nonpayable',
           type: 'function'
         }
       ],
-      functionName: 'createSuccessionPlan',
-      args: [successor, transferDate, planDetails],
+      functionName: 'createAssessment',
+      args: [riskType, riskLevel, description, mitigation],
     });
   };
 
-  const approvePlan = async (
+  const markAsMitigated = async (
     contractAddress: Address,
-    planId: bigint
+    assessmentId: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
@@ -49,22 +51,23 @@ export function useOnchainFarmSuccessionPlanning() {
       address: contractAddress,
       abi: [
         {
-          inputs: [{ name: 'planId', type: 'uint256' }],
-          name: 'approvePlan',
+          inputs: [{ name: 'assessmentId', type: 'uint256' }],
+          name: 'markAsMitigated',
           outputs: [],
           stateMutability: 'nonpayable',
           type: 'function'
         }
       ],
-      functionName: 'approvePlan',
-      args: [planId],
+      functionName: 'markAsMitigated',
+      args: [assessmentId],
     });
   };
 
   return { 
-    plans, 
-    createSuccessionPlan, 
-    approvePlan, 
+    assessments, 
+    createAssessment, 
+    markAsMitigated, 
     address 
   };
 }
+

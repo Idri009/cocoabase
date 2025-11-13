@@ -1890,6 +1890,156 @@ src/
 - **Liquidator Rewards**: Calculate liquidator rewards
 - **Reown Integration**: Liquidation operations via Reown wallet
 
+### 🌾 Onchain Farm Yield Prediction
+- **Yield Prediction**: Predict harvest yields with confidence scores
+- **Actual Yield Recording**: Record actual yields for accuracy tracking
+- **Prediction Accuracy**: Calculate prediction accuracy metrics
+- **Reown Wallet**: All yield prediction operations require wallet connection
+
+### 🌦️ Onchain Farm Weather Insurance
+- **Policy Purchase**: Purchase weather insurance policies for plantations
+- **Claim Filing**: File insurance claims for weather-related damages
+- **Coverage Management**: Manage insurance coverage amounts and premiums
+- **Reown Integration**: Weather insurance operations via Reown wallet
+
+### 🌱 Onchain Farm Soil Carbon Sequestration
+- **Sequestration Recording**: Record carbon sequestration in soil
+- **Verification**: Verify carbon sequestration claims onchain
+- **Method Tracking**: Track different sequestration methods
+- **Reown Wallet**: Carbon sequestration operations require wallet connection
+
+### 💧 Onchain Farm Water Rights Trading
+- **Water Rights Trading**: Create and execute water rights trades
+- **Trade Management**: Manage water rights transfers between farmers
+- **Price Calculation**: Calculate water rights trading prices
+- **Reown Integration**: Water rights trading via Reown wallet
+
+### 🦋 Onchain Farm Biodiversity Credits
+- **Credit Minting**: Mint biodiversity credits based on species diversity
+- **Credit Trading**: Trade biodiversity credits onchain
+- **Habitat Tracking**: Track habitat areas and species counts
+- **Reown Wallet**: Biodiversity credit operations require wallet connection
+
+### 🌍 Onchain Farm Carbon Offset Marketplace
+- **Offset Listing**: List carbon offsets for sale
+- **Offset Purchase**: Purchase carbon offsets from farmers
+- **Price Management**: Set and manage carbon offset prices per ton
+- **Reown Integration**: Carbon offset marketplace operations via Reown wallet
+
+### ⚡ Onchain Farm Renewable Energy Trading
+- **Energy Listing**: List renewable energy for sale
+- **Energy Purchase**: Purchase renewable energy from farms
+- **Energy Types**: Support solar, wind, and biomass energy trading
+- **Reown Wallet**: Renewable energy trading requires wallet connection
+
+### 📊 Onchain Farm Data Monetization
+- **Data Listing**: List farm data for monetization
+- **Data Access Purchase**: Purchase access to farm data
+- **Data Hash Verification**: Verify data authenticity via hashes
+- **Reown Integration**: Data monetization operations via Reown wallet
+
+### 🛡️ Onchain Farm Insurance Pool
+- **Pool Creation**: Create insurance pools for risk sharing
+- **Pool Membership**: Join insurance pools with contributions
+- **Coverage Types**: Support various insurance coverage types
+- **Reown Wallet**: Insurance pool operations require wallet connection
+
+### 🗳️ Onchain Farm Cooperative Voting
+- **Proposal Creation**: Create governance proposals for cooperatives
+- **Voting**: Cast votes on proposals with wallet signatures
+- **Vote Counting**: Track yes/no votes onchain
+- **Reown Integration**: Cooperative voting operations via Reown wallet
+
+### 🏢 Onchain Farm Asset Leasing
+- **Lease Creation**: Create asset lease agreements
+- **Lease Execution**: Execute lease agreements onchain
+- **Rent Management**: Manage monthly rental payments
+- **Reown Wallet**: Asset leasing operations require wallet connection
+
+### 💰 Onchain Farm Labor Payment Escrow
+- **Escrow Creation**: Create escrow payments for labor
+- **Payment Release**: Release escrow payments upon work completion
+- **Work Description**: Track work descriptions for each escrow
+- **Reown Integration**: Labor payment escrow operations via Reown wallet
+
+### 🔄 Onchain Farm Supply Chain Payments
+- **Payment Initiation**: Initiate supply chain payments
+- **Payment Confirmation**: Confirm payment receipt onchain
+- **Order Linking**: Link payments to specific orders
+- **Reown Wallet**: Supply chain payment operations require wallet connection
+
+### ✅ Onchain Farm Quality Assurance
+- **Quality Checks**: Perform quality checks on farm products
+- **Quality Certification**: Certify product quality onchain
+- **Score Tracking**: Track quality scores and inspector notes
+- **Reown Integration**: Quality assurance operations via Reown wallet
+
+### 📦 Onchain Farm Export Certification
+- **Certification Application**: Apply for export certifications
+- **Certification Approval**: Approve export certifications onchain
+- **Standards Compliance**: Track compliance with export standards
+- **Reown Wallet**: Export certification operations require wallet connection
+
+### 🗺️ Onchain Farm Land Registry
+- **Land Registration**: Register land parcels onchain
+- **Ownership Transfer**: Transfer land ownership onchain
+- **Legal Documentation**: Store legal document hashes
+- **Reown Integration**: Land registry operations via Reown wallet
+
+### 🔧 Onchain Farm Equipment Sharing
+- **Equipment Sharing**: Share equipment between farmers
+- **Sharing Confirmation**: Confirm equipment sharing agreements
+- **Fee Management**: Manage sharing fees and durations
+- **Reown Wallet**: Equipment sharing operations require wallet connection
+
+### 🌰 Onchain Farm Seed Exchange
+- **Seed Listing**: List seeds for sale on the exchange
+- **Seed Purchase**: Purchase seeds from other farmers
+- **Certification Tracking**: Track seed certifications
+- **Reown Integration**: Seed exchange operations via Reown wallet
+
+### 📈 Onchain Farm Harvest Futures
+- **Futures Creation**: Create futures contracts for harvest yields
+- **Futures Settlement**: Settle futures contracts with actual yields
+- **Price Locking**: Lock in harvest prices in advance
+- **Reown Wallet**: Harvest futures operations require wallet connection
+
+### 🌿 Onchain Farm Sustainability Rewards
+- **Reward Claiming**: Claim sustainability rewards based on scores
+- **Reward Distribution**: Distribute rewards onchain
+- **Score Tracking**: Track sustainability scores per plantation
+- **Reown Integration**: Sustainability reward operations via Reown wallet
+
+### 🐛 Onchain Farm Pest Monitoring
+- **Pest Sighting**: Record pest sightings with location and severity
+- **Treatment Reporting**: Report pest treatment methods
+- **Monitoring History**: Maintain pest monitoring history
+- **Reown Wallet**: Pest monitoring operations require wallet connection
+
+### 💧 Onchain Farm Irrigation Automation
+- **Irrigation Scheduling**: Schedule automated irrigation
+- **Irrigation Execution**: Execute irrigation schedules onchain
+- **Water Management**: Track water amounts and frequency
+- **Reown Integration**: Irrigation automation operations via Reown wallet
+
+### 🌾 Onchain Farm Fertilizer Tracking
+- **Application Recording**: Record fertilizer applications
+- **Application Verification**: Verify fertilizer applications onchain
+- **Type Tracking**: Track different fertilizer types and amounts
+- **Reown Wallet**: Fertilizer tracking operations require wallet connection
+
+### 🔄 Onchain Farm Crop Rotation Planning
+- **Rotation Plan Creation**: Create crop rotation plans
+- **Rotation Execution**: Execute crop rotations onchain
+- **Multi-Crop Support**: Support multiple crops in rotation cycles
+- **Reown Integration**: Crop rotation planning operations via Reown wallet
+
+### 🐄 Onchain Farm Livestock Tracking
+- **Livestock Recording**: Record livestock with birth dates and species
+- **Health Status Updates**: Update livestock health status onchain
+- **Animal Identification**: Track individual animals by ID
+- **Reown Wallet**: Livestock tracking operations require wallet connection
+
 ## 🔗 Connect Your Wallet with Reown
 
 Cocoa Chain uses **Reown AppKit** (formerly WalletConnect) as the primary wallet connection layer. All onchain features require a connected wallet via Reown.

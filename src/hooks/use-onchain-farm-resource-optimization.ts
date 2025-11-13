@@ -1,23 +1,70 @@
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
-import {
-  createOptimizationPlan,
-  type OptimizationPlan,
-} from '@/lib/onchain-farm-resource-optimization-utils';
+import { useAccount, useWriteContract } from 'wagmi';
+import type { Address } from 'viem';
 
+/**
+ * Hook for onchain farm resource optimization
+ * Uses Reown wallet for all transactions
+ */
 export function useOnchainFarmResourceOptimization() {
   const { address } = useAccount();
-  const [plans, setPlans] = useState<OptimizationPlan[]>([]);
+  const { writeContract } = useWriteContract();
+  const [plans, setPlans] = useState<any[]>([]);
 
-  const create = async (
+  const createOptimizationPlan = async (
+    contractAddress: Address,
     resourceType: string,
     currentUsage: bigint,
-    optimizedUsage: bigint
+    optimalUsage: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const plan = createOptimizationPlan(address, resourceType, currentUsage, optimizedUsage);
-    setPlans([...plans, plan]);
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'resourceType', type: 'string' },
+            { name: 'currentUsage', type: 'uint256' },
+            { name: 'optimalUsage', type: 'uint256' }
+          ],
+          name: 'createOptimizationPlan',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'createOptimizationPlan',
+      args: [resourceType, currentUsage, optimalUsage],
+    });
   };
 
-  return { plans, create, address };
+  const implementPlan = async (
+    contractAddress: Address,
+    planId: bigint
+  ): Promise<void> => {
+    if (!address) throw new Error('Wallet not connected via Reown');
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [{ name: 'planId', type: 'uint256' }],
+          name: 'implementPlan',
+          outputs: [],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'implementPlan',
+      args: [planId],
+    });
+  };
+
+  return { 
+    plans, 
+    createOptimizationPlan, 
+    implementPlan, 
+    address 
+  };
 }

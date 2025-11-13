@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createAsset,
+  type Asset,
+} from '@/lib/onchain-farm-asset-tokenization-utils';
 
 /**
  * Hook for onchain farm asset tokenization
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmAssetTokenization() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [assets, setAssets] = useState<any[]>([]);
+  const [assets, setAssets] = useState<Asset[]>([]);
 
   const tokenizeAsset = async (
     contractAddress: Address,

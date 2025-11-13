@@ -1,21 +1,45 @@
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
-import {
-  createComplianceReport,
-  type ComplianceReport,
-} from '@/lib/onchain-farm-compliance-reporting-utils';
+import { useAccount, useWriteContract } from 'wagmi';
+import type { Address } from 'viem';
 
+/**
+ * Hook for onchain farm compliance reporting
+ * Uses Reown wallet for all transactions
+ */
 export function useOnchainFarmComplianceReporting() {
   const { address } = useAccount();
-  const [reports, setReports] = useState<ComplianceReport[]>([]);
+  const { writeContract } = useWriteContract();
+  const [reports, setReports] = useState<any[]>([]);
 
-  const create = async (
-    reportType: string
+  const submitReport = async (
+    contractAddress: Address,
+    reportType: string,
+    data: string
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const report = createComplianceReport(address, reportType);
-    setReports([...reports, report]);
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'reportType', type: 'string' },
+            { name: 'data', type: 'string' }
+          ],
+          name: 'submitReport',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'submitReport',
+      args: [reportType, data],
+    });
   };
 
-  return { reports, create, address };
+  return { 
+    reports, 
+    submitReport, 
+    address 
+  };
 }

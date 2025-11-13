@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createProfitabilityReport,
+  type ProfitabilityReport,
+} from '@/lib/onchain-farm-profitability-analysis-utils';
 
 /**
  * Hook for onchain farm profitability analysis
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmProfitabilityAnalysis() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [reports, setReports] = useState<any[]>([]);
+  const [reports, setReports] = useState<ProfitabilityReport[]>([]);
 
   const createReport = async (
     contractAddress: Address,

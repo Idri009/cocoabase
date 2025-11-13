@@ -222,7 +222,7 @@ PlantationData memory data = plantationNFT.getPlantationData(tokenId);
 - **Wallet Analytics**: Deep analytics on wallet activity and plantation performance
 - **ENS Integration**: Support for Ethereum Name Service (ENS) domains
 - **Wallet Disconnect**: Secure wallet disconnection with onchain session management
-- **All Onchain Features Require Reown Wallet**: Every onchain feature in Cocoa Chain requires a connected wallet via Reown AppKit. All 100+ onchain features use `useAccount` from wagmi (powered by Reown) for wallet authentication and transaction signing. This includes 20 core agricultural features, 20 operational features, 20 additional agricultural features, 20 latest features, and 20 additional latest features - all seamlessly integrated with Reown wallet connectivity
+- **All Onchain Features Require Reown Wallet**: Every onchain feature in Cocoa Chain requires a connected wallet via Reown AppKit. All 80+ onchain features use `useAccount` from wagmi (powered by Reown) for wallet authentication and transaction signing. This includes 20 core agricultural features, 20 operational features, 20 additional agricultural features, and 20 latest features - all seamlessly integrated with Reown wallet connectivity
 
 ### 🤝 Decentralized Collaboration & DAO
 
@@ -1391,6 +1391,11 @@ The codebase includes comprehensive utility libraries optimized for onchain oper
 - **`onchain-farm-investment-tracking-utils.ts`**: Farm investment tracking utilities with investment filtering and return calculation
 - **`onchain-agricultural-weather-risk-insurance-utils.ts`**: Agricultural weather risk insurance utilities with insurance claim and expiry check
 - **`onchain-farm-production-analytics-utils.ts`**: Farm production analytics utilities with analytics filtering and average calculation
+- **`onchain-agricultural-payment-terms-management-utils.ts`**: Agricultural payment terms management utilities with payment term status and calculation
+- **`onchain-farm-labor-productivity-tracking-utils.ts`**: Farm labor productivity tracking utilities with productivity calculation and filtering
+- **`onchain-farm-inventory-valuation-utils.ts`**: Farm inventory valuation utilities with inventory value calculation
+- **`onchain-farm-asset-depreciation-tracking-utils.ts`**: Farm asset depreciation tracking utilities with depreciation calculation functions
+- **`onchain-farm-performance-benchmarking-utils.ts`**: Farm performance benchmarking utilities with performance calculation and target check
 
 ### Risk & Performance
 - **`risk-utils.ts`**: Risk management utilities with onchain scoring
@@ -1616,6 +1621,11 @@ The codebase includes comprehensive utility libraries optimized for onchain oper
 - **`useOnchainFarmInvestmentTracking`**: Farm investment tracking system for recording and tracking investments with Reown wallet integration
 - **`useOnchainAgriculturalWeatherRiskInsurance`**: Agricultural weather risk insurance system for creating and managing weather insurance policies with Reown wallet integration
 - **`useOnchainFarmProductionAnalytics`**: Farm production analytics system for recording and tracking production metrics with Reown wallet integration
+- **`useOnchainAgriculturalPaymentTermsManagement`**: Agricultural payment terms management system for creating and managing payment terms with Reown wallet integration
+- **`useOnchainFarmLaborProductivityTracking`**: Farm labor productivity tracking system for recording and tracking worker productivity with Reown wallet integration
+- **`useOnchainFarmInventoryValuation`**: Farm inventory valuation system for recording and tracking inventory items with Reown wallet integration
+- **`useOnchainFarmAssetDepreciationTracking`**: Farm asset depreciation tracking system for recording and tracking asset depreciation with Reown wallet integration
+- **`useOnchainFarmPerformanceBenchmarking`**: Farm performance benchmarking system for creating and tracking performance benchmarks with Reown wallet integration
 
 ### General Hooks (from `hooks.ts`)
 - **`usePrevious`**: Get previous value

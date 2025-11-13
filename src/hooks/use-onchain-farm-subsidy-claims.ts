@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createSubsidyClaim,
+  type SubsidyClaim,
+} from '@/lib/onchain-farm-subsidy-claims-utils';
 
 /**
  * Hook for onchain farm subsidy claims
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmSubsidyClaims() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [claims, setClaims] = useState<any[]>([]);
+  const [claims, setClaims] = useState<SubsidyClaim[]>([]);
 
   const submitClaim = async (
     contractAddress: Address,

@@ -1,39 +1,33 @@
 import { type Address } from 'viem';
 
 export interface WasteRecord {
-  id: bigint;
-  recorder: Address;
-  type: string;
+  id: string;
+  recordId: bigint;
+  farmOwner: Address;
+  wasteType: string;
   amount: bigint;
   disposalMethod: string;
-  timestamp: bigint;
+  date: bigint;
+  recycled: boolean;
+  recyclingValue: bigint;
 }
 
 export function createWasteRecord(
-  recorder: Address,
-  type: string,
+  farmOwner: Address,
+  recordId: bigint,
+  wasteType: string,
   amount: bigint,
   disposalMethod: string
 ): WasteRecord {
   return {
-    id: BigInt(Date.now()),
-    recorder,
-    type,
+    id: `${Date.now()}-${Math.random()}`,
+    recordId,
+    farmOwner,
+    wasteType,
     amount,
     disposalMethod,
-    timestamp: BigInt(Date.now()),
+    date: BigInt(Date.now()),
+    recycled: false,
+    recyclingValue: BigInt(0),
   };
-}
-
-export function getTotalWaste(
-  records: WasteRecord[]
-): bigint {
-  return records.reduce((total, r) => total + r.amount, BigInt(0));
-}
-
-export function getWasteByType(
-  records: WasteRecord[],
-  type: string
-): WasteRecord[] {
-  return records.filter((r) => r.type === type);
 }

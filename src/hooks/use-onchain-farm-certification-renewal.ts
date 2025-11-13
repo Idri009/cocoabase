@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createCertification,
+  type Certification,
+} from '@/lib/onchain-farm-certification-renewal-utils';
 
 /**
  * Hook for onchain farm certification renewal
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmCertificationRenewal() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [certifications, setCertifications] = useState<any[]>([]);
+  const [certifications, setCertifications] = useState<Certification[]>([]);
 
   const renewCertification = async (
     contractAddress: Address,

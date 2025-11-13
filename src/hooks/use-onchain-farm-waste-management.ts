@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createWasteRecord,
+  type WasteRecord,
+} from '@/lib/onchain-farm-waste-management-utils';
 
 /**
  * Hook for onchain farm waste management
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmWasteManagement() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [records, setRecords] = useState<any[]>([]);
+  const [records, setRecords] = useState<WasteRecord[]>([]);
 
   const createWasteRecord = async (
     contractAddress: Address,

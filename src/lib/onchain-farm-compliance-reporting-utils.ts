@@ -1,37 +1,29 @@
 import { type Address } from 'viem';
 
 export interface ComplianceReport {
-  id: bigint;
+  id: string;
+  reportId: bigint;
   reporter: Address;
   reportType: string;
-  status: 'pending' | 'approved' | 'rejected';
-  timestamp: bigint;
+  data: string;
+  submissionDate: bigint;
+  verified: boolean;
+  verifier?: Address;
 }
 
 export function createComplianceReport(
   reporter: Address,
-  reportType: string
+  reportId: bigint,
+  reportType: string,
+  data: string
 ): ComplianceReport {
   return {
-    id: BigInt(Date.now()),
+    id: `${Date.now()}-${Math.random()}`,
+    reportId,
     reporter,
     reportType,
-    status: 'pending',
-    timestamp: BigInt(Date.now()),
+    data,
+    submissionDate: BigInt(Date.now()),
+    verified: false,
   };
-}
-
-export function approveReport(
-  report: ComplianceReport
-): ComplianceReport {
-  return {
-    ...report,
-    status: 'approved',
-  };
-}
-
-export function getPendingReports(
-  reports: ComplianceReport[]
-): ComplianceReport[] {
-  return reports.filter((r) => r.status === 'pending');
 }

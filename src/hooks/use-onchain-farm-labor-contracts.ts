@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createLaborContract,
+  type LaborContract,
+} from '@/lib/onchain-farm-labor-contracts-utils';
 
 /**
  * Hook for onchain farm labor contracts
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmLaborContracts() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [contracts, setContracts] = useState<any[]>([]);
+  const [contracts, setContracts] = useState<LaborContract[]>([]);
 
   const createContract = async (
     contractAddress: Address,

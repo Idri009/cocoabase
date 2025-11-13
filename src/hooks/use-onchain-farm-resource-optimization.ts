@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createOptimizationPlan,
+  type OptimizationPlan,
+} from '@/lib/onchain-farm-resource-optimization-utils';
 
 /**
  * Hook for onchain farm resource optimization
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmResourceOptimization() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [plans, setPlans] = useState<any[]>([]);
+  const [plans, setPlans] = useState<OptimizationPlan[]>([]);
 
   const createOptimizationPlan = async (
     contractAddress: Address,

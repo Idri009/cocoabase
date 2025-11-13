@@ -24,3 +24,18 @@ export function createRevenueRecord(
     status: 'pending',
   };
 }
+
+export function recognizeRevenue(record: RevenueRecord): RevenueRecord {
+  return {
+    ...record,
+    status: 'recognized',
+  };
+}
+
+export function getPendingRevenue(records: RevenueRecord[]): RevenueRecord[] {
+  return records.filter((r) => r.status === 'pending');
+}
+
+export function calculateTotalRevenue(records: RevenueRecord[]): bigint {
+  return records.reduce((total, r) => total + r.amount, BigInt(0));
+}

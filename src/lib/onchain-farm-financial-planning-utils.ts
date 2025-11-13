@@ -24,3 +24,16 @@ export function createFinancialPlan(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getTotalBudget(
+  plans: FinancialPlan[]
+): bigint {
+  return plans.reduce((total, p) => total + p.budget, BigInt(0));
+}
+
+export function getPlansByPeriod(
+  plans: FinancialPlan[],
+  period: string
+): FinancialPlan[] {
+  return plans.filter((p) => p.period === period);
+}

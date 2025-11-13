@@ -1,39 +1,43 @@
 import { type Address } from 'viem';
 
 export interface FinancialPlan {
-  id: bigint;
-  planner: Address;
+  id: string;
+  planId: bigint;
+  owner: Address;
+  totalBudget: bigint;
+  allocatedBudget: bigint;
+  startDate: bigint;
+  endDate: bigint;
   planType: string;
-  budget: bigint;
-  period: string;
-  timestamp: bigint;
+  active: boolean;
+}
+
+export interface BudgetItem {
+  id: string;
+  itemId: bigint;
+  planId: bigint;
+  category: string;
+  allocated: bigint;
+  spent: bigint;
 }
 
 export function createFinancialPlan(
-  planner: Address,
-  planType: string,
-  budget: bigint,
-  period: string
+  owner: Address,
+  planId: bigint,
+  totalBudget: bigint,
+  startDate: bigint,
+  endDate: bigint,
+  planType: string
 ): FinancialPlan {
   return {
-    id: BigInt(Date.now()),
-    planner,
+    id: `${Date.now()}-${Math.random()}`,
+    planId,
+    owner,
+    totalBudget,
+    allocatedBudget: BigInt(0),
+    startDate,
+    endDate,
     planType,
-    budget,
-    period,
-    timestamp: BigInt(Date.now()),
+    active: true,
   };
-}
-
-export function getTotalBudget(
-  plans: FinancialPlan[]
-): bigint {
-  return plans.reduce((total, p) => total + p.budget, BigInt(0));
-}
-
-export function getPlansByPeriod(
-  plans: FinancialPlan[],
-  period: string
-): FinancialPlan[] {
-  return plans.filter((p) => p.period === period);
 }

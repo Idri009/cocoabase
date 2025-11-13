@@ -20,3 +20,18 @@ export function createTradeDocument(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function approveDocument(
+  document: TradeDocument
+): TradeDocument {
+  return {
+    ...document,
+    status: 'approved',
+  };
+}
+
+export function getApprovedDocuments(
+  documents: TradeDocument[]
+): TradeDocument[] {
+  return documents.filter((d) => d.status === 'approved');
+}

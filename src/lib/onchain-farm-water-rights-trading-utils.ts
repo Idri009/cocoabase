@@ -1,37 +1,28 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm water rights trading utilities
- * Water rights trading and transfer management
- */
-
-export interface WaterRightsTrade {
+export interface WaterRight {
   id: string;
-  waterRightsId: string;
-  seller: Address;
-  buyer: Address;
-  amount: bigint;
+  rightId: bigint;
+  waterAmount: bigint;
   price: bigint;
-  status: 'pending' | 'executed' | 'cancelled';
-  timestamp: bigint;
+  seller: Address;
+  buyer?: Address;
+  listingDate: bigint;
+  sold: boolean;
 }
 
-export function createWaterRightsTrade(
-  seller: Address,
-  waterRightsId: string,
-  amount: bigint,
-  price: bigint,
-  buyer: Address
-): WaterRightsTrade {
+export function createWaterRight(
+  address: Address,
+  waterAmount: bigint,
+  price: bigint
+): WaterRight {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    waterRightsId,
-    seller,
-    buyer,
-    amount,
+    rightId: BigInt(0),
+    waterAmount,
     price,
-    status: 'pending',
-    timestamp: BigInt(Date.now()),
+    seller: address,
+    listingDate: BigInt(Date.now()),
+    sold: false,
   };
 }
-

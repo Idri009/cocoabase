@@ -7,7 +7,7 @@ import {
 } from '@/lib/onchain-farm-soil-carbon-sequestration-utils';
 
 /**
- * Hook for onchain farm soil carbon sequestration tracking
+ * Hook for onchain soil carbon sequestration
  * Uses Reown wallet for all transactions
  */
 export function useOnchainFarmSoilCarbonSequestration() {
@@ -16,28 +16,45 @@ export function useOnchainFarmSoilCarbonSequestration() {
   const [sequestrations, setSequestrations] = useState<CarbonSequestration[]>([]);
 
   const recordSequestration = async (
-    plantationId: string,
+    contractAddress: Address,
+    plantationId: bigint,
     carbonAmount: bigint,
-    method: string
+    soilType: string
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const sequestration = createCarbonSequestration(address, plantationId, carbonAmount, method);
+    
+    const sequestration = createCarbonSequestration(
+      address,
+      plantationId,
+      carbonAmount,
+      soilType
+    );
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'plantationId', type: 'uint256' },
+            { name: 'carbonAmount', type: 'uint256' },
+            { name: 'soilType', type: 'string' }
+          ],
+          name: 'recordSequestration',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'recordSequestration',
+      args: [plantationId, carbonAmount, soilType],
+    });
+    
     setSequestrations([...sequestrations, sequestration]);
   };
 
-  const verifySequestration = async (
-    contractAddress: Address,
-    sequestrationId: string
-  ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected via Reown');
-    await writeContract({
-      address: contractAddress,
-      abi: [],
-      functionName: 'verifySequestration',
-      args: [sequestrationId],
-    });
+  return { 
+    sequestrations, 
+    recordSequestration, 
+    address 
   };
-
-  return { sequestrations, recordSequestration, verifySequestration, address };
 }
-

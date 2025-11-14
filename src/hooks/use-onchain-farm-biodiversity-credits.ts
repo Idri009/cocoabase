@@ -7,7 +7,7 @@ import {
 } from '@/lib/onchain-farm-biodiversity-credits-utils';
 
 /**
- * Hook for onchain farm biodiversity credits
+ * Hook for onchain biodiversity credits
  * Uses Reown wallet for all transactions
  */
 export function useOnchainFarmBiodiversityCredits() {
@@ -15,31 +15,46 @@ export function useOnchainFarmBiodiversityCredits() {
   const { writeContract } = useWriteContract();
   const [credits, setCredits] = useState<BiodiversityCredit[]>([]);
 
-  const mintCredit = async (
-    plantationId: string,
-    speciesCount: number,
-    habitatArea: bigint
+  const issueCredit = async (
+    contractAddress: Address,
+    plantationId: bigint,
+    creditAmount: bigint,
+    biodiversityType: string
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const credit = createBiodiversityCredit(address, plantationId, speciesCount, habitatArea);
+    
+    const credit = createBiodiversityCredit(
+      address,
+      plantationId,
+      creditAmount,
+      biodiversityType
+    );
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'plantationId', type: 'uint256' },
+            { name: 'creditAmount', type: 'uint256' },
+            { name: 'biodiversityType', type: 'string' }
+          ],
+          name: 'issueCredit',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'issueCredit',
+      args: [plantationId, creditAmount, biodiversityType],
+    });
+    
     setCredits([...credits, credit]);
   };
 
-  const tradeCredit = async (
-    contractAddress: Address,
-    creditId: string,
-    buyer: Address,
-    price: bigint
-  ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected via Reown');
-    await writeContract({
-      address: contractAddress,
-      abi: [],
-      functionName: 'tradeCredit',
-      args: [creditId, buyer, price],
-    });
+  return { 
+    credits, 
+    issueCredit, 
+    address 
   };
-
-  return { credits, mintCredit, tradeCredit, address };
 }
-

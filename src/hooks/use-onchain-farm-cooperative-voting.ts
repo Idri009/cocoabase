@@ -2,43 +2,70 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createVote,
-  type Vote,
+  createProposal,
+  type Proposal,
 } from '@/lib/onchain-farm-cooperative-voting-utils';
 
-/**
- * Hook for onchain farm cooperative voting
- * Uses Reown wallet for all transactions
- */
 export function useOnchainFarmCooperativeVoting() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [votes, setVotes] = useState<Vote[]>([]);
+  const [proposals, setProposals] = useState<Proposal[]>([]);
 
-  const createProposal = async (
-    proposalTitle: string,
+  const createProposalAction = async (
+    contractAddress: Address,
     description: string,
-    votingPeriod: number
+    votingDuration: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const vote = createVote(address, proposalTitle, description, votingPeriod);
-    setVotes([...votes, vote]);
+    
+    const proposal = createProposal(address, description, votingDuration);
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'description', type: 'string' },
+            { name: 'votingDuration', type: 'uint256' }
+          ],
+          name: 'createProposal',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'createProposal',
+      args: [description, votingDuration],
+    });
+    
+    setProposals([...proposals, proposal]);
   };
 
-  const castVote = async (
+  const vote = async (
     contractAddress: Address,
-    proposalId: string,
+    proposalId: bigint,
     support: boolean
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
+    
     await writeContract({
       address: contractAddress,
-      abi: [],
-      functionName: 'castVote',
+      abi: [
+        {
+          inputs: [
+            { name: 'proposalId', type: 'uint256' },
+            { name: 'support', type: 'bool' }
+          ],
+          name: 'vote',
+          outputs: [],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'vote',
       args: [proposalId, support],
     });
   };
 
-  return { votes, createProposal, castVote, address };
+  return { proposals, createProposalAction, vote, address };
 }
-

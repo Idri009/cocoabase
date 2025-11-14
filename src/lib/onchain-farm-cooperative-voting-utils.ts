@@ -1,42 +1,31 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm cooperative voting utilities
- * Proposal creation and voting management
- */
-
-export interface Vote {
+export interface Proposal {
   id: string;
-  proposalTitle: string;
+  proposalId: bigint;
   description: string;
   proposer: Address;
-  votingPeriod: number;
-  startTime: bigint;
-  endTime: bigint;
+  startDate: bigint;
+  endDate: bigint;
   yesVotes: bigint;
   noVotes: bigint;
-  status: 'active' | 'passed' | 'rejected' | 'expired';
+  executed: boolean;
 }
 
-export function createVote(
+export function createProposal(
   address: Address,
-  proposalTitle: string,
   description: string,
-  votingPeriod: number
-): Vote {
-  const startTime = BigInt(Date.now());
-  const endTime = BigInt(Date.now() + votingPeriod * 24 * 60 * 60 * 1000);
+  votingDuration: bigint
+): Proposal {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    proposalTitle,
+    proposalId: BigInt(0),
     description,
     proposer: address,
-    votingPeriod,
-    startTime,
-    endTime,
+    startDate: BigInt(Date.now()),
+    endDate: BigInt(Date.now()) + votingDuration,
     yesVotes: BigInt(0),
     noVotes: BigInt(0),
-    status: 'active',
+    executed: false,
   };
 }
-

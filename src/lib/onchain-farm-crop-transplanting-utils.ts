@@ -26,4 +26,3 @@ export function createTransplantRecord(
     transplanter: address,
   };
 }
-

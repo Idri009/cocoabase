@@ -6,41 +6,57 @@ import {
   type WelfareAssessment,
 } from '@/lib/onchain-farm-livestock-welfare-monitoring-utils';
 
-/**
- * Hook for onchain farm livestock welfare monitoring
- * Uses blockchain wallet for all web3 transactions
- */
 export function useOnchainFarmLivestockWelfareMonitoring() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [assessments, setAssessments] = useState<WelfareAssessment[]>([]);
+  const [welfareAssessments, setWelfareAssessments] = useState<WelfareAssessment[]>([]);
 
   const assessWelfare = async (
-    animalId: string,
-    welfareScore: number,
-    assessmentCriteria: string[],
-    assessmentDate: bigint,
-    assessor: string
-  ): Promise<void> => {
-    if (!address) throw new Error('Web3 wallet not connected');
-    const assessment = createWelfareAssessment(address, animalId, welfareScore, assessmentCriteria, assessmentDate, assessor);
-    setAssessments([...assessments, assessment]);
-  };
-
-  const updateWelfareScore = async (
     contractAddress: Address,
-    assessmentId: string,
-    newScore: number
+    livestockId: bigint,
+    healthScore: bigint,
+    behaviorScore: bigint,
+    environmentScore: bigint,
+    nutritionScore: bigint
   ): Promise<void> => {
-    if (!address) throw new Error('Web3 wallet not connected');
+    if (!address) throw new Error('Wallet not connected via Reown');
+    
+    const assessment = createWelfareAssessment(
+      address,
+      livestockId,
+      healthScore,
+      behaviorScore,
+      environmentScore,
+      nutritionScore
+    );
+    
     await writeContract({
       address: contractAddress,
-      abi: [],
-      functionName: 'updateWelfareScore',
-      args: [assessmentId, newScore],
+      abi: [
+        {
+          inputs: [
+            { name: 'livestockId', type: 'uint256' },
+            { name: 'healthScore', type: 'uint256' },
+            { name: 'behaviorScore', type: 'uint256' },
+            { name: 'environmentScore', type: 'uint256' },
+            { name: 'nutritionScore', type: 'uint256' }
+          ],
+          name: 'assessWelfare',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'assessWelfare',
+      args: [livestockId, healthScore, behaviorScore, environmentScore, nutritionScore],
     });
+    
+    setWelfareAssessments([...welfareAssessments, assessment]);
   };
 
-  return { assessments, assessWelfare, updateWelfareScore, address };
+  return { 
+    welfareAssessments, 
+    assessWelfare, 
+    address 
+  };
 }
-

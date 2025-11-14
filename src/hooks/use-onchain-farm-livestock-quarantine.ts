@@ -6,40 +6,42 @@ import {
   type QuarantineRecord,
 } from '@/lib/onchain-farm-livestock-quarantine-utils';
 
-/**
- * Hook for onchain farm livestock quarantine
- * Uses Reown wallet for all transactions
- */
 export function useOnchainFarmLivestockQuarantine() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   const [records, setRecords] = useState<QuarantineRecord[]>([]);
 
-  const recordQuarantine = async (
-    animalId: string,
-    quarantineStartDate: bigint,
-    quarantineEndDate: bigint,
-    reason: string,
-    location: string
+  const startQuarantine = async (
+    contractAddress: Address,
+    livestockId: bigint,
+    duration: bigint,
+    reason: string
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const record = createQuarantineRecord(address, animalId, quarantineStartDate, quarantineEndDate, reason, location);
+    
+    const record = createQuarantineRecord(address, livestockId, duration, reason);
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'livestockId', type: 'uint256' },
+            { name: 'duration', type: 'uint256' },
+            { name: 'reason', type: 'string' }
+          ],
+          name: 'startQuarantine',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'startQuarantine',
+      args: [livestockId, duration, reason],
+    });
+    
     setRecords([...records, record]);
   };
 
-  const releaseFromQuarantine = async (
-    contractAddress: Address,
-    recordId: string
-  ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected via Reown');
-    await writeContract({
-      address: contractAddress,
-      abi: [],
-      functionName: 'releaseFromQuarantine',
-      args: [recordId],
-    });
-  };
-
-  return { records, recordQuarantine, releaseFromQuarantine, address };
+  return { records, startQuarantine, address };
 }
-

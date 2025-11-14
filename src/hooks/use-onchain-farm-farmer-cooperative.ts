@@ -74,7 +74,7 @@ export function useOnchainFarmFarmerCooperative() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const proposal = createProposal(address, description, votingDeadline);
+    const proposalData = createProposal(address, description, votingDeadline);
     
     await writeContract({
       address: contractAddress,
@@ -94,7 +94,7 @@ export function useOnchainFarmFarmerCooperative() {
       args: [description, votingDeadline],
     });
     
-    setProposals([...proposals, proposal]);
+    setProposals([...proposals, proposalData]);
   };
 
   const vote = async (

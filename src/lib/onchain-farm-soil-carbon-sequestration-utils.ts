@@ -1,34 +1,31 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm soil carbon sequestration utilities
- * Carbon sequestration tracking and verification
- */
-
 export interface CarbonSequestration {
   id: string;
-  plantationId: string;
-  recordedBy: Address;
+  plantationId: bigint;
   carbonAmount: bigint;
-  method: string;
-  timestamp: bigint;
+  measurementDate: bigint;
+  soilType: string;
+  measurer: Address;
   verified: boolean;
+  creditsEarned: bigint;
 }
 
 export function createCarbonSequestration(
   address: Address,
-  plantationId: string,
+  plantationId: bigint,
   carbonAmount: bigint,
-  method: string
+  soilType: string
 ): CarbonSequestration {
+  const creditsEarned = carbonAmount / BigInt(1000);
   return {
     id: `${Date.now()}-${Math.random()}`,
     plantationId,
-    recordedBy: address,
     carbonAmount,
-    method,
-    timestamp: BigInt(Date.now()),
+    measurementDate: BigInt(Date.now()),
+    soilType,
+    measurer: address,
     verified: false,
+    creditsEarned,
   };
 }
-

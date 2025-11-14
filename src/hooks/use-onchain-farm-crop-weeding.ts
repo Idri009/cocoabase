@@ -45,4 +45,3 @@ export function useOnchainFarmCropWeeding() {
 
   return { records, recordWeeding, address };
 }
-

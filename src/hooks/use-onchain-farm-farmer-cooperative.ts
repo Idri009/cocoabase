@@ -3,7 +3,7 @@ import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createCooperativeMember,
-  createProposal,
+  createProposal as createProposalData,
   type CooperativeMember,
   type Proposal,
 } from '@/lib/onchain-farm-farmer-cooperative-utils';
@@ -74,7 +74,7 @@ export function useOnchainFarmFarmerCooperative() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const proposalData = createProposal(address, description, votingDeadline);
+    const proposalData = createProposalData(address, description, votingDeadline);
     
     await writeContract({
       address: contractAddress,

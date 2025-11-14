@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createLoan,
+  createLoan as createLoanData,
   type Loan,
 } from '@/lib/onchain-farm-microfinance-utils';
 
@@ -24,7 +24,7 @@ export function useOnchainFarmMicrofinance() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const loanData = createLoan(address, principal, BigInt(0), termDays, purpose);
+    const loanData = createLoanData(address, principal, BigInt(0), termDays, purpose);
     
     await writeContract({
       address: contractAddress,

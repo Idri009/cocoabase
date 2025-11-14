@@ -2,28 +2,28 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createCompactionReading,
-  type CompactionReading,
-} from '@/lib/onchain-farm-soil-compaction-monitoring-utils';
+  createIntercroppingSystem,
+  type IntercroppingSystem,
+} from '@/lib/onchain-farm-crop-intercropping-management-utils';
 
-export function useOnchainFarmSoilCompactionMonitoring() {
+export function useOnchainFarmCropIntercroppingManagement() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [readings, setReadings] = useState<CompactionReading[]>([]);
+  const [systems, setSystems] = useState<IntercroppingSystem[]>([]);
 
-  const recordCompaction = async (
+  const createSystem = async (
     contractAddress: Address,
     fieldId: bigint,
-    compactionLevel: bigint,
-    depth: bigint
+    cropTypes: string[],
+    spacing: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const reading = createCompactionReading(
+    const system = createIntercroppingSystem(
       address,
       fieldId,
-      compactionLevel,
-      depth
+      cropTypes,
+      spacing
     );
     
     await writeContract({
@@ -32,25 +32,26 @@ export function useOnchainFarmSoilCompactionMonitoring() {
         {
           inputs: [
             { name: 'fieldId', type: 'uint256' },
-            { name: 'compactionLevel', type: 'uint256' },
-            { name: 'depth', type: 'uint256' }
+            { name: 'cropTypes', type: 'string[]' },
+            { name: 'spacing', type: 'uint256' }
           ],
-          name: 'recordCompaction',
+          name: 'createSystem',
           outputs: [{ name: '', type: 'uint256' }],
           stateMutability: 'nonpayable',
           type: 'function'
         }
       ],
-      functionName: 'recordCompaction',
-      args: [fieldId, compactionLevel, depth],
+      functionName: 'createSystem',
+      args: [fieldId, cropTypes, spacing],
     });
     
-    setReadings([...readings, reading]);
+    setSystems([...systems, system]);
   };
 
   return { 
-    readings, 
-    recordCompaction, 
+    systems, 
+    createSystem, 
     address 
   };
 }
+

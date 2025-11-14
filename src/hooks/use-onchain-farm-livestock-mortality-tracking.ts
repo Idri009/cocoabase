@@ -6,39 +6,51 @@ import {
   type MortalityRecord,
 } from '@/lib/onchain-farm-livestock-mortality-tracking-utils';
 
-/**
- * Hook for onchain farm livestock mortality tracking
- * Uses blockchain wallet for all web3 transactions
- */
 export function useOnchainFarmLivestockMortalityTracking() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   const [records, setRecords] = useState<MortalityRecord[]>([]);
 
   const recordMortality = async (
-    animalId: string,
-    deathDate: bigint,
-    causeOfDeath: string,
-    disposalMethod: string
+    contractAddress: Address,
+    livestockId: bigint,
+    cause: string,
+    age: bigint
   ): Promise<void> => {
-    if (!address) throw new Error('Web3 wallet not connected');
-    const record = createMortalityRecord(address, animalId, deathDate, causeOfDeath, disposalMethod);
+    if (!address) throw new Error('Wallet not connected via Reown');
+    
+    const record = createMortalityRecord(
+      address,
+      livestockId,
+      cause,
+      age
+    );
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'livestockId', type: 'uint256' },
+            { name: 'cause', type: 'string' },
+            { name: 'age', type: 'uint256' }
+          ],
+          name: 'recordMortality',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'recordMortality',
+      args: [livestockId, cause, age],
+    });
+    
     setRecords([...records, record]);
   };
 
-  const verifyMortality = async (
-    contractAddress: Address,
-    recordId: string
-  ): Promise<void> => {
-    if (!address) throw new Error('Web3 wallet not connected');
-    await writeContract({
-      address: contractAddress,
-      abi: [],
-      functionName: 'verifyMortality',
-      args: [recordId],
-    });
+  return { 
+    records, 
+    recordMortality, 
+    address 
   };
-
-  return { records, recordMortality, verifyMortality, address };
 }
-

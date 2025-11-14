@@ -115,5 +115,27 @@ pragma solidity ^0.8.24;
  * - FarmSoilPhManagement: Soil pH level management
  * - FarmCropGrowthStageTracking: Crop growth stage tracking
  * - FarmLivestockBehaviorMonitoring: Livestock behavior observation tracking
+ * 
+ * 20 Latest Contracts (All use Reown wallet):
+ * - FarmCropClimateAdaptation: Climate adaptation strategy management
+ * - FarmLivestockDiseasePrevention: Disease prevention measure tracking
+ * - FarmCropWaterEfficiency: Water efficiency metric tracking
+ * - FarmLivestockProductivityTracking: Livestock productivity metric tracking
+ * - FarmSoilMicrobiomeManagement: Soil microbiome health management
+ * - FarmCropBiodiversityEnhancement: Biodiversity enhancement activity tracking
+ * - FarmLivestockFeedCostOptimization: Feed cost optimization analysis
+ * - FarmCropStressMonitoring: Crop stress level monitoring
+ * - FarmLivestockHousingManagement: Livestock housing condition assessment
+ * - FarmCropNutrientRecycling: Nutrient recycling activity management
+ * - FarmLivestockGeneticDiversity: Genetic diversity tracking for populations
+ * - FarmCropPostHarvestManagement: Post-harvest crop handling management
+ * - FarmSoilCompactionMonitoring: Soil compaction level monitoring
+ * - FarmLivestockMortalityTracking: Livestock mortality and cause tracking
+ * - FarmCropIntercroppingManagement: Intercropping system management
+ * - FarmLivestockWasteManagement: Livestock waste processing management
+ * - FarmCropCoverCropManagement: Cover crop system management
+ * - FarmSoilOrganicMatterTracking: Soil organic matter level tracking
+ * - FarmLivestockBreedingSelection: Breeding selection decision tracking
+ * - FarmCropDroughtResistance: Crop drought resistance level tracking
  */
 

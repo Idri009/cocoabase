@@ -45,4 +45,3 @@ export function useOnchainFarmCropHarvestQuality() {
 
   return { grades, gradeHarvest, address };
 }
-

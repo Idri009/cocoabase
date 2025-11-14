@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createDistribution,
+  createDistribution as createDistributionRecord,
   type HarvestDistribution,
 } from '@/lib/onchain-farm-crop-harvest-distribution-utils';
 
 /**
  * Hook for onchain farm crop harvest distribution
- * Uses Reown wallet for all transactions
+ * Uses blockchain wallet for all web3 transactions
  */
 export function useOnchainFarmCropHarvestDistribution() {
   const { address } = useAccount();
@@ -21,8 +21,8 @@ export function useOnchainFarmCropHarvestDistribution() {
     amount: bigint,
     distributionDate: bigint
   ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected via Reown');
-    const distribution = createDistribution(address, harvestId, recipient, amount, distributionDate);
+    if (!address) throw new Error('Web3 wallet not connected');
+    const distribution = createDistributionRecord(address, harvestId, recipient, amount, distributionDate);
     setDistributions([...distributions, distribution]);
   };
 
@@ -30,7 +30,7 @@ export function useOnchainFarmCropHarvestDistribution() {
     contractAddress: Address,
     distributionId: string
   ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected via Reown');
+    if (!address) throw new Error('Web3 wallet not connected');
     await writeContract({
       address: contractAddress,
       abi: [],

@@ -2,9 +2,9 @@
 
 **Cocoa Chain** is a decentralized, wallet-connected dApp for minting, tracking, and managing onchain cocoa plantations as verifiable digital assets. Built on Next.js with **Reown AppKit** (WalletConnect) integration, every plantation is tokenized, every transaction is onchain, and every harvest is immutable.
 
-## 🎉 20 New Onchain Features Added!
+## 🎉 40 Onchain Features Total - 20 New Features Added!
 
-Cocoa Chain now includes **20 brand new onchain features** fully integrated with Reown wallet connectivity. All features require wallet connection and use Reown AppKit for secure, decentralized operations. See the [20 New Onchain Features](#-20-new-onchain-features-powered-by-reown-wallet) section below for complete details.
+Cocoa Chain now includes **40 total onchain features** (20 original + 20 brand new) fully integrated with Reown wallet connectivity. All features require wallet connection and use Reown AppKit for secure, decentralized operations. The **20 new features** include advanced trading, marketplace, and sustainability features. See the [20 New Onchain Features](#-20-new-onchain-features-powered-by-reown-wallet) section below for complete details.
 
 ## 🔗 Onchain Architecture
 
@@ -2836,7 +2836,153 @@ Cocoa Chain now includes **140+ onchain features** fully integrated with blockch
 - **Recycling Value**: Record recycling value for recycled waste
 - **Reown Integration**: Waste management operations via Reown wallet
 
-**All 20 new onchain features are fully integrated with Reown AppKit and require wallet connection for all operations. Each feature includes smart contracts deployed onchain and React hooks for seamless frontend integration.**
+**All 20 original onchain features are fully integrated with Reown AppKit and require wallet connection for all operations. Each feature includes smart contracts deployed onchain and React hooks for seamless frontend integration.**
+
+## 🚀 20 Additional New Onchain Features (Powered by Reown Wallet)
+
+Cocoa Chain now includes **20 additional brand new onchain features** for advanced trading, marketplace operations, and sustainability initiatives. All features are fully integrated with **Reown AppKit** and require wallet connection via Reown.
+
+### 📊 Crop Yield Prediction
+- **Prediction Creation**: Create yield predictions with confidence scores via Reown wallet
+- **Prediction Verification**: Verify predictions against actual yields with onchain accuracy calculation
+- **Crop Type Tracking**: Track predictions by crop type with onchain filtering
+- **Confidence Scoring**: Record prediction confidence levels with onchain verification
+- **Reown Integration**: All prediction operations require Reown wallet connection
+
+### 🌦️ Weather Insurance
+- **Policy Creation**: Create weather insurance policies with coverage amounts via Reown wallet
+- **Claim Filing**: File insurance claims with onchain verification
+- **Weather Conditions**: Track covered weather conditions with onchain storage
+- **Coverage Management**: Manage policy coverage periods and amounts
+- **Reown Wallet**: Insurance operations require wallet connection
+
+### 🌱 Soil Carbon Sequestration
+- **Sequestration Recording**: Record carbon sequestration amounts with soil type via Reown wallet
+- **Credit Calculation**: Automatically calculate carbon credits earned (1 credit per ton)
+- **Verification System**: Verify sequestration records (owner-only function)
+- **Soil Type Tracking**: Track sequestration by soil type with onchain queries
+- **Reown Integration**: Carbon tracking via Reown wallet
+
+### 💧 Water Rights Trading
+- **Right Listing**: List water rights for sale with amounts and prices via Reown wallet
+- **Right Purchase**: Purchase water rights with onchain payment processing
+- **Marketplace**: Decentralized marketplace for water rights trading
+- **Ownership Transfer**: Automatic ownership transfer on purchase
+- **Reown Wallet**: Trading operations require wallet connection
+
+### 🦋 Biodiversity Credits
+- **Credit Issuance**: Issue biodiversity credits with amounts and types via Reown wallet
+- **Credit Verification**: Verify credits and assign values (owner-only function)
+- **Credit Types**: Track various biodiversity types (flora, fauna, ecosystem)
+- **Value Assignment**: Assign monetary values to verified credits
+- **Reown Integration**: Credit operations via Reown wallet
+
+### ⚡ Renewable Energy Trading
+- **Energy Listing**: List renewable energy for sale with amounts and prices via Reown wallet
+- **Energy Purchase**: Purchase renewable energy with onchain payment processing
+- **Energy Types**: Support solar, wind, hydro, and other renewable sources
+- **Marketplace**: Decentralized marketplace for renewable energy trading
+- **Reown Wallet**: Trading operations require wallet connection
+
+### 📊 Data Monetization
+- **Data Listing**: List farm data for sale with types and prices via Reown wallet
+- **Data Purchase**: Purchase farm data with onchain payment processing
+- **Data Types**: Support various data types (yield, weather, soil, etc.)
+- **Metadata Storage**: Store data metadata onchain for transparency
+- **Reown Integration**: Data monetization via Reown wallet
+
+### 🌍 Carbon Offset Marketplace
+- **Offset Listing**: List carbon offsets for sale with amounts and prices via Reown wallet
+- **Offset Purchase**: Purchase carbon offsets with onchain payment processing
+- **Offset Verification**: Verify offsets (owner-only function)
+- **Price Per Ton**: Set and track prices per ton of carbon
+- **Reown Wallet**: Marketplace operations require wallet connection
+
+### 🛡️ Insurance Pool
+- **Pool Membership**: Join insurance pool with contributions via Reown wallet
+- **Claim Filing**: File insurance claims with amounts and onchain verification
+- **Claim Approval**: Approve claims (owner-only function)
+- **Claim Payment**: Process claim payments with onchain fund management
+- **Reown Integration**: Pool operations via Reown wallet
+
+### 🗳️ Cooperative Voting
+- **Proposal Creation**: Create proposals with descriptions and voting periods via Reown wallet
+- **Voting**: Cast votes (yes/no) on proposals with onchain verification
+- **Vote Counting**: Automatic vote counting with onchain tallies
+- **Proposal Execution**: Execute approved proposals automatically
+- **Reown Wallet**: Voting operations require wallet connection
+
+### 🏢 Asset Leasing
+- **Lease Creation**: Create asset leases with terms and rent via Reown wallet
+- **Rent Payment**: Pay monthly rent with onchain payment processing
+- **Lease Management**: Track active leases with start and end dates
+- **Lease Termination**: Terminate leases with onchain status updates
+- **Reown Integration**: Leasing operations via Reown wallet
+
+### 💼 Labor Payment Escrow
+- **Escrow Creation**: Create escrow payments with amounts and release dates via Reown wallet
+- **Payment Release**: Release payments automatically on release date
+- **Dispute Handling**: File disputes with onchain dispute resolution
+- **Dispute Resolution**: Resolve disputes (owner-only function)
+- **Reown Wallet**: Escrow operations require wallet connection
+
+### 💰 Supply Chain Payments
+- **Payment Creation**: Create supply chain payments with invoices via Reown wallet
+- **Payment Processing**: Process payments with onchain verification
+- **Invoice Tracking**: Track payments by invoice ID with onchain queries
+- **Due Date Management**: Manage payment due dates with onchain timestamps
+- **Reown Integration**: Payment operations via Reown wallet
+
+### ✅ Quality Assurance
+- **Quality Checks**: Perform quality checks with scores and standards via Reown wallet
+- **Score Threshold**: Automatic pass/fail based on 80+ score threshold
+- **Certification Issuance**: Issue quality certifications for passed checks
+- **Standards Tracking**: Track quality standards with onchain storage
+- **Reown Wallet**: Quality assurance requires wallet connection
+
+### 🗺️ Land Registry
+- **Parcel Registration**: Register land parcels with areas and coordinates via Reown wallet
+- **Parcel Verification**: Verify land parcels (owner-only function)
+- **Ownership Transfer**: Transfer land parcel ownership with onchain updates
+- **Coordinate Storage**: Store GPS coordinates onchain for verification
+- **Reown Integration**: Registry operations via Reown wallet
+
+### 📦 Export Certification
+- **Certificate Issuance**: Issue export certificates with validity periods via Reown wallet
+- **Certificate Validation**: Validate certificates with onchain expiry checks
+- **Destination Tracking**: Track export destinations with onchain storage
+- **Certificate Revocation**: Revoke certificates (owner-only function)
+- **Reown Wallet**: Certification operations require wallet connection
+
+### 🔧 Equipment Sharing
+- **Equipment Sharing**: Share equipment with borrowers and deposits via Reown wallet
+- **Equipment Return**: Return shared equipment with automatic deposit refund
+- **Deposit Management**: Manage security deposits with onchain escrow
+- **Sharing Periods**: Track sharing periods with start and end dates
+- **Reown Integration**: Sharing operations via Reown wallet
+
+### 📈 Harvest Futures
+- **Futures Creation**: Create futures contracts with expected yields and prices via Reown wallet
+- **Harvest Delivery**: Deliver harvest with actual yields and onchain verification
+- **Contract Settlement**: Settle futures contracts with onchain payment processing
+- **Delivery Dates**: Manage delivery dates with onchain timestamps
+- **Reown Wallet**: Futures operations require wallet connection
+
+### 🌾 Seed Exchange
+- **Seed Listing**: List seeds for sale with types, quantities, and prices via Reown wallet
+- **Seed Purchase**: Purchase seeds with onchain payment processing
+- **Quality Tracking**: Track seed quality with onchain storage
+- **Marketplace**: Decentralized marketplace for seed trading
+- **Reown Integration**: Exchange operations via Reown wallet
+
+### 🌿 Sustainability Rewards
+- **Action Recording**: Record sustainability actions with points via Reown wallet
+- **Point System**: Earn points for sustainability actions (100 points = 1 reward unit)
+- **Reward Claiming**: Claim rewards based on accumulated points
+- **Action Verification**: Verify actions (owner-only function)
+- **Reown Wallet**: Rewards operations require wallet connection
+
+**All 20 additional new onchain features are fully integrated with Reown AppKit and require wallet connection for all operations. Each feature includes smart contracts deployed onchain and React hooks for seamless frontend integration.**
 
 ### 📦 Importing Onchain Features
 

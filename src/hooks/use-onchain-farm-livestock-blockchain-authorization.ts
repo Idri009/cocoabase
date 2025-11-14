@@ -42,3 +42,4 @@ export function useOnchainFarmLivestockBlockchainAuthorization() {
   return { authorizations, authorize, revokeAuthorization, address };
 }
 
+

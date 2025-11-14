@@ -68,3 +68,4 @@ export function useOnchainFarmCropRotationOptimization() {
   return { plans, createRotationPlanAction, activatePlan, address };
 }
 
+

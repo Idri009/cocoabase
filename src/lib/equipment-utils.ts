@@ -159,3 +159,4 @@ export const formatEquipmentCategory = (category: EquipmentCategory): string => 
 };
 
 
+

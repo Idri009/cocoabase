@@ -21,3 +21,4 @@ export function useOnchainFarmCarbonFootprintTracking() {
 
   return { footprints, create, address };
 }
+

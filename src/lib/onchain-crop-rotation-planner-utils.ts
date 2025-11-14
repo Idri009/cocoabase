@@ -69,3 +69,4 @@ export function calculateRotationBenefits(
   return compatiblePairs[previousCrop]?.includes(nextCrop) ? 85 : 50;
 }
 
+

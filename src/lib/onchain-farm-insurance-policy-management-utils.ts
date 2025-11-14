@@ -63,3 +63,4 @@ export function calculateClaimAmount(
   return lossAmount - policy.deductible;
 }
 
+

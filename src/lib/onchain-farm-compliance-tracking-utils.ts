@@ -31,3 +31,4 @@ export function checkExpiry(record: ComplianceRecord, currentTime: bigint): bool
   return currentTime >= record.expiryDate;
 }
 
+

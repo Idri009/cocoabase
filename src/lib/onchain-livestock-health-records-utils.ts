@@ -67,3 +67,4 @@ export function calculateHealthScore(record: LivestockHealthRecord): number {
   return statusScores[record.healthStatus];
 }
 
+

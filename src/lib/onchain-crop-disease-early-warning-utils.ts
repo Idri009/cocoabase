@@ -58,3 +58,4 @@ export function isCriticalWarning(warning: DiseaseWarning): boolean {
   return warning.riskLevel === 'critical' || warning.riskLevel === 'high';
 }
 
+

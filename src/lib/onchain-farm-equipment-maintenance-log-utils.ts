@@ -57,3 +57,4 @@ export function calculateMaintenanceCost(logs: MaintenanceLog[]): bigint {
   return logs.reduce((total, log) => total + log.cost, BigInt(0));
 }
 
+

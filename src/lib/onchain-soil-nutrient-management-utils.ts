@@ -75,3 +75,4 @@ export function calculateNutrientBalance(record: SoilNutrientRecord): number {
   return (nScore + pScore + kScore) / 3;
 }
 
+

@@ -1,38 +1,30 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm crop harvest forecasting utilities
- * Harvest forecast creation and updates
- */
-
 export interface HarvestForecast {
   id: string;
-  plantationId: string;
-  createdBy: Address;
+  plantationId: bigint;
+  cropType: string;
+  predictedHarvestDate: bigint;
   predictedYield: bigint;
-  forecastDate: bigint;
-  confidence: number;
-  factors: string[];
-  timestamp: bigint;
+  confidenceLevel: bigint;
+  forecaster: Address;
 }
 
-export function createForecast(
+export function createHarvestForecast(
   address: Address,
-  plantationId: string,
+  plantationId: bigint,
+  cropType: string,
+  predictedHarvestDate: bigint,
   predictedYield: bigint,
-  forecastDate: bigint,
-  confidence: number,
-  factors: string[]
+  confidenceLevel: bigint
 ): HarvestForecast {
   return {
     id: `${Date.now()}-${Math.random()}`,
     plantationId,
-    createdBy: address,
+    cropType,
+    predictedHarvestDate,
     predictedYield,
-    forecastDate,
-    confidence,
-    factors,
-    timestamp: BigInt(Date.now()),
+    confidenceLevel,
+    forecaster: address,
   };
 }
-

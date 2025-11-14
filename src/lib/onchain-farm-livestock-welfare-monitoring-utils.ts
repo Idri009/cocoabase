@@ -1,38 +1,33 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm livestock welfare monitoring utilities
- * Welfare assessment creation on blockchain
- */
-
 export interface WelfareAssessment {
   id: string;
-  animalId: string;
-  assessedBy: Address;
-  welfareScore: number;
-  assessmentCriteria: string[];
-  assessmentDate: bigint;
-  assessor: string;
-  timestamp: bigint;
+  livestockId: bigint;
+  healthScore: bigint;
+  behaviorScore: bigint;
+  environmentScore: bigint;
+  nutritionScore: bigint;
+  overallScore: bigint;
+  assessor: Address;
 }
 
 export function createWelfareAssessment(
   address: Address,
-  animalId: string,
-  welfareScore: number,
-  assessmentCriteria: string[],
-  assessmentDate: bigint,
-  assessor: string
+  livestockId: bigint,
+  healthScore: bigint,
+  behaviorScore: bigint,
+  environmentScore: bigint,
+  nutritionScore: bigint
 ): WelfareAssessment {
+  const overallScore = (healthScore + behaviorScore + environmentScore + nutritionScore) / 4n;
   return {
     id: `${Date.now()}-${Math.random()}`,
-    animalId,
-    assessedBy: address,
-    welfareScore,
-    assessmentCriteria,
-    assessmentDate,
-    assessor,
-    timestamp: BigInt(Date.now()),
+    livestockId,
+    healthScore,
+    behaviorScore,
+    environmentScore,
+    nutritionScore,
+    overallScore,
+    assessor: address,
   };
 }
-

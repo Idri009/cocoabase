@@ -2,46 +2,83 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createReproductionTracking,
-  type ReproductionTracking,
+  createReproductionCycle,
+  type ReproductionCycle,
 } from '@/lib/onchain-farm-livestock-reproduction-tracking-utils';
 
 /**
- * Hook for onchain farm livestock reproduction tracking
- * Uses blockchain wallet for all web3 transactions
+ * Hook for onchain livestock reproduction tracking
+ * Uses Reown wallet for all transactions
  */
 export function useOnchainFarmLivestockReproductionTracking() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [trackings, setTrackings] = useState<ReproductionTracking[]>([]);
+  const [reproductionCycles, setReproductionCycles] = useState<ReproductionCycle[]>([]);
 
-  const trackReproduction = async (
-    animalId: string,
-    matingDate: bigint,
-    expectedCalvingDate: bigint,
-    sireId: string,
-    damId: string,
-    breedingMethod: string
-  ): Promise<void> => {
-    if (!address) throw new Error('Web3 wallet not connected');
-    const tracking = createReproductionTracking(address, animalId, matingDate, expectedCalvingDate, sireId, damId, breedingMethod);
-    setTrackings([...trackings, tracking]);
-  };
-
-  const updateTracking = async (
+  const startCycle = async (
     contractAddress: Address,
-    trackingId: string,
-    actualCalvingDate: bigint
+    livestockId: bigint,
+    expectedBirthDate: bigint
   ): Promise<void> => {
-    if (!address) throw new Error('Web3 wallet not connected');
+    if (!address) throw new Error('Wallet not connected via Reown');
+    
+    const cycle = createReproductionCycle(
+      address,
+      livestockId,
+      expectedBirthDate
+    );
+    
     await writeContract({
       address: contractAddress,
-      abi: [],
-      functionName: 'updateTracking',
-      args: [trackingId, actualCalvingDate],
+      abi: [
+        {
+          inputs: [
+            { name: 'livestockId', type: 'uint256' },
+            { name: 'expectedBirthDate', type: 'uint256' }
+          ],
+          name: 'startReproductionCycle',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'startReproductionCycle',
+      args: [livestockId, expectedBirthDate],
+    });
+    
+    setReproductionCycles([...reproductionCycles, cycle]);
+  };
+
+  const recordBirth = async (
+    contractAddress: Address,
+    cycleId: bigint,
+    offspringCount: bigint
+  ): Promise<void> => {
+    if (!address) throw new Error('Wallet not connected via Reown');
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'cycleId', type: 'uint256' },
+            { name: 'offspringCount', type: 'uint256' }
+          ],
+          name: 'recordBirth',
+          outputs: [],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'recordBirth',
+      args: [cycleId, offspringCount],
     });
   };
 
-  return { trackings, trackReproduction, updateTracking, address };
+  return { 
+    reproductionCycles, 
+    startCycle, 
+    recordBirth, 
+    address 
+  };
 }
-

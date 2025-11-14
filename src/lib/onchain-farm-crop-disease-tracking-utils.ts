@@ -1,37 +1,33 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm crop disease tracking utilities
- * Disease record and treatment tracking
- */
-
 export interface DiseaseRecord {
   id: string;
-  plantationId: string;
-  recordedBy: Address;
+  recordId: bigint;
+  plantationId: bigint;
   diseaseType: string;
-  severity: number;
-  affectedArea: bigint;
-  treated: boolean;
-  timestamp: bigint;
+  severity: bigint;
+  detectionDate: bigint;
+  treatment: string;
+  tracker: Address;
+  resolved: boolean;
 }
 
 export function createDiseaseRecord(
   address: Address,
-  plantationId: string,
+  plantationId: bigint,
   diseaseType: string,
-  severity: number,
-  affectedArea: bigint
+  severity: bigint,
+  treatment: string
 ): DiseaseRecord {
   return {
     id: `${Date.now()}-${Math.random()}`,
+    recordId: BigInt(0),
     plantationId,
-    recordedBy: address,
     diseaseType,
     severity,
-    affectedArea,
-    treated: false,
-    timestamp: BigInt(Date.now()),
+    detectionDate: BigInt(Date.now()),
+    treatment,
+    tracker: address,
+    resolved: false,
   };
 }
-

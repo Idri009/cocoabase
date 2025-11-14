@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createRotationPlan,
-  createRotationHistory,
+  createRotationPlan as createRotationPlanData,
+  createRotationHistory as createRotationHistoryItem,
   type RotationPlan,
   type RotationHistory,
 } from '@/lib/onchain-farm-crop-rotation-utils';
@@ -28,7 +28,7 @@ export function useOnchainFarmCropRotation() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const plan = createRotationPlan(address, fieldId, currentCrop, nextCrop, rotationDate, cycleLength);
+    const plan = createRotationPlanData(address, fieldId, currentCrop, nextCrop, rotationDate, cycleLength);
     
     await writeContract({
       address: contractAddress,
@@ -63,7 +63,7 @@ export function useOnchainFarmCropRotation() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const history = createRotationHistory(planId, crop, plantingDate, yield);
+    const history = createRotationHistoryItem(planId, crop, plantingDate, yield);
     
     await writeContract({
       address: contractAddress,

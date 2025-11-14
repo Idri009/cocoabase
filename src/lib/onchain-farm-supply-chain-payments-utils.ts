@@ -1,34 +1,32 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm supply chain payments utilities
- * Supply chain payment processing
- */
-
-export interface SupplyChainPayment {
+export interface Payment {
   id: string;
-  buyer: Address;
-  supplier: Address;
+  paymentId: bigint;
+  payer: Address;
+  payee: Address;
   amount: bigint;
-  orderId: string;
-  status: 'pending' | 'confirmed' | 'rejected';
-  timestamp: bigint;
+  invoiceId: string;
+  dueDate: bigint;
+  paid: boolean;
+  paidDate?: bigint;
 }
 
 export function createPayment(
-  buyer: Address,
-  supplier: Address,
+  address: Address,
+  payee: Address,
   amount: bigint,
-  orderId: string
-): SupplyChainPayment {
+  invoiceId: string,
+  dueDate: bigint
+): Payment {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    buyer,
-    supplier,
+    paymentId: BigInt(0),
+    payer: address,
+    payee,
     amount,
-    orderId,
-    status: 'pending',
-    timestamp: BigInt(Date.now()),
+    invoiceId,
+    dueDate,
+    paid: false,
   };
 }
-

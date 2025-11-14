@@ -3,41 +3,71 @@ import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createPayment,
-  type SupplyChainPayment,
+  type Payment,
 } from '@/lib/onchain-farm-supply-chain-payments-utils';
 
-/**
- * Hook for onchain farm supply chain payments
- * Uses Reown wallet for all transactions
- */
 export function useOnchainFarmSupplyChainPayments() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [payments, setPayments] = useState<SupplyChainPayment[]>([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
 
-  const initiatePayment = async (
-    supplier: Address,
+  const createPaymentAction = async (
+    contractAddress: Address,
+    payee: Address,
     amount: bigint,
-    orderId: string
+    invoiceId: string,
+    dueDate: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const payment = createPayment(address, supplier, amount, orderId);
+    
+    const payment = createPayment(address, payee, amount, invoiceId, dueDate);
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'payee', type: 'address' },
+            { name: 'amount', type: 'uint256' },
+            { name: 'invoiceId', type: 'string' },
+            { name: 'dueDate', type: 'uint256' }
+          ],
+          name: 'createPayment',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'createPayment',
+      args: [payee, amount, invoiceId, dueDate],
+    });
+    
     setPayments([...payments, payment]);
   };
 
-  const confirmPayment = async (
+  const processPayment = async (
     contractAddress: Address,
-    paymentId: string
+    paymentId: bigint,
+    value: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
+    
     await writeContract({
       address: contractAddress,
-      abi: [],
-      functionName: 'confirmPayment',
+      abi: [
+        {
+          inputs: [{ name: 'paymentId', type: 'uint256' }],
+          name: 'processPayment',
+          outputs: [],
+          stateMutability: 'payable',
+          type: 'function'
+        }
+      ],
+      functionName: 'processPayment',
       args: [paymentId],
+      value,
     });
   };
 
-  return { payments, initiatePayment, confirmPayment, address };
+  return { payments, createPaymentAction, processPayment, address };
 }
-

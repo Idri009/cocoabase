@@ -57,6 +57,26 @@ export { useOnchainFarmFertilizerApplication } from './use-onchain-farm-fertiliz
 export { useOnchainFarmWeatherMonitoring } from './use-onchain-farm-weather-monitoring';
 export { useOnchainFarmCropDiseaseTracking } from './use-onchain-farm-crop-disease-tracking';
 export { useOnchainFarmInventoryManagement } from './use-onchain-farm-inventory-management';
+export { useOnchainFarmCropHarvestQuality } from './use-onchain-farm-crop-harvest-quality';
+export { useOnchainFarmLivestockBreeding } from './use-onchain-farm-livestock-breeding';
+export { useOnchainFarmCropPollination } from './use-onchain-farm-crop-pollination';
+export { useOnchainFarmWaterQuality } from './use-onchain-farm-water-quality';
+export { useOnchainFarmCropMaturity } from './use-onchain-farm-crop-maturity';
+export { useOnchainFarmLivestockFeeding } from './use-onchain-farm-livestock-feeding';
+export { useOnchainFarmCropPruning } from './use-onchain-farm-crop-pruning';
+export { useOnchainFarmLivestockMilking } from './use-onchain-farm-livestock-milking';
+export { useOnchainFarmCropWeeding } from './use-onchain-farm-crop-weeding';
+export { useOnchainFarmLivestockVaccination } from './use-onchain-farm-livestock-vaccination';
+export { useOnchainFarmCropTransplanting } from './use-onchain-farm-crop-transplanting';
+export { useOnchainFarmLivestockWeight } from './use-onchain-farm-livestock-weight';
+export { useOnchainFarmCropThinning } from './use-onchain-farm-crop-thinning';
+export { useOnchainFarmLivestockMovement } from './use-onchain-farm-livestock-movement';
+export { useOnchainFarmCropGrafting } from './use-onchain-farm-crop-grafting';
+export { useOnchainFarmLivestockSlaughter } from './use-onchain-farm-livestock-slaughter';
+export { useOnchainFarmCropSeedling } from './use-onchain-farm-crop-seedling';
+export { useOnchainFarmLivestockQuarantine } from './use-onchain-farm-livestock-quarantine';
+export { useOnchainFarmCropMulching } from './use-onchain-farm-crop-mulching';
+export { useOnchainFarmLivestockIdentification } from './use-onchain-farm-livestock-identification';
 
 // 20 More Additional Onchain Features - All use Reown wallet
 export { useOnchainFarmCropHarvestQuality } from './use-onchain-farm-crop-harvest-quality';

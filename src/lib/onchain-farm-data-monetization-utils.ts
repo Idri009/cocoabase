@@ -1,37 +1,31 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm data monetization utilities
- * Farm data listing and access management
- */
-
 export interface DataListing {
   id: string;
+  listingId: bigint;
   dataType: string;
-  dataHash: string;
-  owner: Address;
   price: bigint;
-  accessDuration: number;
-  status: 'listed' | 'sold' | 'cancelled';
-  timestamp: bigint;
+  seller: Address;
+  buyer?: Address;
+  listingDate: bigint;
+  sold: boolean;
+  metadata: string;
 }
 
 export function createDataListing(
   address: Address,
   dataType: string,
-  dataHash: string,
   price: bigint,
-  accessDuration: number
+  metadata: string
 ): DataListing {
   return {
     id: `${Date.now()}-${Math.random()}`,
+    listingId: BigInt(0),
     dataType,
-    dataHash,
-    owner: address,
     price,
-    accessDuration,
-    status: 'listed',
-    timestamp: BigInt(Date.now()),
+    seller: address,
+    listingDate: BigInt(Date.now()),
+    sold: false,
+    metadata,
   };
 }
-

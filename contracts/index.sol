@@ -93,5 +93,27 @@ pragma solidity ^0.8.24;
  * - FarmLivestockQuarantine: Livestock quarantine management
  * - FarmCropMulching: Crop mulching activity tracking
  * - FarmLivestockIdentification: Livestock identification tag management
+ * 
+ * 20 Advanced New Contracts (All use Reown wallet):
+ * - FarmCropHarvestAutomation: Automated harvest scheduling and execution
+ * - FarmLivestockFeedOptimization: Feed ration optimization for livestock
+ * - FarmCropPestResistanceTracking: Crop pest resistance level tracking
+ * - FarmSoilMoistureMonitoring: Soil moisture level monitoring
+ * - FarmCropYieldOptimization: Crop yield optimization planning
+ * - FarmLivestockGeneticsTracking: Livestock genetics and breeding tracking
+ * - FarmCropNutritionManagement: Crop nutrition plan management
+ * - FarmLivestockReproductionTracking: Livestock reproduction cycle tracking
+ * - FarmCropDiseaseResistance: Crop disease resistance tracking
+ * - FarmSoilFertilityManagement: Soil fertility assessment and improvement
+ * - FarmCropIrrigationScheduling: Crop irrigation schedule management
+ * - FarmLivestockWelfareMonitoring: Livestock welfare assessment
+ * - FarmCropHarvestForecasting: Harvest date and yield forecasting
+ * - FarmSoilErosionPrevention: Soil erosion assessment and prevention
+ * - FarmCropPollinationManagement: Crop pollination event management
+ * - FarmLivestockFeedQualityControl: Livestock feed quality testing
+ * - FarmCropSeedQualityTracking: Crop seed quality tracking
+ * - FarmSoilPhManagement: Soil pH level management
+ * - FarmCropGrowthStageTracking: Crop growth stage tracking
+ * - FarmLivestockBehaviorMonitoring: Livestock behavior observation tracking
  */
 

@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createListing,
-  createOrder,
+  createListing as createListingData,
+  createOrder as createOrderData,
   type Listing,
   type Order,
 } from '@/lib/onchain-farm-direct-marketplace-utils';
@@ -28,7 +28,7 @@ export function useOnchainFarmDirectMarketplace() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const listing = createListing(address, productName, productDescription, quantity, pricePerUnit, category);
+    const listing = createListingData(address, productName, productDescription, quantity, pricePerUnit, category);
     
     await writeContract({
       address: contractAddress,
@@ -62,7 +62,7 @@ export function useOnchainFarmDirectMarketplace() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const order = createOrder(address, address, listingId, quantity, value);
+    const order = createOrderData(address, address, listingId, quantity, value);
     
     await writeContract({
       address: contractAddress,

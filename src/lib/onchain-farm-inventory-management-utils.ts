@@ -1,18 +1,14 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm inventory management utilities
- * Inventory item creation and quantity management
- */
-
 export interface InventoryItem {
   id: string;
+  itemId: bigint;
   itemName: string;
-  owner: Address;
   category: string;
   quantity: bigint;
   unitPrice: bigint;
-  timestamp: bigint;
+  manager: Address;
+  lastUpdated: bigint;
 }
 
 export function createInventoryItem(
@@ -24,12 +20,12 @@ export function createInventoryItem(
 ): InventoryItem {
   return {
     id: `${Date.now()}-${Math.random()}`,
+    itemId: BigInt(0),
     itemName,
-    owner: address,
     category,
     quantity,
     unitPrice,
-    timestamp: BigInt(Date.now()),
+    manager: address,
+    lastUpdated: BigInt(Date.now()),
   };
 }
-

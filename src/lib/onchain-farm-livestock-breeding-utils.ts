@@ -1,36 +1,28 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm livestock breeding utilities
- * Livestock breeding record creation and birth recording
- */
-
-export interface LivestockBreedingRecord {
+export interface BreedingRecord {
   id: string;
-  sireId: string;
-  damId: string;
-  recordedBy: Address;
+  recordId: bigint;
+  sireId: bigint;
+  damId: bigint;
   breedingDate: bigint;
-  expectedBirthDate: bigint;
-  offspringId?: string;
-  timestamp: bigint;
+  breeder: Address;
+  successful: boolean;
+  offspringId?: bigint;
 }
 
 export function createBreedingRecord(
   address: Address,
-  sireId: string,
-  damId: string,
-  breedingDate: bigint,
-  expectedBirthDate: bigint
-): LivestockBreedingRecord {
+  sireId: bigint,
+  damId: bigint
+): BreedingRecord {
   return {
     id: `${Date.now()}-${Math.random()}`,
+    recordId: BigInt(0),
     sireId,
     damId,
-    recordedBy: address,
-    breedingDate,
-    expectedBirthDate,
-    timestamp: BigInt(Date.now()),
+    breedingDate: BigInt(Date.now()),
+    breeder: address,
+    successful: false,
   };
 }
-

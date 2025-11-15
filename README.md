@@ -83,6 +83,8 @@ CocoaBase is built with:
 - `FarmSoilCompactionMonitoring` - Monitor soil compaction levels
 - `FarmSoilMicrobiomeManagement` - Manage soil microbiome health
 - `FarmSoilCarbonSequestration` - Track carbon sequestration in soil
+- `FarmSoilNutrientAnalysis` - Comprehensive soil nutrient analysis
+- `FarmSoilTextureAnalysis` - Analyze soil texture composition
 
 #### Crop Operations
 - `FarmCropSeedling` - Seedling management
@@ -114,6 +116,18 @@ CocoaBase is built with:
 - `FarmCropPostHarvestManagement` - Post-harvest processing
 - `FarmGrainStorage` - Specialized grain storage
 - `FarmHarvestQuality` - Harvest quality assurance
+- `FarmCropStorageConditions` - Monitor storage conditions for quality preservation
+- `FarmCropTransportTracking` - Track crop transportation and logistics
+- `FarmCropQualityGrading` - Standardized quality grading system
+- `FarmCropTraceability` - Complete traceability from seed to consumer
+- `FarmCropOriginVerification` - Verify and certify crop geographic origin
+
+#### Crop Development Tracking
+- `FarmCropGerminationTracking` - Track seed germination rates and success
+- `FarmCropFloweringTracking` - Monitor flowering stages and timing
+- `FarmCropFruitingTracking` - Track fruit development and yield potential
+- `FarmCropRipeningTracking` - Monitor ripening process and readiness
+- `FarmCropHarvestTiming` - Optimize harvest timing based on multiple factors
 
 ### 🐄 **Livestock Management** (25 Features)
 
@@ -146,8 +160,14 @@ CocoaBase is built with:
 - `FarmLivestockProductivityTracking` - Productivity metrics
 - `FarmLivestockHousingManagement` - Housing and facility management
 - `FarmLivestockWasteManagement` - Waste management
+- `FarmLivestockGrazingManagement` - Manage grazing schedules and pasture rotation
+- `FarmLivestockPastureRotation` - Pasture rotation scheduling system
+- `FarmLivestockMilkQuality` - Track milk quality metrics and standards
+- `FarmLivestockEggProduction` - Track egg production and quality grading
+- `FarmLivestockWoolProduction` - Track wool production and fiber quality
+- `FarmLivestockMeatQuality` - Grade meat quality with certification
 
-### 💧 **Water & Irrigation** (4 Features)
+### 💧 **Water & Irrigation** (8 Features)
 
 - `FarmIrrigationManagement` - Comprehensive irrigation scheduling
 - `FarmIrrigationEfficiency` - Irrigation efficiency tracking
@@ -155,6 +175,8 @@ CocoaBase is built with:
 - `FarmWaterQuality` - Water quality testing
 - `FarmWaterRights` - Water rights management
 - `FarmWaterRightsTrading` - Water rights trading marketplace
+- `FarmWaterUsageTracking` - Track water consumption and usage patterns
+- `FarmWaterConservation` - Track water conservation efforts and efficiency
 
 ### 🌦️ **Weather & Climate** (3 Features)
 
@@ -250,19 +272,22 @@ CocoaBase is built with:
 - `FarmCooperativeVoting` - Onchain voting for cooperatives
 - `FarmCropResearch` - Crop research data sharing
 
-### 📊 **Analytics & Planning** (5 Features)
+### 📊 **Analytics & Planning** (8 Features)
 
 - `FarmProductionAnalytics` - Production analytics
 - `FarmResourceOptimization` - Resource optimization
 - `FarmRiskAssessment` - Risk assessment system
 - `FarmSuccessionPlanning` - Succession planning
 - `FarmSubsidyClaims` - Subsidy claims processing
+- `FarmPrecisionAgriculture` - Store precision agriculture data and analytics
+- `FarmDroneMonitoring` - Store drone monitoring data and aerial analysis
+- `FarmIoTDeviceIntegration` - Integrate and store IoT device sensor data
 
 ### 🎨 **NFT & Digital Assets** (1 Feature)
 
 - `PlantationNFT` - ERC-721 NFT contract for cocoa plantations with onchain metadata
 
-### ⛓️ **Advanced Onchain Features** (30 Features)
+### ⛓️ **Advanced Onchain Features** (60 Features)
 
 #### Onchain Governance & DAO
 - `FarmOnchainVoting` - Decentralized autonomous organization voting for farm cooperatives

@@ -2,7 +2,7 @@
 
 > **Revolutionizing Agriculture Through Blockchain Technology**
 
-CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **160+ distinct onchain transaction types** through **203+ specialized smart contracts** that execute directly onchain without intermediaries.
+CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **160+ distinct onchain transaction types** through **233+ specialized smart contracts** that execute directly onchain without intermediaries.
 
 Every agricultural operation—from seed planting to harvest, certification issuance to financial transactions—is recorded as immutable, verifiable onchain state on a decentralized ledger, creating permanent audit trails that are cryptographically secured and trustless.
 
@@ -38,7 +38,7 @@ CocoaBase leverages blockchain technology to create an **immutable, transparent,
 
 CocoaBase is built with:
 
-- **Smart Contracts**: 203+ Solidity contracts covering every aspect of agricultural management
+- **Smart Contracts**: 233+ Solidity contracts covering every aspect of agricultural management
 - **Frontend**: Next.js 16 with React 19, TypeScript, and Tailwind CSS
 - **Wallet Integration**: Reown (WalletConnect) for seamless Web3 connectivity
 - **Blockchain**: Ethereum-compatible networks (Ethereum, Arbitrum, Sepolia testnet)
@@ -47,7 +47,7 @@ CocoaBase is built with:
 
 ## 📋 Complete Feature List
 
-### 🌿 **Crop Management** (52 Features)
+### 🌿 **Crop Management** (67 Features)
 
 #### Core Crop Operations
 - `FarmCropMonitoring` - Real-time crop growth and health monitoring
@@ -83,6 +83,8 @@ CocoaBase is built with:
 - `FarmSoilCompactionMonitoring` - Monitor soil compaction levels
 - `FarmSoilMicrobiomeManagement` - Manage soil microbiome health
 - `FarmSoilCarbonSequestration` - Track carbon sequestration in soil
+- `FarmSoilNutrientBalance` - Soil nutrient balance tracking and recommendations
+- `FarmSoilMoistureAlerts` - Soil moisture alert system for irrigation management
 - `FarmSoilNutrientAnalysis` - Comprehensive soil nutrient analysis
 - `FarmSoilTextureAnalysis` - Analyze soil texture composition
 
@@ -119,6 +121,21 @@ CocoaBase is built with:
 - `FarmCropRotationHistory` - Historical tracking of crop rotation patterns
 - `FarmSeedOriginTracking` - Seed origin and provenance tracking
 - `FarmHarvestOriginTracking` - Harvest origin and batch tracking
+- `FarmCropHarvestScheduling` - Harvest scheduling and optimization system
+- `FarmCropHarvestStorage` - Harvest storage management and inventory tracking
+- `FarmCropHarvestQualityGrading` - Harvest quality grading and certification
+- `FarmCropSeedlingManagement` - Seedling management and nursery tracking
+- `FarmCropIrrigationEfficiency` - Irrigation efficiency tracking and optimization
+- `FarmCropPestMonitoring` - Pest monitoring and early warning system
+- `FarmCropDiseasePrevention` - Disease prevention protocols and compliance tracking
+- `FarmCropWeatherImpact` - Weather impact assessment on crops
+- `FarmCropPollinationTracking` - Pollination activity tracking and success monitoring
+- `FarmCropPruningSchedule` - Pruning schedule and maintenance tracking
+- `FarmCropWeedingSchedule` - Weeding schedule and weed management tracking
+- `FarmCropMulchingSchedule` - Mulching schedule and material tracking
+- `FarmCropFertilizerSchedule` - Fertilizer application scheduling and tracking
+- `FarmCropGraftingRecords` - Grafting records and success tracking
+- `FarmCropYieldAnalysis` - Yield analysis and comparative reporting
 - `FarmCropStorageConditions` - Monitor storage conditions for quality preservation
 - `FarmCropTransportTracking` - Track crop transportation and logistics
 - `FarmCropQualityGrading` - Standardized quality grading system
@@ -132,7 +149,7 @@ CocoaBase is built with:
 - `FarmCropRipeningTracking` - Monitor ripening process and readiness
 - `FarmCropHarvestTiming` - Optimize harvest timing based on multiple factors
 
-### 🐄 **Livestock Management** (25 Features)
+### 🐄 **Livestock Management** (40 Features)
 
 #### Livestock Health & Welfare
 - `FarmLivestockHealth` - Comprehensive livestock health records
@@ -163,6 +180,20 @@ CocoaBase is built with:
 - `FarmLivestockProductivityTracking` - Productivity metrics
 - `FarmLivestockHousingManagement` - Housing and facility management
 - `FarmLivestockWasteManagement` - Waste management
+- `FarmLivestockFeedInventory` - Livestock feed inventory management
+- `FarmLivestockVaccinationSchedule` - Vaccination scheduling and tracking
+- `FarmLivestockBreedingRecords` - Breeding records and lineage tracking
+- `FarmLivestockHealthRecords` - Comprehensive health records for livestock
+- `FarmLivestockWeightTracking` - Weight tracking and growth monitoring
+- `FarmLivestockMilkingRecords` - Milking records and production tracking
+- `FarmLivestockMovementTracking` - Livestock movement and location tracking
+- `FarmLivestockFeedSchedule` - Feed scheduling and ration management
+- `FarmLivestockQuarantineManagement` - Quarantine management and health isolation
+- `FarmLivestockSlaughterRecords` - Slaughter records and processing documentation
+- `FarmLivestockHousingConditions` - Housing conditions monitoring and welfare compliance
+- `FarmLivestockMortalityReporting` - Mortality reporting and cause tracking
+- `FarmLivestockProductivityMetrics` - Productivity metrics and performance tracking
+- `FarmLivestockBehaviorAnalysis` - Behavior analysis and welfare indicators
 - `FarmLivestockGrazingManagement` - Manage grazing schedules and pasture rotation
 - `FarmLivestockPastureRotation` - Pasture rotation scheduling system
 - `FarmLivestockMilkQuality` - Track milk quality metrics and standards
@@ -187,12 +218,13 @@ CocoaBase is built with:
 - `FarmWeatherData` - Weather data oracle and historical tracking
 - `FarmWeatherInsurance` - Weather-based insurance policies
 
-### 🏭 **Equipment & Infrastructure** (5 Features)
+### 🏭 **Equipment & Infrastructure** (6 Features)
 
 - `FarmEquipmentTracking` - Equipment usage and location tracking
 - `FarmEquipmentMaintenance` - Maintenance scheduling and records
 - `FarmEquipmentAuction` - Equipment auction marketplace
 - `FarmEquipmentSharing` - Equipment sharing with deposits
+- `FarmEquipmentUsageTracking` - Equipment usage hours and efficiency tracking
 
 ### 👥 **Labor Management** (6 Features)
 
@@ -574,7 +606,7 @@ MIT License - see LICENSE file for details
 
 ## 🌟 Key Differentiators
 
-1. **Comprehensive Coverage**: 203+ smart contracts covering every aspect of agriculture
+1. **Comprehensive Coverage**: 233+ smart contracts covering every aspect of agriculture
 2. **Real-World Focus**: Solves actual problems faced by farmers and supply chain participants
 3. **Onchain Transparency**: All operations are verifiable and immutable
 4. **Financial Inclusion**: Opens access to credit, insurance, and markets

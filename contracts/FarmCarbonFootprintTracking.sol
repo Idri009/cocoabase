@@ -5,57 +5,64 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCarbonFootprintTracking
- * @dev Accurate carbon footprint calculation and tracking system
+ * @dev Onchain carbon footprint calculation and tracking
  */
 contract FarmCarbonFootprintTracking is Ownable {
-    struct FootprintRecord {
-        uint256 recordId;
+    struct CarbonFootprint {
+        uint256 footprintId;
         address farmer;
         string activityType;
-        uint256 co2Equivalent;
-        uint256 recordDate;
-        uint256 offsetCredits;
+        uint256 emissions;
+        string unit;
+        uint256 timestamp;
+        string offsetMethod;
     }
 
-    mapping(uint256 => FootprintRecord) public records;
-    mapping(address => uint256) public totalFootprintByFarmer;
-    mapping(address => uint256[]) public recordsByFarmer;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => CarbonFootprint) public footprints;
+    mapping(address => uint256[]) public footprintsByFarmer;
+    mapping(address => uint256) public totalEmissionsByFarmer;
+    uint256 private _footprintIdCounter;
 
-    event FootprintRecorded(
-        uint256 indexed recordId,
+    event CarbonFootprintRecorded(
+        uint256 indexed footprintId,
         address indexed farmer,
-        uint256 co2Equivalent
+        string activityType,
+        uint256 emissions
     );
 
     constructor() Ownable(msg.sender) {}
 
     function recordFootprint(
         string memory activityType,
-        uint256 co2Equivalent,
-        uint256 offsetCredits
+        uint256 emissions,
+        string memory unit,
+        string memory offsetMethod
     ) public returns (uint256) {
-        uint256 recordId = _recordIdCounter++;
-        records[recordId] = FootprintRecord({
-            recordId: recordId,
+        require(emissions > 0, "Emissions must be greater than 0");
+
+        uint256 footprintId = _footprintIdCounter++;
+        footprints[footprintId] = CarbonFootprint({
+            footprintId: footprintId,
             farmer: msg.sender,
             activityType: activityType,
-            co2Equivalent: co2Equivalent,
-            recordDate: block.timestamp,
-            offsetCredits: offsetCredits
+            emissions: emissions,
+            unit: unit,
+            timestamp: block.timestamp,
+            offsetMethod: offsetMethod
         });
 
-        totalFootprintByFarmer[msg.sender] += co2Equivalent;
-        recordsByFarmer[msg.sender].push(recordId);
-        emit FootprintRecorded(recordId, msg.sender, co2Equivalent);
-        return recordId;
+        footprintsByFarmer[msg.sender].push(footprintId);
+        totalEmissionsByFarmer[msg.sender] += emissions;
+
+        emit CarbonFootprintRecorded(footprintId, msg.sender, activityType, emissions);
+        return footprintId;
     }
 
-    function getTotalFootprint(address farmer) public view returns (uint256) {
-        return totalFootprintByFarmer[farmer];
+    function getFootprint(uint256 footprintId) public view returns (CarbonFootprint memory) {
+        return footprints[footprintId];
     }
 
-    function getRecord(uint256 recordId) public view returns (FootprintRecord memory) {
-        return records[recordId];
+    function getTotalEmissions(address farmer) public view returns (uint256) {
+        return totalEmissionsByFarmer[farmer];
     }
 }

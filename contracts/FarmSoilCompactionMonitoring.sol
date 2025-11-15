@@ -60,3 +60,4 @@ contract FarmSoilCompactionMonitoring is Ownable {
     }
 }
 
+

@@ -5,57 +5,54 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmWaterConservation
- * @dev Onchain system for tracking water conservation efforts and efficiency
+ * @dev Water conservation initiatives and impact tracking
  */
 contract FarmWaterConservation is Ownable {
-    struct ConservationRecord {
-        uint256 recordId;
-        uint256 fieldId;
+    struct ConservationInitiative {
+        uint256 initiativeId;
+        address farmer;
+        string initiativeType;
         uint256 waterSaved;
-        string conservationMethod;
-        uint256 efficiencyImprovement;
-        uint256 recordDate;
-        address recorder;
+        uint256 implementationDate;
+        bool verified;
     }
 
-    mapping(uint256 => ConservationRecord) public conservationRecords;
-    mapping(address => uint256[]) public recordsByRecorder;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => ConservationInitiative) public initiatives;
+    mapping(address => uint256[]) public initiativesByFarmer;
+    uint256 private _initiativeIdCounter;
 
-    event ConservationRecorded(
-        uint256 indexed recordId,
-        address indexed recorder,
-        uint256 waterSaved
+    event InitiativeRegistered(
+        uint256 indexed initiativeId,
+        address indexed farmer,
+        string initiativeType
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordConservation(
-        uint256 fieldId,
-        uint256 waterSaved,
-        string memory conservationMethod,
-        uint256 efficiencyImprovement,
-        uint256 recordDate
+    function registerInitiative(
+        string memory initiativeType,
+        uint256 waterSaved
     ) public returns (uint256) {
-        uint256 recordId = _recordIdCounter++;
-        conservationRecords[recordId] = ConservationRecord({
-            recordId: recordId,
-            fieldId: fieldId,
+        uint256 initiativeId = _initiativeIdCounter++;
+        initiatives[initiativeId] = ConservationInitiative({
+            initiativeId: initiativeId,
+            farmer: msg.sender,
+            initiativeType: initiativeType,
             waterSaved: waterSaved,
-            conservationMethod: conservationMethod,
-            efficiencyImprovement: efficiencyImprovement,
-            recordDate: recordDate,
-            recorder: msg.sender
+            implementationDate: block.timestamp,
+            verified: false
         });
 
-        recordsByRecorder[msg.sender].push(recordId);
-
-        emit ConservationRecorded(recordId, msg.sender, waterSaved);
-        return recordId;
+        initiativesByFarmer[msg.sender].push(initiativeId);
+        emit InitiativeRegistered(initiativeId, msg.sender, initiativeType);
+        return initiativeId;
     }
 
-    function getRecord(uint256 recordId) public view returns (ConservationRecord memory) {
-        return conservationRecords[recordId];
+    function verifyInitiative(uint256 initiativeId) public onlyOwner {
+        initiatives[initiativeId].verified = true;
+    }
+
+    function getInitiative(uint256 initiativeId) public view returns (ConservationInitiative memory) {
+        return initiatives[initiativeId];
     }
 }
-

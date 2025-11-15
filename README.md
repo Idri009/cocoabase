@@ -2,7 +2,7 @@
 
 > **Revolutionizing Agriculture Through Blockchain Technology**
 
-CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **100+ distinct onchain transaction types** through **143+ specialized smart contracts** that execute directly onchain without intermediaries.
+CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **100+ distinct onchain transaction types** through **173+ specialized smart contracts** that execute directly onchain without intermediaries.
 
 Every agricultural operation—from seed planting to harvest, certification issuance to financial transactions—is recorded as immutable, verifiable onchain state on a decentralized ledger, creating permanent audit trails that are cryptographically secured and trustless.
 
@@ -38,7 +38,7 @@ CocoaBase leverages blockchain technology to create an **immutable, transparent,
 
 CocoaBase is built with:
 
-- **Smart Contracts**: 143+ Solidity contracts covering every aspect of agricultural management
+- **Smart Contracts**: 173+ Solidity contracts covering every aspect of agricultural management
 - **Frontend**: Next.js 16 with React 19, TypeScript, and Tailwind CSS
 - **Wallet Integration**: Reown (WalletConnect) for seamless Web3 connectivity
 - **Blockchain**: Ethereum-compatible networks (Ethereum, Arbitrum, Sepolia testnet)
@@ -459,7 +459,7 @@ The deployment process saves deployment information to `deployments/deployment-{
 
 ### Multi-Contract Deployment
 
-To deploy all 143+ contracts, you can create a batch deployment script:
+To deploy all 173+ contracts, you can create a batch deployment script:
 
 ```javascript
 // scripts/deploy-all.js
@@ -517,7 +517,7 @@ MIT License - see LICENSE file for details
 
 ## 🌟 Key Differentiators
 
-1. **Comprehensive Coverage**: 143+ smart contracts covering every aspect of agriculture
+1. **Comprehensive Coverage**: 173+ smart contracts covering every aspect of agriculture
 2. **Real-World Focus**: Solves actual problems faced by farmers and supply chain participants
 3. **Onchain Transparency**: All operations are verifiable and immutable
 4. **Financial Inclusion**: Opens access to credit, insurance, and markets

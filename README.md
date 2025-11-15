@@ -47,7 +47,7 @@ CocoaBase is built with:
 
 ## 📋 Complete Feature List
 
-### 🌿 **Crop Management** (47 Features)
+### 🌿 **Crop Management** (52 Features)
 
 #### Core Crop Operations
 - `FarmCropMonitoring` - Real-time crop growth and health monitoring
@@ -116,6 +116,9 @@ CocoaBase is built with:
 - `FarmCropPostHarvestManagement` - Post-harvest processing
 - `FarmGrainStorage` - Specialized grain storage
 - `FarmHarvestQuality` - Harvest quality assurance
+- `FarmCropRotationHistory` - Historical tracking of crop rotation patterns
+- `FarmSeedOriginTracking` - Seed origin and provenance tracking
+- `FarmHarvestOriginTracking` - Harvest origin and batch tracking
 - `FarmCropStorageConditions` - Monitor storage conditions for quality preservation
 - `FarmCropTransportTracking` - Track crop transportation and logistics
 - `FarmCropQualityGrading` - Standardized quality grading system
@@ -191,19 +194,24 @@ CocoaBase is built with:
 - `FarmEquipmentAuction` - Equipment auction marketplace
 - `FarmEquipmentSharing` - Equipment sharing with deposits
 
-### 👥 **Labor Management** (4 Features)
+### 👥 **Labor Management** (6 Features)
 
 - `FarmLaborScheduling` - Labor task scheduling
 - `FarmLaborContracts` - Labor contract management
 - `FarmLaborPool` - Labor pooling system
 - `FarmLaborPaymentEscrow` - Secure labor payment escrow
+- `FarmLaborDisputeResolution` - Dispute resolution system for labor contracts
+- `FarmContractEnforcement` - Smart contract enforcement and escrow system
 
-### 📦 **Inventory & Supply Chain** (4 Features)
+### 📦 **Inventory & Supply Chain** (7 Features)
 
 - `FarmInventoryManagement` - Comprehensive inventory tracking
 - `FarmSupplyChainTracking` - Supply chain location tracking
 - `FarmSupplyChainPayments` - Supply chain payment processing
 - `FarmSeedManagement` - Seed batch and quality management
+- `FarmCropTraceability` - Full traceability system for crops from seed to harvest
+- `FarmLivestockTraceability` - Livestock traceability from birth to processing
+- `FarmProductOriginVerification` - Product origin verification and certification
 
 ### 💰 **Financial Services** (12 Features)
 
@@ -217,6 +225,12 @@ CocoaBase is built with:
 - `FarmInsurancePool` - Collective insurance pool system
 - `FarmCropInsurancePool` - Crop-specific insurance pools
 - `FarmWeatherInsurance` - Weather-based insurance
+- `FarmCropYieldInsurance` - Crop yield insurance with automated claims
+- `FarmLivestockInsurance` - Livestock insurance with mortality and health coverage
+- `FarmEquipmentInsurance` - Equipment insurance with damage and theft coverage
+- `FarmCropPriceInsurance` - Price protection insurance for crops
+- `FarmCropQualityInsurance` - Quality-based crop insurance
+- `FarmSupplyChainInsurance` - Supply chain risk insurance
 
 #### Financial Planning
 - `FarmFinancialPlanning` - Financial planning and budgeting
@@ -224,7 +238,7 @@ CocoaBase is built with:
 - `FarmProfitabilityAnalysis` - Profitability analysis
 - `FarmPerformanceBenchmarking` - Performance benchmarking
 
-### 🏪 **Marketplaces & Trading** (10 Features)
+### 🏪 **Marketplaces & Trading** (12 Features)
 
 - `FarmDirectMarketplace` - Direct farmer-to-buyer marketplace
 - `FarmMarketPriceTracking` - Market price recording and tracking
@@ -236,8 +250,10 @@ CocoaBase is built with:
 - `FarmRenewableEnergyTrading` - Renewable energy trading
 - `FarmDataMonetization` - Farm data monetization marketplace
 - `FarmEquipmentAuction` - Equipment auction system
+- `FarmWeatherDerivatives` - Weather derivatives trading for risk management
+- `FarmCropOptions` - Options trading for crop price protection
 
-### 🏛️ **Land & Asset Management** (6 Features)
+### 🏛️ **Land & Asset Management** (7 Features)
 
 - `FarmLandRegistry` - Onchain land parcel registry
 - `FarmLandLeasing` - Land leasing agreements
@@ -246,8 +262,9 @@ CocoaBase is built with:
 - `FarmFieldBoundary` - Field boundary management
 - `FarmAssetTokenization` - Asset tokenization as NFTs
 - `FarmAssetLeasing` - Asset leasing with onchain payments
+- `FarmLandTitleVerification` - Land title verification and ownership records
 
-### ✅ **Certification & Compliance** (5 Features)
+### ✅ **Certification & Compliance** (8 Features)
 
 - `FarmOrganicCertification` - Organic certification management
 - `FarmCropCertification` - Crop quality certification
@@ -255,8 +272,10 @@ CocoaBase is built with:
 - `FarmCertificationRenewal` - Certification renewal management
 - `FarmComplianceReporting` - Compliance reporting system
 - `FarmQualityAssurance` - Quality checks and certifications
+- `FarmFairTradeCertification` - Fair trade certification and compliance tracking
+- `FarmOrganicTransitionTracking` - Organic certification transition process tracking
 
-### 🌍 **Sustainability & Environment** (6 Features)
+### 🌍 **Sustainability & Environment** (11 Features)
 
 - `FarmSoilCarbonSequestration` - Carbon sequestration tracking
 - `FarmCarbonOffsetMarketplace` - Carbon offset trading
@@ -265,14 +284,20 @@ CocoaBase is built with:
 - `FarmSustainabilityRewards` - Sustainability reward system
 - `FarmCompostManagement` - Compost batch management
 - `FarmWasteManagement` - Waste management
+- `FarmWaterUsageTracking` - Water usage tracking and monitoring
+- `FarmEnergyConsumptionTracking` - Energy consumption tracking for farms
+- `FarmCarbonFootprintTracking` - Carbon footprint calculation and tracking
+- `FarmBiodiversityIndex` - Biodiversity index calculation and tracking
+- `FarmRegenerativeAgricultureTracking` - Regenerative agriculture practices tracking
 
-### 🤝 **Cooperative & Community** (3 Features)
+### 🤝 **Cooperative & Community** (4 Features)
 
 - `FarmFarmerCooperative` - Farmer cooperative management
 - `FarmCooperativeVoting` - Onchain voting for cooperatives
 - `FarmCropResearch` - Crop research data sharing
+- `FarmAgroforestryManagement` - Agroforestry system management and tracking
 
-### 📊 **Analytics & Planning** (8 Features)
+### 📊 **Analytics & Planning** (13 Features)
 
 - `FarmProductionAnalytics` - Production analytics
 - `FarmResourceOptimization` - Resource optimization
@@ -282,6 +307,11 @@ CocoaBase is built with:
 - `FarmPrecisionAgriculture` - Store precision agriculture data and analytics
 - `FarmDroneMonitoring` - Store drone monitoring data and aerial analysis
 - `FarmIoTDeviceIntegration` - Integrate and store IoT device sensor data
+- `FarmSoilQualityIndex` - Soil quality index calculation and tracking
+- `FarmCropQualityIndex` - Crop quality index calculation and tracking
+- `FarmFarmerReputation` - Farmer reputation system based on performance
+- `FarmSupplierReputation` - Supplier reputation and rating system
+- `FarmBuyerReputation` - Buyer reputation and payment reliability tracking
 
 ### 🎨 **NFT & Digital Assets** (1 Feature)
 

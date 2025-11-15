@@ -68,3 +68,4 @@ export function calculateHealthScore(record: LivestockHealthRecord): number {
 }
 
 
+

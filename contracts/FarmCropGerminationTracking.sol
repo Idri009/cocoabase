@@ -5,65 +5,64 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropGerminationTracking
- * @dev Onchain system for tracking seed germination rates and success
+ * @dev Onchain tracking of seed germination rates and success metrics
  */
 contract FarmCropGerminationTracking is Ownable {
-    struct GerminationRecord {
-        uint256 recordId;
-        uint256 seedBatchId;
+    struct GerminationBatch {
+        uint256 batchId;
+        address farmer;
+        string cropType;
         uint256 seedsPlanted;
         uint256 seedsGerminated;
-        uint256 germinationRate;
-        uint256 plantingDate;
         uint256 germinationDate;
-        address farmer;
+        uint256 successRate;
+        bool verified;
     }
 
-    mapping(uint256 => GerminationRecord) public germinationRecords;
-    mapping(address => uint256[]) public recordsByFarmer;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => GerminationBatch) public batches;
+    mapping(address => uint256[]) public batchesByFarmer;
+    uint256 private _batchIdCounter;
 
-    event GerminationRecorded(
-        uint256 indexed recordId,
+    event BatchRecorded(
+        uint256 indexed batchId,
         address indexed farmer,
-        uint256 germinationRate
+        string cropType,
+        uint256 successRate
     );
 
     constructor() Ownable(msg.sender) {}
 
     function recordGermination(
-        uint256 seedBatchId,
+        string memory cropType,
         uint256 seedsPlanted,
         uint256 seedsGerminated,
         uint256 germinationDate
     ) public returns (uint256) {
         require(seedsGerminated <= seedsPlanted, "Invalid germination count");
-        uint256 germinationRate = (seedsGerminated * 100) / seedsPlanted;
-        
-        uint256 recordId = _recordIdCounter++;
-        germinationRecords[recordId] = GerminationRecord({
-            recordId: recordId,
-            seedBatchId: seedBatchId,
+        uint256 successRate = (seedsGerminated * 10000) / seedsPlanted;
+
+        uint256 batchId = _batchIdCounter++;
+        batches[batchId] = GerminationBatch({
+            batchId: batchId,
+            farmer: msg.sender,
+            cropType: cropType,
             seedsPlanted: seedsPlanted,
             seedsGerminated: seedsGerminated,
-            germinationRate: germinationRate,
-            plantingDate: block.timestamp,
             germinationDate: germinationDate,
-            farmer: msg.sender
+            successRate: successRate,
+            verified: false
         });
 
-        recordsByFarmer[msg.sender].push(recordId);
-
-        emit GerminationRecorded(recordId, msg.sender, germinationRate);
-        return recordId;
+        batchesByFarmer[msg.sender].push(batchId);
+        emit BatchRecorded(batchId, msg.sender, cropType, successRate);
+        return batchId;
     }
 
-    function getRecord(uint256 recordId) public view returns (GerminationRecord memory) {
-        return germinationRecords[recordId];
+    function verifyBatch(uint256 batchId) public onlyOwner {
+        batches[batchId].verified = true;
     }
 
-    function getRecordsByFarmer(address farmer) public view returns (uint256[] memory) {
-        return recordsByFarmer[farmer];
+    function getBatch(uint256 batchId) public view returns (GerminationBatch memory) {
+        return batches[batchId];
     }
 }
-

@@ -2,7 +2,7 @@
 
 > **Revolutionizing Agriculture Through Blockchain Technology**
 
-CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **100+ distinct onchain transaction types** through **173+ specialized smart contracts** that execute directly onchain without intermediaries.
+CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **130+ distinct onchain transaction types** through **173+ specialized smart contracts** that execute directly onchain without intermediaries.
 
 Every agricultural operation—from seed planting to harvest, certification issuance to financial transactions—is recorded as immutable, verifiable onchain state on a decentralized ledger, creating permanent audit trails that are cryptographically secured and trustless.
 

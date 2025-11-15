@@ -114,3 +114,4 @@ export const validateBarcodeFormat = (value: string, format: string): boolean =>
 
 
 
+

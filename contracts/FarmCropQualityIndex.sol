@@ -5,76 +5,56 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropQualityIndex
- * @dev Onchain crop quality index calculation and tracking
+ * @dev Crop quality index calculation and tracking
  */
 contract FarmCropQualityIndex is Ownable {
-    struct CropQualityRecord {
-        uint256 recordId;
-        address farmer;
-        string cropType;
+    struct CropQuality {
+        uint256 qualityId;
+        uint256 cropId;
+        uint256 appearanceScore;
         uint256 sizeScore;
-        uint256 colorScore;
-        uint256 textureScore;
-        uint256 overallQuality;
+        uint256 maturityScore;
+        uint256 overallScore;
         uint256 timestamp;
     }
 
-    mapping(uint256 => CropQualityRecord) public records;
-    mapping(address => uint256[]) public recordsByFarmer;
-    mapping(address => uint256) public averageQualityByFarmer;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => CropQuality) public cropQualities;
+    mapping(uint256 => uint256[]) public qualitiesByCrop;
+    uint256 private _qualityIdCounter;
 
-    event CropQualityRecorded(
-        uint256 indexed recordId,
-        address indexed farmer,
-        string cropType,
-        uint256 overallQuality
+    event CropQualityCalculated(
+        uint256 indexed qualityId,
+        uint256 cropId,
+        uint256 overallScore
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordCropQuality(
-        string memory cropType,
+    function calculateQuality(
+        uint256 cropId,
+        uint256 appearanceScore,
         uint256 sizeScore,
-        uint256 colorScore,
-        uint256 textureScore
+        uint256 maturityScore
     ) public returns (uint256) {
-        require(sizeScore > 0 && sizeScore <= 100, "Invalid size score");
-        require(colorScore > 0 && colorScore <= 100, "Invalid color score");
-        require(textureScore > 0 && textureScore <= 100, "Invalid texture score");
-
-        uint256 recordId = _recordIdCounter++;
-        uint256 overallQuality = (sizeScore + colorScore + textureScore) / 3;
-
-        records[recordId] = CropQualityRecord({
-            recordId: recordId,
-            farmer: msg.sender,
-            cropType: cropType,
+        uint256 overallScore = (appearanceScore + sizeScore + maturityScore) / 3;
+        uint256 qualityId = _qualityIdCounter++;
+        cropQualities[qualityId] = CropQuality({
+            qualityId: qualityId,
+            cropId: cropId,
+            appearanceScore: appearanceScore,
             sizeScore: sizeScore,
-            colorScore: colorScore,
-            textureScore: textureScore,
-            overallQuality: overallQuality,
+            maturityScore: maturityScore,
+            overallScore: overallScore,
             timestamp: block.timestamp
         });
-
-        recordsByFarmer[msg.sender].push(recordId);
-        updateAverageQuality(msg.sender, overallQuality);
-
-        emit CropQualityRecorded(recordId, msg.sender, cropType, overallQuality);
-        return recordId;
+        qualitiesByCrop[cropId].push(qualityId);
+        emit CropQualityCalculated(qualityId, cropId, overallScore);
+        return qualityId;
     }
 
-    function updateAverageQuality(address farmer, uint256 newScore) internal {
-        uint256 count = recordsByFarmer[farmer].length;
-        averageQualityByFarmer[farmer] = ((averageQualityByFarmer[farmer] * (count - 1)) + newScore) / count;
-    }
-
-    function getRecord(uint256 recordId) public view returns (CropQualityRecord memory) {
-        return records[recordId];
-    }
-
-    function getAverageQuality(address farmer) public view returns (uint256) {
-        return averageQualityByFarmer[farmer];
+    function getLatestQuality(uint256 cropId) public view returns (CropQuality memory) {
+        require(qualitiesByCrop[cropId].length > 0, "No qualities found");
+        uint256 latestId = qualitiesByCrop[cropId][qualitiesByCrop[cropId].length - 1];
+        return cropQualities[latestId];
     }
 }
-

@@ -68,6 +68,8 @@ CocoaBase is built with:
 - `FarmPestManagement` - Comprehensive pest control system
 - `FarmPestControl` - Pest treatment tracking
 - `FarmPestDiseaseTracking` - Combined pest and disease monitoring
+- `FarmPestLifecycleTracking` - Track pest lifecycles and population dynamics
+- `FarmPestResistanceTracking` - Track pest resistance development to treatments
 
 #### Crop Nutrition & Soil
 - `FarmCropNutritionManagement` - Crop nutrition planning and tracking
@@ -87,6 +89,10 @@ CocoaBase is built with:
 - `FarmSoilMoistureAlerts` - Soil moisture alert system for irrigation management
 - `FarmSoilNutrientAnalysis` - Comprehensive soil nutrient analysis
 - `FarmSoilTextureAnalysis` - Analyze soil texture composition
+- `FarmSoilTextureMonitoring` - Monitor soil texture changes over time
+- `FarmSoilMicrobialActivity` - Track soil microbial activity and health indicators
+- `FarmSoilPhMonitoring` - Continuous soil pH monitoring and alerts
+- `FarmSoilAmendments` - Soil amendment application tracking and impact measurement
 
 #### Crop Operations
 - `FarmCropSeedling` - Seedling management
@@ -126,6 +132,7 @@ CocoaBase is built with:
 - `FarmCropDroughtResistance` - Drought resistance tracking
 - `FarmCropWaterEfficiency` - Water usage optimization
 - `FarmCropStressMonitoring` - Monitor crop stress levels
+- `FarmCropNutrientBalance` - Track crop nutrient balance and deficiencies
 
 #### Post-Harvest & Storage
 - `FarmCropStorage` - Crop storage management
@@ -159,11 +166,19 @@ CocoaBase is built with:
 #### Crop Development Tracking
 - `FarmCropGerminationTracking` - Track seed germination rates and success
 - `FarmCropFloweringTracking` - Monitor flowering stages and timing
+- `FarmCropFloweringMonitoring` - Monitor flowering stages and timing for crops
 - `FarmCropFruitingTracking` - Track fruit development and yield potential
 - `FarmCropRipeningTracking` - Monitor ripening process and readiness
 - `FarmCropHarvestTiming` - Optimize harvest timing based on multiple factors
+- `FarmHarvestTimingOptimization` - Optimize harvest timing based on multiple factors
+- `FarmCropMaturityPrediction` - Predict crop maturity dates using onchain data
+- `FarmCropStressTolerance` - Monitor crop stress tolerance levels and adaptation
+- `FarmCropPollinationSuccess` - Track pollination success rates and fruit set
+- `FarmCropCanopyManagement` - Manage crop canopy for optimal light penetration
+- `FarmPrecisionSeeding` - Precision seeding operations and seed placement tracking
+- `FarmCropThinningOptimization` - Optimize crop thinning operations for better yields
 
-### 🐄 **Livestock Management** (40 Features)
+### 🐄 **Livestock Management** (46 Features)
 
 #### Livestock Health & Welfare
 - `FarmLivestockHealth` - Comprehensive livestock health records
@@ -214,17 +229,26 @@ CocoaBase is built with:
 - `FarmLivestockEggProduction` - Track egg production and quality grading
 - `FarmLivestockWoolProduction` - Track wool production and fiber quality
 - `FarmLivestockMeatQuality` - Grade meat quality with certification
+- `FarmLivestockFeedConversion` - Track feed conversion ratios for livestock efficiency
+- `FarmLivestockGrazingRotation` - Grazing rotation scheduling and pasture management
+- `FarmLivestockHeatStress` - Track heat stress in livestock and mitigation measures
+- `FarmLivestockVaccinationSchedule` - Automated vaccination scheduling for livestock
+- `FarmLivestockBreedingProgram` - Manage breeding programs and genetic improvement
 
-### 💧 **Water & Irrigation** (8 Features)
+### 💧 **Water & Irrigation** (12 Features)
 
 - `FarmIrrigationManagement` - Comprehensive irrigation scheduling
 - `FarmIrrigationEfficiency` - Irrigation efficiency tracking
 - `FarmCropIrrigationScheduling` - Crop-specific irrigation
 - `FarmWaterQuality` - Water quality testing
+- `FarmWaterQualityMonitoring` - Continuous water quality monitoring and alerts
 - `FarmWaterRights` - Water rights management
 - `FarmWaterRightsTrading` - Water rights trading marketplace
 - `FarmWaterUsageTracking` - Track water consumption and usage patterns
+- `FarmWaterUsageEfficiency` - Track water usage efficiency metrics
 - `FarmWaterConservation` - Track water conservation efforts and efficiency
+- `FarmWaterFiltration` - Water filtration system tracking and efficiency monitoring
+- `FarmWaterSourceTracking` - Track water sources and usage patterns
 
 ### 🌦️ **Weather & Climate** (3 Features)
 
@@ -232,13 +256,14 @@ CocoaBase is built with:
 - `FarmWeatherData` - Weather data oracle and historical tracking
 - `FarmWeatherInsurance` - Weather-based insurance policies
 
-### 🏭 **Equipment & Infrastructure** (6 Features)
+### 🏭 **Equipment & Infrastructure** (7 Features)
 
 - `FarmEquipmentTracking` - Equipment usage and location tracking
 - `FarmEquipmentMaintenance` - Maintenance scheduling and records
 - `FarmEquipmentAuction` - Equipment auction marketplace
 - `FarmEquipmentSharing` - Equipment sharing with deposits
 - `FarmEquipmentUsageTracking` - Equipment usage hours and efficiency tracking
+- `FarmEquipmentFuelTracking` - Track equipment fuel consumption and efficiency
 
 ### 👥 **Labor Management** (6 Features)
 
@@ -358,10 +383,17 @@ CocoaBase is built with:
 - `FarmWaterRecycling` - Water recycling and reuse tracking system
 - `FarmWaterConservation` - Track water conservation efforts and efficiency
 - `FarmEnergyConsumptionTracking` - Energy consumption tracking for farms
+- `FarmEnergyConsumption` - Energy consumption tracking and optimization system
 - `FarmEnergyEfficiency` - Energy efficiency improvements tracking
+- `FarmEnergyStorage` - Energy storage system management and capacity tracking
+- `FarmEnergyAudit` - Energy audit tracking and efficiency recommendations
+- `FarmEnergyGenerationTracking` - Track energy generation from renewable sources
+- `FarmEnergyCostTracking` - Track energy costs and consumption patterns
+- `FarmRenewableEnergyCertification` - Renewable energy certification and validation
 - `FarmCarbonFootprintTracking` - Carbon footprint calculation and tracking
 - `FarmBiodiversityIndex` - Biodiversity index calculation and tracking
 - `FarmRegenerativeAgricultureTracking` - Regenerative agriculture practices tracking
+- `FarmRegenerativePractices` - Regenerative agriculture practices tracking
 
 ### 🤝 **Cooperative & Community** (6 Features)
 

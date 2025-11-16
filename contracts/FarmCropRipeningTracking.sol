@@ -5,59 +5,62 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropRipeningTracking
- * @dev Onchain system for monitoring crop ripening process and readiness
+ * @dev Onchain ripening process and readiness monitoring
  */
 contract FarmCropRipeningTracking is Ownable {
     struct RipeningRecord {
         uint256 recordId;
-        uint256 plantationId;
-        uint256 ripeningStartDate;
-        uint256 ripeningProgress;
-        string ripenessLevel;
-        bool harvestReady;
-        address tracker;
+        address farmer;
+        string fieldId;
+        string cropType;
+        uint256 ripenessPercentage;
+        string color;
+        string texture;
+        uint256 recordDate;
+        bool isReadyForHarvest;
     }
 
-    mapping(uint256 => RipeningRecord) public ripeningRecords;
-    mapping(address => uint256[]) public recordsByTracker;
+    mapping(uint256 => RipeningRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
     uint256 private _recordIdCounter;
 
     event RipeningRecorded(
         uint256 indexed recordId,
-        address indexed tracker,
-        string ripenessLevel
+        address indexed farmer,
+        string fieldId,
+        uint256 ripenessPercentage
     );
 
     constructor() Ownable(msg.sender) {}
 
     function recordRipening(
-        uint256 plantationId,
-        uint256 ripeningStartDate,
-        uint256 ripeningProgress,
-        string memory ripenessLevel,
-        bool harvestReady
+        string memory fieldId,
+        string memory cropType,
+        uint256 ripenessPercentage,
+        string memory color,
+        string memory texture
     ) public returns (uint256) {
-        require(ripeningProgress <= 100, "Invalid progress");
         uint256 recordId = _recordIdCounter++;
-        ripeningRecords[recordId] = RipeningRecord({
+        bool isReadyForHarvest = ripenessPercentage >= 85;
+
+        records[recordId] = RipeningRecord({
             recordId: recordId,
-            plantationId: plantationId,
-            ripeningStartDate: ripeningStartDate,
-            ripeningProgress: ripeningProgress,
-            ripenessLevel: ripenessLevel,
-            harvestReady: harvestReady,
-            tracker: msg.sender
+            farmer: msg.sender,
+            fieldId: fieldId,
+            cropType: cropType,
+            ripenessPercentage: ripenessPercentage,
+            color: color,
+            texture: texture,
+            recordDate: block.timestamp,
+            isReadyForHarvest: isReadyForHarvest
         });
 
-        recordsByTracker[msg.sender].push(recordId);
-
-        emit RipeningRecorded(recordId, msg.sender, ripenessLevel);
+        recordsByFarmer[msg.sender].push(recordId);
+        emit RipeningRecorded(recordId, msg.sender, fieldId, ripenessPercentage);
         return recordId;
     }
 
     function getRecord(uint256 recordId) public view returns (RipeningRecord memory) {
-        return ripeningRecords[recordId];
+        return records[recordId];
     }
 }
-
-

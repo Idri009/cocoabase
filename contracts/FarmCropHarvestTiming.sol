@@ -5,61 +5,61 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropHarvestTiming
- * @dev Onchain system for optimizing harvest timing based on multiple factors
+ * @dev Onchain harvest timing optimization based on multiple factors
  */
 contract FarmCropHarvestTiming is Ownable {
     struct HarvestTiming {
         uint256 timingId;
-        uint256 plantationId;
+        address farmer;
+        string fieldId;
         uint256 optimalHarvestDate;
-        uint256 earliestHarvestDate;
-        uint256 latestHarvestDate;
-        string factors;
-        address planner;
+        uint256 qualityScore;
+        uint256 marketPrice;
+        uint256 weatherFactor;
+        uint256 calculationDate;
+        string recommendation;
     }
 
-    mapping(uint256 => HarvestTiming) public harvestTimings;
-    mapping(address => uint256[]) public timingsByPlanner;
+    mapping(uint256 => HarvestTiming) public timings;
+    mapping(address => uint256[]) public timingsByFarmer;
     uint256 private _timingIdCounter;
 
-    event HarvestTimingCalculated(
+    event TimingCalculated(
         uint256 indexed timingId,
-        address indexed planner,
+        address indexed farmer,
+        string fieldId,
         uint256 optimalHarvestDate
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function calculateHarvestTiming(
-        uint256 plantationId,
+    function calculateTiming(
+        string memory fieldId,
         uint256 optimalHarvestDate,
-        uint256 earliestHarvestDate,
-        uint256 latestHarvestDate,
-        string memory factors
+        uint256 qualityScore,
+        uint256 marketPrice,
+        uint256 weatherFactor,
+        string memory recommendation
     ) public returns (uint256) {
-        require(earliestHarvestDate <= optimalHarvestDate, "Invalid dates");
-        require(optimalHarvestDate <= latestHarvestDate, "Invalid dates");
-        
         uint256 timingId = _timingIdCounter++;
-        harvestTimings[timingId] = HarvestTiming({
+        timings[timingId] = HarvestTiming({
             timingId: timingId,
-            plantationId: plantationId,
+            farmer: msg.sender,
+            fieldId: fieldId,
             optimalHarvestDate: optimalHarvestDate,
-            earliestHarvestDate: earliestHarvestDate,
-            latestHarvestDate: latestHarvestDate,
-            factors: factors,
-            planner: msg.sender
+            qualityScore: qualityScore,
+            marketPrice: marketPrice,
+            weatherFactor: weatherFactor,
+            calculationDate: block.timestamp,
+            recommendation: recommendation
         });
 
-        timingsByPlanner[msg.sender].push(timingId);
-
-        emit HarvestTimingCalculated(timingId, msg.sender, optimalHarvestDate);
+        timingsByFarmer[msg.sender].push(timingId);
+        emit TimingCalculated(timingId, msg.sender, fieldId, optimalHarvestDate);
         return timingId;
     }
 
     function getTiming(uint256 timingId) public view returns (HarvestTiming memory) {
-        return harvestTimings[timingId];
+        return timings[timingId];
     }
 }
-
-

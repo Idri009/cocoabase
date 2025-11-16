@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmSoilTextureMonitoring
- * @dev Monitor soil texture changes over time
+ * @dev Onchain soil texture changes monitoring over time
  */
 contract FarmSoilTextureMonitoring is Ownable {
     struct TextureRecord {
@@ -16,6 +16,7 @@ contract FarmSoilTextureMonitoring is Ownable {
         uint256 siltPercentage;
         uint256 clayPercentage;
         uint256 recordDate;
+        string textureClass;
     }
 
     mapping(uint256 => TextureRecord) public records;
@@ -25,7 +26,8 @@ contract FarmSoilTextureMonitoring is Ownable {
     event TextureRecorded(
         uint256 indexed recordId,
         address indexed farmer,
-        string fieldId
+        string fieldId,
+        string textureClass
     );
 
     constructor() Ownable(msg.sender) {}
@@ -34,9 +36,9 @@ contract FarmSoilTextureMonitoring is Ownable {
         string memory fieldId,
         uint256 sandPercentage,
         uint256 siltPercentage,
-        uint256 clayPercentage
+        uint256 clayPercentage,
+        string memory textureClass
     ) public returns (uint256) {
-        require(sandPercentage + siltPercentage + clayPercentage == 100, "Invalid percentages");
         uint256 recordId = _recordIdCounter++;
         records[recordId] = TextureRecord({
             recordId: recordId,
@@ -45,11 +47,12 @@ contract FarmSoilTextureMonitoring is Ownable {
             sandPercentage: sandPercentage,
             siltPercentage: siltPercentage,
             clayPercentage: clayPercentage,
-            recordDate: block.timestamp
+            recordDate: block.timestamp,
+            textureClass: textureClass
         });
 
         recordsByFarmer[msg.sender].push(recordId);
-        emit TextureRecorded(recordId, msg.sender, fieldId);
+        emit TextureRecorded(recordId, msg.sender, fieldId, textureClass);
         return recordId;
     }
 

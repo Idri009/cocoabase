@@ -5,25 +5,28 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmSoilMicrobialActivity
- * @dev Track soil microbial activity and health indicators
+ * @dev Onchain soil microbial activity and health indicators tracking
  */
 contract FarmSoilMicrobialActivity is Ownable {
-    struct MicrobialActivity {
+    struct MicrobialRecord {
         uint256 recordId;
         address farmer;
         string fieldId;
-        uint256 activityLevel;
+        uint256 microbialCount;
         uint256 diversityIndex;
+        uint256 activityLevel;
         uint256 recordDate;
+        string healthIndicator;
     }
 
-    mapping(uint256 => MicrobialActivity) public records;
+    mapping(uint256 => MicrobialRecord) public records;
     mapping(address => uint256[]) public recordsByFarmer;
     uint256 private _recordIdCounter;
 
     event ActivityRecorded(
         uint256 indexed recordId,
         address indexed farmer,
+        string fieldId,
         uint256 activityLevel
     );
 
@@ -31,25 +34,29 @@ contract FarmSoilMicrobialActivity is Ownable {
 
     function recordActivity(
         string memory fieldId,
+        uint256 microbialCount,
+        uint256 diversityIndex,
         uint256 activityLevel,
-        uint256 diversityIndex
+        string memory healthIndicator
     ) public returns (uint256) {
         uint256 recordId = _recordIdCounter++;
-        records[recordId] = MicrobialActivity({
+        records[recordId] = MicrobialRecord({
             recordId: recordId,
             farmer: msg.sender,
             fieldId: fieldId,
-            activityLevel: activityLevel,
+            microbialCount: microbialCount,
             diversityIndex: diversityIndex,
-            recordDate: block.timestamp
+            activityLevel: activityLevel,
+            recordDate: block.timestamp,
+            healthIndicator: healthIndicator
         });
 
         recordsByFarmer[msg.sender].push(recordId);
-        emit ActivityRecorded(recordId, msg.sender, activityLevel);
+        emit ActivityRecorded(recordId, msg.sender, fieldId, activityLevel);
         return recordId;
     }
 
-    function getRecord(uint256 recordId) public view returns (MicrobialActivity memory) {
+    function getRecord(uint256 recordId) public view returns (MicrobialRecord memory) {
         return records[recordId];
     }
 }

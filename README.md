@@ -548,7 +548,7 @@ The deployment process saves deployment information to `deployments/deployment-{
 
 ### Multi-Contract Deployment
 
-To deploy all 203+ contracts, you can create a batch deployment script:
+To deploy all 233+ contracts, you can create a batch deployment script:
 
 ```javascript
 // scripts/deploy-all.js

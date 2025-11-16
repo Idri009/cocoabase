@@ -112,3 +112,4 @@ contract FarmCropDiseaseResistance is Ownable {
 }
 
 
+

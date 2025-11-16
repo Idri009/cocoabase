@@ -56,3 +56,4 @@ contract FarmRenewableEnergyGeneration is Ownable {
     }
 }
 
+

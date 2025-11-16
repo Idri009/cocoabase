@@ -33,3 +33,4 @@ export function DAOProposalCard({ proposal }: DAOProposalCardProps) {
 
 
 
+

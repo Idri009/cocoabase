@@ -70,3 +70,4 @@ contract FarmSoilDataOracle is Ownable {
     }
 }
 
+

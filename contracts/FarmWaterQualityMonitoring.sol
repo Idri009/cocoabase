@@ -5,57 +5,57 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmWaterQualityMonitoring
- * @dev Continuous water quality monitoring and alerts
+ * @dev Water quality monitoring system
  */
 contract FarmWaterQualityMonitoring is Ownable {
-    struct QualityRecord {
-        uint256 recordId;
-        address farmer;
-        string sourceId;
+    struct QualityTest {
+        uint256 testId;
+        address tester;
+        uint256 sourceId;
         uint256 phLevel;
-        uint256 dissolvedOxygen;
-        uint256 turbidity;
-        uint256 qualityScore;
-        uint256 recordDate;
+        uint256 contaminationLevel;
+        uint256 timestamp;
+        bool safe;
     }
 
-    mapping(uint256 => QualityRecord) public records;
-    mapping(address => uint256[]) public recordsByFarmer;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => QualityTest) public qualityTests;
+    mapping(uint256 => uint256[]) public testsBySource;
+    mapping(address => uint256[]) public testsByTester;
+    uint256 private _testIdCounter;
 
-    event QualityRecorded(
-        uint256 indexed recordId,
-        address indexed farmer,
-        uint256 qualityScore
+    event QualityTestRecorded(
+        uint256 indexed testId,
+        uint256 sourceId,
+        bool safe
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordQuality(
-        string memory sourceId,
+    function recordTest(
+        uint256 sourceId,
         uint256 phLevel,
-        uint256 dissolvedOxygen,
-        uint256 turbidity
+        uint256 contaminationLevel
     ) public returns (uint256) {
-        uint256 qualityScore = (phLevel + dissolvedOxygen + (100 - turbidity)) / 3;
-        uint256 recordId = _recordIdCounter++;
-        records[recordId] = QualityRecord({
-            recordId: recordId,
-            farmer: msg.sender,
+        bool safe = phLevel >= 6 && phLevel <= 8 && contaminationLevel < 50;
+        uint256 testId = _testIdCounter++;
+        qualityTests[testId] = QualityTest({
+            testId: testId,
+            tester: msg.sender,
             sourceId: sourceId,
             phLevel: phLevel,
-            dissolvedOxygen: dissolvedOxygen,
-            turbidity: turbidity,
-            qualityScore: qualityScore,
-            recordDate: block.timestamp
+            contaminationLevel: contaminationLevel,
+            timestamp: block.timestamp,
+            safe: safe
         });
-
-        recordsByFarmer[msg.sender].push(recordId);
-        emit QualityRecorded(recordId, msg.sender, qualityScore);
-        return recordId;
+        testsBySource[sourceId].push(testId);
+        testsByTester[msg.sender].push(testId);
+        emit QualityTestRecorded(testId, sourceId, safe);
+        return testId;
     }
 
-    function getRecord(uint256 recordId) public view returns (QualityRecord memory) {
-        return records[recordId];
+    function getLatestTest(uint256 sourceId) public view returns (QualityTest memory) {
+        require(testsBySource[sourceId].length > 0, "No tests found");
+        uint256 latestId = testsBySource[sourceId][testsBySource[sourceId].length - 1];
+        return qualityTests[latestId];
     }
 }

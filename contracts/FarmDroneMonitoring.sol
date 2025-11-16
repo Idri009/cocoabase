@@ -5,56 +5,52 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmDroneMonitoring
- * @dev Onchain system for storing drone monitoring data and aerial imagery analysis
+ * @dev Store drone monitoring data and aerial analysis
  */
 contract FarmDroneMonitoring is Ownable {
-    struct DroneMonitoringData {
-        uint256 dataId;
-        uint256 fieldId;
-        string monitoringType;
-        string imageHash;
-        string analysisResults;
-        uint256 flightDate;
+    struct DroneData {
+        uint256 flightId;
         address operator;
+        uint256 fieldId;
+        bytes32 imageHash;
+        string analysis;
+        uint256 timestamp;
     }
 
-    mapping(uint256 => DroneMonitoringData) public droneMonitoringData;
-    mapping(address => uint256[]) public dataByOperator;
-    uint256 private _dataIdCounter;
+    mapping(uint256 => DroneData) public droneFlights;
+    mapping(address => uint256[]) public flightsByOperator;
+    mapping(uint256 => uint256[]) public flightsByField;
+    uint256 private _flightIdCounter;
 
-    event DroneMonitoringRecorded(
-        uint256 indexed dataId,
+    event DroneFlightRecorded(
+        uint256 indexed flightId,
         address indexed operator,
-        string monitoringType
+        uint256 fieldId
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordDroneMonitoring(
+    function recordFlight(
         uint256 fieldId,
-        string memory monitoringType,
-        string memory imageHash,
-        string memory analysisResults,
-        uint256 flightDate
+        bytes32 imageHash,
+        string memory analysis
     ) public returns (uint256) {
-        uint256 dataId = _dataIdCounter++;
-        droneMonitoringData[dataId] = DroneMonitoringData({
-            dataId: dataId,
+        uint256 flightId = _flightIdCounter++;
+        droneFlights[flightId] = DroneData({
+            flightId: flightId,
+            operator: msg.sender,
             fieldId: fieldId,
-            monitoringType: monitoringType,
             imageHash: imageHash,
-            analysisResults: analysisResults,
-            flightDate: flightDate,
-            operator: msg.sender
+            analysis: analysis,
+            timestamp: block.timestamp
         });
-
-        dataByOperator[msg.sender].push(dataId);
-
-        emit DroneMonitoringRecorded(dataId, msg.sender, monitoringType);
-        return dataId;
+        flightsByOperator[msg.sender].push(flightId);
+        flightsByField[fieldId].push(flightId);
+        emit DroneFlightRecorded(flightId, msg.sender, fieldId);
+        return flightId;
     }
 
-    function getData(uint256 dataId) public view returns (DroneMonitoringData memory) {
-        return droneMonitoringData[dataId];
+    function getFieldFlights(uint256 fieldId) public view returns (uint256[] memory) {
+        return flightsByField[fieldId];
     }
 }

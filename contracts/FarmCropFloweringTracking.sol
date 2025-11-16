@@ -5,64 +5,61 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropFloweringTracking
- * @dev Onchain system for tracking crop flowering stages and timing
+ * @dev Onchain flowering stages and timing monitoring
  */
 contract FarmCropFloweringTracking is Ownable {
     struct FloweringRecord {
         uint256 recordId;
-        uint256 plantationId;
+        address farmer;
+        string fieldId;
+        string cropType;
         uint256 floweringStartDate;
-        uint256 floweringPeakDate;
+        uint256 peakFloweringDate;
         uint256 floweringEndDate;
-        uint256 flowerCount;
-        string floweringStage;
-        address tracker;
+        uint256 bloomCount;
+        string pollinatorActivity;
     }
 
-    mapping(uint256 => FloweringRecord) public floweringRecords;
-    mapping(address => uint256[]) public recordsByTracker;
+    mapping(uint256 => FloweringRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
     uint256 private _recordIdCounter;
 
     event FloweringRecorded(
         uint256 indexed recordId,
-        address indexed tracker,
-        string floweringStage
+        address indexed farmer,
+        string fieldId,
+        uint256 bloomCount
     );
 
     constructor() Ownable(msg.sender) {}
 
     function recordFlowering(
-        uint256 plantationId,
+        string memory fieldId,
+        string memory cropType,
         uint256 floweringStartDate,
-        uint256 flowerCount,
-        string memory floweringStage
+        uint256 peakFloweringDate,
+        uint256 bloomCount,
+        string memory pollinatorActivity
     ) public returns (uint256) {
         uint256 recordId = _recordIdCounter++;
-        floweringRecords[recordId] = FloweringRecord({
+        records[recordId] = FloweringRecord({
             recordId: recordId,
-            plantationId: plantationId,
+            farmer: msg.sender,
+            fieldId: fieldId,
+            cropType: cropType,
             floweringStartDate: floweringStartDate,
-            floweringPeakDate: 0,
+            peakFloweringDate: peakFloweringDate,
             floweringEndDate: 0,
-            flowerCount: flowerCount,
-            floweringStage: floweringStage,
-            tracker: msg.sender
+            bloomCount: bloomCount,
+            pollinatorActivity: pollinatorActivity
         });
 
-        recordsByTracker[msg.sender].push(recordId);
-
-        emit FloweringRecorded(recordId, msg.sender, floweringStage);
+        recordsByFarmer[msg.sender].push(recordId);
+        emit FloweringRecorded(recordId, msg.sender, fieldId, bloomCount);
         return recordId;
     }
 
-    function updateFloweringPeak(uint256 recordId, uint256 peakDate) public {
-        require(floweringRecords[recordId].tracker == msg.sender, "Not authorized");
-        floweringRecords[recordId].floweringPeakDate = peakDate;
-    }
-
     function getRecord(uint256 recordId) public view returns (FloweringRecord memory) {
-        return floweringRecords[recordId];
+        return records[recordId];
     }
 }
-
-

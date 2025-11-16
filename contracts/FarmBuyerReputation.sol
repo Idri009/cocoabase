@@ -5,92 +5,58 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmBuyerReputation
- * @dev Onchain buyer reputation and payment reliability tracking
+ * @dev Buyer reputation and payment reliability tracking
  */
 contract FarmBuyerReputation is Ownable {
     struct BuyerReputation {
         address buyer;
-        uint256 paymentReliability;
-        uint256 transactionCount;
+        uint256 score;
+        uint256 totalTransactions;
         uint256 onTimePayments;
-        uint256 totalSpent;
-        uint256 overallRating;
+        uint256 totalPayments;
+        uint256 lastUpdated;
     }
 
-    struct BuyerReview {
-        uint256 reviewId;
-        address reviewer;
-        address buyer;
-        uint256 rating;
-        string comment;
-        uint256 timestamp;
-    }
+    mapping(address => BuyerReputation) public buyerReputations;
+    mapping(address => mapping(address => bool)) public hasRatedBuyer;
 
-    mapping(address => BuyerReputation) public reputations;
-    mapping(uint256 => BuyerReview) public reviews;
-    mapping(address => uint256[]) public reviewsByBuyer;
-    uint256 private _reviewIdCounter;
-
-    event ReviewSubmitted(
-        uint256 indexed reviewId,
-        address indexed reviewer,
-        address indexed buyer,
-        uint256 rating
-    );
+    event BuyerRated(address indexed buyer, address indexed rater, uint256 score);
+    event ReputationUpdated(address indexed buyer, uint256 newScore);
 
     constructor() Ownable(msg.sender) {}
 
-    function submitReview(
-        address buyer,
-        uint256 rating,
-        string memory comment
-    ) public returns (uint256) {
-        require(buyer != address(0), "Invalid buyer address");
-        require(rating >= 1 && rating <= 5, "Rating must be between 1 and 5");
-
-        uint256 reviewId = _reviewIdCounter++;
-        reviews[reviewId] = BuyerReview({
-            reviewId: reviewId,
-            reviewer: msg.sender,
-            buyer: buyer,
-            rating: rating,
-            comment: comment,
-            timestamp: block.timestamp
-        });
-
-        reviewsByBuyer[buyer].push(reviewId);
-
-        if (reputations[buyer].transactionCount == 0) {
-            reputations[buyer] = BuyerReputation({
-                buyer: buyer,
-                paymentReliability: 0,
-                transactionCount: 0,
-                onTimePayments: 0,
-                totalSpent: 0,
-                overallRating: 0
-            });
+    function rateBuyer(address buyer, uint256 score) public {
+        require(score >= 1 && score <= 5, "Invalid score");
+        require(buyer != msg.sender, "Cannot rate yourself");
+        require(!hasRatedBuyer[buyer][msg.sender], "Already rated");
+        
+        hasRatedBuyer[buyer][msg.sender] = true;
+        BuyerReputation storage rep = buyerReputations[buyer];
+        if (rep.buyer == address(0)) {
+            rep.buyer = buyer;
+            rep.score = 1000;
         }
-
-        BuyerReputation storage rep = reputations[buyer];
-        rep.transactionCount++;
-        rep.overallRating = ((rep.overallRating * (rep.transactionCount - 1)) + (rating * 20)) / rep.transactionCount;
-
-        emit ReviewSubmitted(reviewId, msg.sender, buyer, rating);
-        return reviewId;
+        
+        rep.totalTransactions++;
+        rep.score = ((rep.score * (rep.totalTransactions - 1)) + (score * 200)) / rep.totalTransactions;
+        rep.lastUpdated = block.timestamp;
+        emit BuyerRated(buyer, msg.sender, score);
+        emit ReputationUpdated(buyer, rep.score);
     }
 
-    function recordPayment(address buyer, uint256 amount, bool onTime) public onlyOwner {
-        BuyerReputation storage rep = reputations[buyer];
-        rep.transactionCount++;
-        rep.totalSpent += amount;
+    function recordPayment(address buyer, bool onTime) public {
+        BuyerReputation storage rep = buyerReputations[buyer];
+        if (rep.buyer == address(0)) {
+            rep.buyer = buyer;
+            rep.score = 1000;
+        }
+        rep.totalPayments++;
         if (onTime) {
             rep.onTimePayments++;
         }
-        rep.paymentReliability = (rep.onTimePayments * 100) / rep.transactionCount;
     }
 
-    function getReputation(address buyer) public view returns (BuyerReputation memory) {
-        return reputations[buyer];
+    function getBuyerReputation(address buyer) public view returns (BuyerReputation memory) {
+        return buyerReputations[buyer];
     }
 }
-

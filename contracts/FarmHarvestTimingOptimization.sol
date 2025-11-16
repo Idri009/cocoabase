@@ -5,66 +5,61 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmHarvestTimingOptimization
- * @dev Optimize harvest timing based on multiple factors
+ * @dev Onchain harvest timing optimization based on multiple factors
  */
 contract FarmHarvestTimingOptimization is Ownable {
-    struct HarvestWindow {
-        uint256 windowId;
+    struct HarvestTiming {
+        uint256 timingId;
         address farmer;
-        string cropType;
-        uint256 optimalStartDate;
-        uint256 optimalEndDate;
+        string fieldId;
+        uint256 optimalHarvestDate;
         uint256 qualityScore;
-        bool harvested;
+        uint256 marketPrice;
+        uint256 weatherFactor;
+        uint256 calculationDate;
+        string recommendation;
     }
 
-    mapping(uint256 => HarvestWindow) public windows;
-    mapping(address => uint256[]) public windowsByFarmer;
-    uint256 private _windowIdCounter;
+    mapping(uint256 => HarvestTiming) public timings;
+    mapping(address => uint256[]) public timingsByFarmer;
+    uint256 private _timingIdCounter;
 
-    event WindowCreated(
-        uint256 indexed windowId,
+    event TimingCalculated(
+        uint256 indexed timingId,
         address indexed farmer,
-        uint256 optimalStartDate
-    );
-
-    event HarvestExecuted(
-        uint256 indexed windowId,
-        uint256 actualDate
+        string fieldId,
+        uint256 optimalHarvestDate
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function createWindow(
-        string memory cropType,
-        uint256 optimalStartDate,
-        uint256 optimalEndDate,
-        uint256 qualityScore
+    function calculateTiming(
+        string memory fieldId,
+        uint256 optimalHarvestDate,
+        uint256 qualityScore,
+        uint256 marketPrice,
+        uint256 weatherFactor,
+        string memory recommendation
     ) public returns (uint256) {
-        uint256 windowId = _windowIdCounter++;
-        windows[windowId] = HarvestWindow({
-            windowId: windowId,
+        uint256 timingId = _timingIdCounter++;
+        timings[timingId] = HarvestTiming({
+            timingId: timingId,
             farmer: msg.sender,
-            cropType: cropType,
-            optimalStartDate: optimalStartDate,
-            optimalEndDate: optimalEndDate,
+            fieldId: fieldId,
+            optimalHarvestDate: optimalHarvestDate,
             qualityScore: qualityScore,
-            harvested: false
+            marketPrice: marketPrice,
+            weatherFactor: weatherFactor,
+            calculationDate: block.timestamp,
+            recommendation: recommendation
         });
 
-        windowsByFarmer[msg.sender].push(windowId);
-        emit WindowCreated(windowId, msg.sender, optimalStartDate);
-        return windowId;
+        timingsByFarmer[msg.sender].push(timingId);
+        emit TimingCalculated(timingId, msg.sender, fieldId, optimalHarvestDate);
+        return timingId;
     }
 
-    function executeHarvest(uint256 windowId) public {
-        require(windows[windowId].farmer == msg.sender, "Not authorized");
-        require(!windows[windowId].harvested, "Already harvested");
-        windows[windowId].harvested = true;
-        emit HarvestExecuted(windowId, block.timestamp);
-    }
-
-    function getWindow(uint256 windowId) public view returns (HarvestWindow memory) {
-        return windows[windowId];
+    function getTiming(uint256 timingId) public view returns (HarvestTiming memory) {
+        return timings[timingId];
     }
 }

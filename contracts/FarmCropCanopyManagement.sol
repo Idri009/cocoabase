@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropCanopyManagement
- * @dev Manage crop canopy for optimal light penetration
+ * @dev Onchain crop canopy management for optimal light penetration
  */
 contract FarmCropCanopyManagement is Ownable {
     struct CanopyRecord {
@@ -14,8 +14,9 @@ contract FarmCropCanopyManagement is Ownable {
         string fieldId;
         uint256 canopyCoverage;
         uint256 lightPenetration;
-        uint256 managementAction;
         uint256 recordDate;
+        string managementAction;
+        uint256 effectiveness;
     }
 
     mapping(uint256 => CanopyRecord) public records;
@@ -25,6 +26,7 @@ contract FarmCropCanopyManagement is Ownable {
     event CanopyRecorded(
         uint256 indexed recordId,
         address indexed farmer,
+        string fieldId,
         uint256 canopyCoverage
     );
 
@@ -34,7 +36,8 @@ contract FarmCropCanopyManagement is Ownable {
         string memory fieldId,
         uint256 canopyCoverage,
         uint256 lightPenetration,
-        uint256 managementAction
+        string memory managementAction,
+        uint256 effectiveness
     ) public returns (uint256) {
         uint256 recordId = _recordIdCounter++;
         records[recordId] = CanopyRecord({
@@ -43,12 +46,13 @@ contract FarmCropCanopyManagement is Ownable {
             fieldId: fieldId,
             canopyCoverage: canopyCoverage,
             lightPenetration: lightPenetration,
+            recordDate: block.timestamp,
             managementAction: managementAction,
-            recordDate: block.timestamp
+            effectiveness: effectiveness
         });
 
         recordsByFarmer[msg.sender].push(recordId);
-        emit CanopyRecorded(recordId, msg.sender, canopyCoverage);
+        emit CanopyRecorded(recordId, msg.sender, fieldId, canopyCoverage);
         return recordId;
     }
 

@@ -5,55 +5,60 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropFloweringMonitoring
- * @dev Monitor flowering stages and timing for crops
+ * @dev Onchain flowering stages and timing monitoring for crops
  */
 contract FarmCropFloweringMonitoring is Ownable {
-    struct FloweringRecord {
-        uint256 recordId;
+    struct FloweringMonitor {
+        uint256 monitorId;
         address farmer;
         string fieldId;
         string cropType;
-        uint256 floweringPercentage;
-        uint256 peakDate;
+        uint256 floweringStart;
+        uint256 peakFlowering;
+        uint256 floweringEnd;
+        uint256 bloomDensity;
         uint256 recordDate;
     }
 
-    mapping(uint256 => FloweringRecord) public records;
-    mapping(address => uint256[]) public recordsByFarmer;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => FloweringMonitor) public monitors;
+    mapping(address => uint256[]) public monitorsByFarmer;
+    uint256 private _monitorIdCounter;
 
-    event FloweringRecorded(
-        uint256 indexed recordId,
+    event FloweringMonitored(
+        uint256 indexed monitorId,
         address indexed farmer,
-        uint256 floweringPercentage
+        string fieldId,
+        uint256 bloomDensity
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordFlowering(
+    function monitorFlowering(
         string memory fieldId,
         string memory cropType,
-        uint256 floweringPercentage,
-        uint256 peakDate
+        uint256 floweringStart,
+        uint256 peakFlowering,
+        uint256 bloomDensity
     ) public returns (uint256) {
-        require(floweringPercentage <= 100, "Invalid percentage");
-        uint256 recordId = _recordIdCounter++;
-        records[recordId] = FloweringRecord({
-            recordId: recordId,
+        uint256 monitorId = _monitorIdCounter++;
+        monitors[monitorId] = FloweringMonitor({
+            monitorId: monitorId,
             farmer: msg.sender,
             fieldId: fieldId,
             cropType: cropType,
-            floweringPercentage: floweringPercentage,
-            peakDate: peakDate,
+            floweringStart: floweringStart,
+            peakFlowering: peakFlowering,
+            floweringEnd: 0,
+            bloomDensity: bloomDensity,
             recordDate: block.timestamp
         });
 
-        recordsByFarmer[msg.sender].push(recordId);
-        emit FloweringRecorded(recordId, msg.sender, floweringPercentage);
-        return recordId;
+        monitorsByFarmer[msg.sender].push(monitorId);
+        emit FloweringMonitored(monitorId, msg.sender, fieldId, bloomDensity);
+        return monitorId;
     }
 
-    function getRecord(uint256 recordId) public view returns (FloweringRecord memory) {
-        return records[recordId];
+    function getMonitor(uint256 monitorId) public view returns (FloweringMonitor memory) {
+        return monitors[monitorId];
     }
 }

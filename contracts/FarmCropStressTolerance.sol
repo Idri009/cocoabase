@@ -5,16 +5,18 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropStressTolerance
- * @dev Monitor crop stress tolerance levels and adaptation
+ * @dev Onchain crop stress tolerance monitoring and adaptation tracking
  */
 contract FarmCropStressTolerance is Ownable {
     struct StressTolerance {
         uint256 recordId;
         address farmer;
-        string cropType;
+        string cropVariety;
         string stressType;
         uint256 toleranceLevel;
+        uint256 adaptationScore;
         uint256 recordDate;
+        string adaptationMeasures;
     }
 
     mapping(uint256 => StressTolerance) public records;
@@ -24,28 +26,33 @@ contract FarmCropStressTolerance is Ownable {
     event ToleranceRecorded(
         uint256 indexed recordId,
         address indexed farmer,
-        string stressType
+        string cropVariety,
+        uint256 toleranceLevel
     );
 
     constructor() Ownable(msg.sender) {}
 
     function recordTolerance(
-        string memory cropType,
+        string memory cropVariety,
         string memory stressType,
-        uint256 toleranceLevel
+        uint256 toleranceLevel,
+        uint256 adaptationScore,
+        string memory adaptationMeasures
     ) public returns (uint256) {
         uint256 recordId = _recordIdCounter++;
         records[recordId] = StressTolerance({
             recordId: recordId,
             farmer: msg.sender,
-            cropType: cropType,
+            cropVariety: cropVariety,
             stressType: stressType,
             toleranceLevel: toleranceLevel,
-            recordDate: block.timestamp
+            adaptationScore: adaptationScore,
+            recordDate: block.timestamp,
+            adaptationMeasures: adaptationMeasures
         });
 
         recordsByFarmer[msg.sender].push(recordId);
-        emit ToleranceRecorded(recordId, msg.sender, stressType);
+        emit ToleranceRecorded(recordId, msg.sender, cropVariety, toleranceLevel);
         return recordId;
     }
 

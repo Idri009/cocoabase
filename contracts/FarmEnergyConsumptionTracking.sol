@@ -5,65 +5,53 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmEnergyConsumptionTracking
- * @dev Onchain energy consumption tracking for farms
+ * @dev Energy consumption tracking for farms
  */
 contract FarmEnergyConsumptionTracking is Ownable {
-    struct EnergyConsumption {
-        uint256 consumptionId;
+    struct EnergyRecord {
+        uint256 recordId;
         address farmer;
+        uint256 farmId;
+        uint256 consumption;
         string energyType;
-        uint256 amount;
-        string unit;
         uint256 timestamp;
-        string source;
     }
 
-    mapping(uint256 => EnergyConsumption) public consumptions;
-    mapping(address => uint256[]) public consumptionsByFarmer;
-    mapping(address => uint256) public totalConsumptionByFarmer;
-    uint256 private _consumptionIdCounter;
+    mapping(uint256 => EnergyRecord) public energyRecords;
+    mapping(address => uint256[]) public recordsByFarmer;
+    mapping(uint256 => uint256) public totalConsumptionByFarm;
+    uint256 private _recordIdCounter;
 
-    event EnergyConsumptionRecorded(
-        uint256 indexed consumptionId,
+    event EnergyRecorded(
+        uint256 indexed recordId,
         address indexed farmer,
-        string energyType,
-        uint256 amount
+        uint256 consumption
     );
 
     constructor() Ownable(msg.sender) {}
 
     function recordConsumption(
-        string memory energyType,
-        uint256 amount,
-        string memory unit,
-        string memory source
+        uint256 farmId,
+        uint256 consumption,
+        string memory energyType
     ) public returns (uint256) {
-        require(amount > 0, "Amount must be greater than 0");
-
-        uint256 consumptionId = _consumptionIdCounter++;
-        consumptions[consumptionId] = EnergyConsumption({
-            consumptionId: consumptionId,
+        require(consumption > 0, "Invalid consumption");
+        uint256 recordId = _recordIdCounter++;
+        energyRecords[recordId] = EnergyRecord({
+            recordId: recordId,
             farmer: msg.sender,
+            farmId: farmId,
+            consumption: consumption,
             energyType: energyType,
-            amount: amount,
-            unit: unit,
-            timestamp: block.timestamp,
-            source: source
+            timestamp: block.timestamp
         });
-
-        consumptionsByFarmer[msg.sender].push(consumptionId);
-        totalConsumptionByFarmer[msg.sender] += amount;
-
-        emit EnergyConsumptionRecorded(consumptionId, msg.sender, energyType, amount);
-        return consumptionId;
+        recordsByFarmer[msg.sender].push(recordId);
+        totalConsumptionByFarm[farmId] += consumption;
+        emit EnergyRecorded(recordId, msg.sender, consumption);
+        return recordId;
     }
 
-    function getConsumption(uint256 consumptionId) public view returns (EnergyConsumption memory) {
-        return consumptions[consumptionId];
-    }
-
-    function getTotalConsumption(address farmer) public view returns (uint256) {
-        return totalConsumptionByFarmer[farmer];
+    function getTotalConsumption(uint256 farmId) public view returns (uint256) {
+        return totalConsumptionByFarm[farmId];
     }
 }
-

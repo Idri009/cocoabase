@@ -5,60 +5,63 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropStressMonitoring
- * @dev Monitor crop stress levels
+ * @dev Onchain crop stress monitoring and early intervention system
  */
 contract FarmCropStressMonitoring is Ownable {
-    struct StressReading {
-        uint256 readingId;
-        uint256 plantationId;
+    struct StressRecord {
+        uint256 recordId;
+        address farmer;
+        string fieldId;
         string stressType;
-        uint256 stressLevel;
-        uint256 recordedDate;
-        address recorder;
+        uint256 severity;
+        uint256 detectionDate;
+        string intervention;
+        bool isResolved;
     }
 
-    mapping(uint256 => StressReading) public readings;
-    mapping(address => uint256[]) public readingsByOwner;
-    uint256 private _readingIdCounter;
+    mapping(uint256 => StressRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
+    uint256 private _recordIdCounter;
 
-    event StressRecorded(
-        uint256 indexed readingId,
-        address indexed owner,
-        uint256 plantationId,
-        uint256 stressLevel
+    event StressDetected(
+        uint256 indexed recordId,
+        address indexed farmer,
+        string fieldId,
+        string stressType,
+        uint256 severity
     );
 
     constructor() Ownable(msg.sender) {}
 
     function recordStress(
-        uint256 plantationId,
+        string memory fieldId,
         string memory stressType,
-        uint256 stressLevel
+        uint256 severity,
+        string memory intervention
     ) public returns (uint256) {
-        uint256 readingId = _readingIdCounter++;
-        readings[readingId] = StressReading({
-            readingId: readingId,
-            plantationId: plantationId,
+        uint256 recordId = _recordIdCounter++;
+        records[recordId] = StressRecord({
+            recordId: recordId,
+            farmer: msg.sender,
+            fieldId: fieldId,
             stressType: stressType,
-            stressLevel: stressLevel,
-            recordedDate: block.timestamp,
-            recorder: msg.sender
+            severity: severity,
+            detectionDate: block.timestamp,
+            intervention: intervention,
+            isResolved: false
         });
 
-        readingsByOwner[msg.sender].push(readingId);
-
-        emit StressRecorded(readingId, msg.sender, plantationId, stressLevel);
-        return readingId;
+        recordsByFarmer[msg.sender].push(recordId);
+        emit StressDetected(recordId, msg.sender, fieldId, stressType, severity);
+        return recordId;
     }
 
-    function getReading(uint256 readingId) public view returns (StressReading memory) {
-        return readings[readingId];
+    function resolveStress(uint256 recordId) public {
+        require(records[recordId].farmer == msg.sender, "Not record owner");
+        records[recordId].isResolved = true;
     }
 
-    function getReadingsByOwner(address owner) public view returns (uint256[] memory) {
-        return readingsByOwner[owner];
+    function getRecord(uint256 recordId) public view returns (StressRecord memory) {
+        return records[recordId];
     }
 }
-
-
-

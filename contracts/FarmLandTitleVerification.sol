@@ -5,93 +5,62 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLandTitleVerification
- * @dev Onchain land title verification and ownership records
+ * @dev Land title verification and ownership records
  */
 contract FarmLandTitleVerification is Ownable {
     struct LandTitle {
         uint256 titleId;
         address owner;
-        string parcelId;
         string location;
         uint256 area;
-        string coordinates;
-        uint256 registrationDate;
-        bool isVerified;
+        bytes32 documentHash;
+        bool verified;
         address verifier;
     }
 
     mapping(uint256 => LandTitle) public titles;
     mapping(address => uint256[]) public titlesByOwner;
-    mapping(string => uint256) public titlesByParcelId;
+    mapping(address => bool) public isVerifier;
     uint256 private _titleIdCounter;
 
-    event TitleRegistered(
-        uint256 indexed titleId,
-        address indexed owner,
-        string parcelId
-    );
+    event TitleRegistered(uint256 indexed titleId, address indexed owner);
+    event TitleVerified(uint256 indexed titleId, address indexed verifier);
+    event VerifierAdded(address indexed verifier);
 
-    event TitleVerified(
-        uint256 indexed titleId,
-        address indexed verifier
-    );
+    constructor() Ownable(msg.sender) {
+        isVerifier[msg.sender] = true;
+    }
 
-    event TitleTransferred(
-        uint256 indexed titleId,
-        address indexed from,
-        address indexed to
-    );
-
-    constructor() Ownable(msg.sender) {}
+    function addVerifier(address verifier) public onlyOwner {
+        isVerifier[verifier] = true;
+        emit VerifierAdded(verifier);
+    }
 
     function registerTitle(
-        string memory parcelId,
         string memory location,
         uint256 area,
-        string memory coordinates
+        bytes32 documentHash
     ) public returns (uint256) {
-        require(titlesByParcelId[parcelId] == 0, "Parcel already registered");
-
         uint256 titleId = _titleIdCounter++;
         titles[titleId] = LandTitle({
             titleId: titleId,
             owner: msg.sender,
-            parcelId: parcelId,
             location: location,
             area: area,
-            coordinates: coordinates,
-            registrationDate: block.timestamp,
-            isVerified: false,
+            documentHash: documentHash,
+            verified: false,
             verifier: address(0)
         });
-
         titlesByOwner[msg.sender].push(titleId);
-        titlesByParcelId[parcelId] = titleId;
-
-        emit TitleRegistered(titleId, msg.sender, parcelId);
+        emit TitleRegistered(titleId, msg.sender);
         return titleId;
     }
 
-    function verifyTitle(uint256 titleId) public onlyOwner {
-        require(!titles[titleId].isVerified, "Title already verified");
-        titles[titleId].isVerified = true;
+    function verifyTitle(uint256 titleId) public {
+        require(isVerifier[msg.sender], "Not a verifier");
+        require(!titles[titleId].verified, "Already verified");
+        titles[titleId].verified = true;
         titles[titleId].verifier = msg.sender;
-
         emit TitleVerified(titleId, msg.sender);
     }
-
-    function transferTitle(uint256 titleId, address newOwner) public {
-        require(titles[titleId].owner == msg.sender, "Not title owner");
-        require(newOwner != address(0), "Invalid new owner");
-
-        address oldOwner = titles[titleId].owner;
-        titles[titleId].owner = newOwner;
-
-        emit TitleTransferred(titleId, oldOwner, newOwner);
-    }
-
-    function getTitle(uint256 titleId) public view returns (LandTitle memory) {
-        return titles[titleId];
-    }
 }
-

@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmPestResistanceTracking
- * @dev Track pest resistance development to treatments
+ * @dev Onchain pest resistance development tracking to treatments
  */
 contract FarmPestResistanceTracking is Ownable {
     struct ResistanceRecord {
@@ -14,8 +14,9 @@ contract FarmPestResistanceTracking is Ownable {
         string pestType;
         string treatmentType;
         uint256 resistanceLevel;
-        uint256 treatmentEffectiveness;
+        uint256 effectiveness;
         uint256 recordDate;
+        string alternativeTreatment;
     }
 
     mapping(uint256 => ResistanceRecord) public records;
@@ -25,7 +26,8 @@ contract FarmPestResistanceTracking is Ownable {
     event ResistanceRecorded(
         uint256 indexed recordId,
         address indexed farmer,
-        string pestType
+        string pestType,
+        uint256 resistanceLevel
     );
 
     constructor() Ownable(msg.sender) {}
@@ -34,7 +36,8 @@ contract FarmPestResistanceTracking is Ownable {
         string memory pestType,
         string memory treatmentType,
         uint256 resistanceLevel,
-        uint256 treatmentEffectiveness
+        uint256 effectiveness,
+        string memory alternativeTreatment
     ) public returns (uint256) {
         uint256 recordId = _recordIdCounter++;
         records[recordId] = ResistanceRecord({
@@ -43,12 +46,13 @@ contract FarmPestResistanceTracking is Ownable {
             pestType: pestType,
             treatmentType: treatmentType,
             resistanceLevel: resistanceLevel,
-            treatmentEffectiveness: treatmentEffectiveness,
-            recordDate: block.timestamp
+            effectiveness: effectiveness,
+            recordDate: block.timestamp,
+            alternativeTreatment: alternativeTreatment
         });
 
         recordsByFarmer[msg.sender].push(recordId);
-        emit ResistanceRecorded(recordId, msg.sender, pestType);
+        emit ResistanceRecorded(recordId, msg.sender, pestType, resistanceLevel);
         return recordId;
     }
 

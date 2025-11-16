@@ -5,88 +5,64 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmFairTradeCertification
- * @dev Onchain fair trade certification and compliance tracking
+ * @dev Fair trade certification and compliance tracking
  */
 contract FarmFairTradeCertification is Ownable {
-    struct FairTradeCert {
+    struct Certification {
         uint256 certId;
         address farmer;
-        string organization;
+        string productType;
         uint256 issueDate;
         uint256 expiryDate;
-        bool isActive;
-        bool isVerified;
-        address verifier;
-        string standards;
+        bool active;
+        address issuer;
     }
 
-    mapping(uint256 => FairTradeCert) public certificates;
-    mapping(address => uint256[]) public certificatesByFarmer;
+    mapping(uint256 => Certification) public certifications;
+    mapping(address => uint256[]) public certsByFarmer;
+    mapping(address => bool) public isIssuer;
     uint256 private _certIdCounter;
 
-    event CertificateIssued(
-        uint256 indexed certId,
-        address indexed farmer,
-        string organization
-    );
+    event CertificationIssued(uint256 indexed certId, address indexed farmer);
+    event CertificationRevoked(uint256 indexed certId);
+    event IssuerAdded(address indexed issuer);
 
-    event CertificateVerified(
-        uint256 indexed certId,
-        address indexed verifier
-    );
+    constructor() Ownable(msg.sender) {
+        isIssuer[msg.sender] = true;
+    }
 
-    event CertificateRenewed(
-        uint256 indexed certId,
-        uint256 newExpiryDate
-    );
+    function addIssuer(address issuer) public onlyOwner {
+        isIssuer[issuer] = true;
+        emit IssuerAdded(issuer);
+    }
 
-    constructor() Ownable(msg.sender) {}
-
-    function issueCertificate(
+    function issueCertification(
         address farmer,
-        string memory organization,
-        uint256 validityPeriod,
-        string memory standards
-    ) public onlyOwner returns (uint256) {
+        string memory productType,
+        uint256 expiryDate
+    ) public returns (uint256) {
+        require(isIssuer[msg.sender], "Not an issuer");
         uint256 certId = _certIdCounter++;
-        certificates[certId] = FairTradeCert({
+        certifications[certId] = Certification({
             certId: certId,
             farmer: farmer,
-            organization: organization,
+            productType: productType,
             issueDate: block.timestamp,
-            expiryDate: block.timestamp + validityPeriod,
-            isActive: true,
-            isVerified: false,
-            verifier: address(0),
-            standards: standards
+            expiryDate: expiryDate,
+            active: true,
+            issuer: msg.sender
         });
-
-        certificatesByFarmer[farmer].push(certId);
-
-        emit CertificateIssued(certId, farmer, organization);
+        certsByFarmer[farmer].push(certId);
+        emit CertificationIssued(certId, farmer);
         return certId;
     }
 
-    function verifyCertificate(uint256 certId) public onlyOwner {
-        require(!certificates[certId].isVerified, "Already verified");
-        certificates[certId].isVerified = true;
-        certificates[certId].verifier = msg.sender;
-
-        emit CertificateVerified(certId, msg.sender);
-    }
-
-    function renewCertificate(uint256 certId, uint256 validityPeriod) public onlyOwner {
-        require(certificates[certId].isActive, "Certificate not active");
-        certificates[certId].expiryDate = block.timestamp + validityPeriod;
-
-        emit CertificateRenewed(certId, certificates[certId].expiryDate);
-    }
-
-    function revokeCertificate(uint256 certId) public onlyOwner {
-        certificates[certId].isActive = false;
-    }
-
-    function getCertificate(uint256 certId) public view returns (FairTradeCert memory) {
-        return certificates[certId];
+    function revokeCertification(uint256 certId) public {
+        require(
+            certifications[certId].issuer == msg.sender || msg.sender == owner(),
+            "Not authorized"
+        );
+        certifications[certId].active = false;
+        emit CertificationRevoked(certId);
     }
 }

@@ -365,7 +365,7 @@ CocoaBase is built with:
 - `FarmRenewableEnergyCertification` - Renewable energy certification and validation
 - `FarmAgroforestryCertification` - Agroforestry certification and validation
 
-### 🌍 **Sustainability & Environment** (17 Features)
+### 🌍 **Sustainability & Environment** (22 Features)
 
 - `FarmSoilCarbonSequestration` - Carbon sequestration tracking
 - `FarmCarbonOffsetMarketplace` - Carbon offset trading

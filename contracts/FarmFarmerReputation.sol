@@ -5,112 +5,49 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmFarmerReputation
- * @dev Onchain farmer reputation system based on performance
+ * @dev Farmer reputation system based on performance
  */
 contract FarmFarmerReputation is Ownable {
-    struct ReputationScore {
+    struct Reputation {
         address farmer;
-        uint256 qualityScore;
-        uint256 deliveryScore;
-        uint256 sustainabilityScore;
-        uint256 overallReputation;
-        uint256 totalTransactions;
-        uint256 positiveReviews;
-        uint256 negativeReviews;
+        uint256 score;
+        uint256 totalRatings;
+        uint256 positiveRatings;
+        uint256 lastUpdated;
     }
 
-    struct Review {
-        uint256 reviewId;
-        address reviewer;
-        address farmer;
-        uint256 rating;
-        string comment;
-        uint256 timestamp;
-    }
+    mapping(address => Reputation) public reputations;
+    mapping(address => mapping(address => bool)) public hasRated;
 
-    mapping(address => ReputationScore) public reputations;
-    mapping(uint256 => Review) public reviews;
-    mapping(address => uint256[]) public reviewsByFarmer;
-    uint256 private _reviewIdCounter;
-
-    event ReviewSubmitted(
-        uint256 indexed reviewId,
-        address indexed reviewer,
-        address indexed farmer,
-        uint256 rating
-    );
+    event ReputationUpdated(address indexed farmer, uint256 newScore);
+    event FarmerRated(address indexed farmer, address indexed rater, bool positive);
 
     constructor() Ownable(msg.sender) {}
 
-    function submitReview(
-        address farmer,
-        uint256 rating,
-        string memory comment
-    ) public returns (uint256) {
-        require(farmer != address(0), "Invalid farmer address");
-        require(rating >= 1 && rating <= 5, "Rating must be between 1 and 5");
-        require(farmer != msg.sender, "Cannot review yourself");
-
-        uint256 reviewId = _reviewIdCounter++;
-        reviews[reviewId] = Review({
-            reviewId: reviewId,
-            reviewer: msg.sender,
-            farmer: farmer,
-            rating: rating,
-            comment: comment,
-            timestamp: block.timestamp
-        });
-
-        reviewsByFarmer[farmer].push(reviewId);
-
-        if (reputations[farmer].totalTransactions == 0) {
-            reputations[farmer] = ReputationScore({
-                farmer: farmer,
-                qualityScore: 0,
-                deliveryScore: 0,
-                sustainabilityScore: 0,
-                overallReputation: 0,
-                totalTransactions: 0,
-                positiveReviews: 0,
-                negativeReviews: 0
-            });
+    function rateFarmer(address farmer, bool positive) public {
+        require(farmer != msg.sender, "Cannot rate yourself");
+        require(!hasRated[farmer][msg.sender], "Already rated");
+        
+        hasRated[farmer][msg.sender] = true;
+        Reputation storage rep = reputations[farmer];
+        if (rep.farmer == address(0)) {
+            rep.farmer = farmer;
+            rep.score = 1000;
         }
-
-        ReputationScore storage rep = reputations[farmer];
-        rep.totalTransactions++;
-        if (rating >= 4) {
-            rep.positiveReviews++;
+        
+        rep.totalRatings++;
+        if (positive) {
+            rep.positiveRatings++;
+            rep.score += 10;
         } else {
-            rep.negativeReviews++;
+            rep.score = rep.score > 10 ? rep.score - 10 : 0;
         }
-        rep.overallReputation = (rep.positiveReviews * 100) / rep.totalTransactions;
-
-        emit ReviewSubmitted(reviewId, msg.sender, farmer, rating);
-        return reviewId;
+        rep.lastUpdated = block.timestamp;
+        emit FarmerRated(farmer, msg.sender, positive);
+        emit ReputationUpdated(farmer, rep.score);
     }
 
-    function updateQualityScore(address farmer, uint256 score) public onlyOwner {
-        reputations[farmer].qualityScore = score;
-        updateOverallReputation(farmer);
-    }
-
-    function updateDeliveryScore(address farmer, uint256 score) public onlyOwner {
-        reputations[farmer].deliveryScore = score;
-        updateOverallReputation(farmer);
-    }
-
-    function updateSustainabilityScore(address farmer, uint256 score) public onlyOwner {
-        reputations[farmer].sustainabilityScore = score;
-        updateOverallReputation(farmer);
-    }
-
-    function updateOverallReputation(address farmer) internal {
-        ReputationScore storage rep = reputations[farmer];
-        rep.overallReputation = (rep.qualityScore + rep.deliveryScore + rep.sustainabilityScore) / 3;
-    }
-
-    function getReputation(address farmer) public view returns (ReputationScore memory) {
+    function getReputation(address farmer) public view returns (Reputation memory) {
         return reputations[farmer];
     }
 }
-

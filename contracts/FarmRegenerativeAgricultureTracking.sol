@@ -5,23 +5,22 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmRegenerativeAgricultureTracking
- * @dev Onchain tracking of regenerative agriculture practices
+ * @dev Regenerative agriculture practices tracking
  */
 contract FarmRegenerativeAgricultureTracking is Ownable {
-    struct RegenerativePractice {
+    struct Practice {
         uint256 practiceId;
         address farmer;
+        uint256 fieldId;
         string practiceType;
-        string fieldId;
         uint256 implementationDate;
-        string description;
-        uint256 impactScore;
-        bool isVerified;
+        bool verified;
     }
 
-    mapping(uint256 => RegenerativePractice) public practices;
+    mapping(uint256 => Practice) public practices;
     mapping(address => uint256[]) public practicesByFarmer;
-    mapping(address => uint256) public totalImpactScoreByFarmer;
+    mapping(uint256 => uint256[]) public practicesByField;
+    mapping(address => bool) public isVerifier;
     uint256 private _practiceIdCounter;
 
     event PracticeRecorded(
@@ -29,56 +28,39 @@ contract FarmRegenerativeAgricultureTracking is Ownable {
         address indexed farmer,
         string practiceType
     );
+    event PracticeVerified(uint256 indexed practiceId, address indexed verifier);
 
-    event PracticeVerified(
-        uint256 indexed practiceId,
-        uint256 impactScore
-    );
+    constructor() Ownable(msg.sender) {
+        isVerifier[msg.sender] = true;
+    }
 
-    constructor() Ownable(msg.sender) {}
+    function addVerifier(address verifier) public onlyOwner {
+        isVerifier[verifier] = true;
+    }
 
     function recordPractice(
-        string memory practiceType,
-        string memory fieldId,
-        string memory description
+        uint256 fieldId,
+        string memory practiceType
     ) public returns (uint256) {
-        require(bytes(practiceType).length > 0, "Practice type required");
-
         uint256 practiceId = _practiceIdCounter++;
-        practices[practiceId] = RegenerativePractice({
+        practices[practiceId] = Practice({
             practiceId: practiceId,
             farmer: msg.sender,
-            practiceType: practiceType,
             fieldId: fieldId,
+            practiceType: practiceType,
             implementationDate: block.timestamp,
-            description: description,
-            impactScore: 0,
-            isVerified: false
+            verified: false
         });
-
         practicesByFarmer[msg.sender].push(practiceId);
-
+        practicesByField[fieldId].push(practiceId);
         emit PracticeRecorded(practiceId, msg.sender, practiceType);
         return practiceId;
     }
 
-    function verifyPractice(uint256 practiceId, uint256 impactScore) public onlyOwner {
-        require(!practices[practiceId].isVerified, "Already verified");
-        practices[practiceId].isVerified = true;
-        practices[practiceId].impactScore = impactScore;
-
-        address farmer = practices[practiceId].farmer;
-        totalImpactScoreByFarmer[farmer] += impactScore;
-
-        emit PracticeVerified(practiceId, impactScore);
-    }
-
-    function getPractice(uint256 practiceId) public view returns (RegenerativePractice memory) {
-        return practices[practiceId];
-    }
-
-    function getTotalImpactScore(address farmer) public view returns (uint256) {
-        return totalImpactScoreByFarmer[farmer];
+    function verifyPractice(uint256 practiceId) public {
+        require(isVerifier[msg.sender], "Not a verifier");
+        require(!practices[practiceId].verified, "Already verified");
+        practices[practiceId].verified = true;
+        emit PracticeVerified(practiceId, msg.sender);
     }
 }
-

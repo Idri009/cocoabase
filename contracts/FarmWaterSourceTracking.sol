@@ -5,62 +5,60 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmWaterSourceTracking
- * @dev Track water sources and usage patterns
+ * @dev Onchain water sources and usage patterns tracking
  */
 contract FarmWaterSourceTracking is Ownable {
-    struct WaterSource {
-        uint256 sourceId;
+    struct SourceRecord {
+        uint256 recordId;
         address farmer;
+        string sourceId;
         string sourceType;
-        uint256 capacity;
-        uint256 usageThisMonth;
-        uint256 lastUpdated;
+        uint256 volumeUsed;
+        uint256 recordDate;
+        string usagePattern;
+        string location;
     }
 
-    mapping(uint256 => WaterSource) public sources;
-    mapping(address => uint256[]) public sourcesByFarmer;
-    uint256 private _sourceIdCounter;
+    mapping(uint256 => SourceRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
+    mapping(string => uint256[]) public recordsBySource;
+    uint256 private _recordIdCounter;
 
-    event SourceRegistered(
-        uint256 indexed sourceId,
+    event SourceRecorded(
+        uint256 indexed recordId,
         address indexed farmer,
-        string sourceType
-    );
-
-    event UsageUpdated(
-        uint256 indexed sourceId,
-        uint256 usageThisMonth
+        string sourceId,
+        uint256 volumeUsed
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function registerSource(
+    function recordSource(
+        string memory sourceId,
         string memory sourceType,
-        uint256 capacity
+        uint256 volumeUsed,
+        string memory usagePattern,
+        string memory location
     ) public returns (uint256) {
-        uint256 sourceId = _sourceIdCounter++;
-        sources[sourceId] = WaterSource({
-            sourceId: sourceId,
+        uint256 recordId = _recordIdCounter++;
+        records[recordId] = SourceRecord({
+            recordId: recordId,
             farmer: msg.sender,
+            sourceId: sourceId,
             sourceType: sourceType,
-            capacity: capacity,
-            usageThisMonth: 0,
-            lastUpdated: block.timestamp
+            volumeUsed: volumeUsed,
+            recordDate: block.timestamp,
+            usagePattern: usagePattern,
+            location: location
         });
 
-        sourcesByFarmer[msg.sender].push(sourceId);
-        emit SourceRegistered(sourceId, msg.sender, sourceType);
-        return sourceId;
+        recordsByFarmer[msg.sender].push(recordId);
+        recordsBySource[sourceId].push(recordId);
+        emit SourceRecorded(recordId, msg.sender, sourceId, volumeUsed);
+        return recordId;
     }
 
-    function updateUsage(uint256 sourceId, uint256 usage) public {
-        require(sources[sourceId].farmer == msg.sender, "Not authorized");
-        sources[sourceId].usageThisMonth += usage;
-        sources[sourceId].lastUpdated = block.timestamp;
-        emit UsageUpdated(sourceId, sources[sourceId].usageThisMonth);
-    }
-
-    function getSource(uint256 sourceId) public view returns (WaterSource memory) {
-        return sources[sourceId];
+    function getRecord(uint256 recordId) public view returns (SourceRecord memory) {
+        return records[recordId];
     }
 }

@@ -5,60 +5,58 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmPesticideTracking
- * @dev Comprehensive pesticide usage tracking and compliance monitoring
+ * @dev Pesticide usage tracking system
  */
 contract FarmPesticideTracking is Ownable {
     struct PesticideApplication {
         uint256 applicationId;
         address farmer;
-        string pesticideType;
+        uint256 fieldId;
+        string pesticideName;
         uint256 quantity;
-        string fieldId;
         uint256 applicationDate;
-        string safetyData;
-        bool approved;
+        string method;
     }
 
     mapping(uint256 => PesticideApplication) public applications;
     mapping(address => uint256[]) public applicationsByFarmer;
+    mapping(uint256 => uint256[]) public applicationsByField;
+    mapping(uint256 => uint256) public totalUsageByField;
     uint256 private _applicationIdCounter;
 
     event ApplicationRecorded(
         uint256 indexed applicationId,
         address indexed farmer,
-        string pesticideType
+        string pesticideName
     );
 
     constructor() Ownable(msg.sender) {}
 
     function recordApplication(
-        string memory pesticideType,
+        uint256 fieldId,
+        string memory pesticideName,
         uint256 quantity,
-        string memory fieldId,
-        string memory safetyData
+        string memory method
     ) public returns (uint256) {
+        require(quantity > 0, "Invalid quantity");
         uint256 applicationId = _applicationIdCounter++;
         applications[applicationId] = PesticideApplication({
             applicationId: applicationId,
             farmer: msg.sender,
-            pesticideType: pesticideType,
-            quantity: quantity,
             fieldId: fieldId,
+            pesticideName: pesticideName,
+            quantity: quantity,
             applicationDate: block.timestamp,
-            safetyData: safetyData,
-            approved: false
+            method: method
         });
-
         applicationsByFarmer[msg.sender].push(applicationId);
-        emit ApplicationRecorded(applicationId, msg.sender, pesticideType);
+        applicationsByField[fieldId].push(applicationId);
+        totalUsageByField[fieldId] += quantity;
+        emit ApplicationRecorded(applicationId, msg.sender, pesticideName);
         return applicationId;
     }
 
-    function approveApplication(uint256 applicationId) public onlyOwner {
-        applications[applicationId].approved = true;
-    }
-
-    function getApplication(uint256 applicationId) public view returns (PesticideApplication memory) {
-        return applications[applicationId];
+    function getTotalUsage(uint256 fieldId) public view returns (uint256) {
+        return totalUsageByField[fieldId];
     }
 }

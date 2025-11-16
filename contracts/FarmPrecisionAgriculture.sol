@@ -5,58 +5,52 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmPrecisionAgriculture
- * @dev Onchain system for storing precision agriculture data and analytics
+ * @dev Store precision agriculture data and analytics
  */
 contract FarmPrecisionAgriculture is Ownable {
     struct PrecisionData {
         uint256 dataId;
+        address farmer;
         uint256 fieldId;
         string dataType;
-        string coordinates;
-        string sensorData;
+        bytes32 dataHash;
         uint256 timestamp;
-        address recorder;
     }
 
-    mapping(uint256 => PrecisionData) public precisionDataRecords;
-    mapping(address => uint256[]) public recordsByRecorder;
+    mapping(uint256 => PrecisionData) public precisionData;
+    mapping(address => uint256[]) public dataByFarmer;
+    mapping(uint256 => uint256[]) public dataByField;
     uint256 private _dataIdCounter;
 
     event PrecisionDataRecorded(
         uint256 indexed dataId,
-        address indexed recorder,
+        address indexed farmer,
         string dataType
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordPrecisionData(
+    function recordData(
         uint256 fieldId,
         string memory dataType,
-        string memory coordinates,
-        string memory sensorData,
-        uint256 timestamp
+        bytes32 dataHash
     ) public returns (uint256) {
         uint256 dataId = _dataIdCounter++;
-        precisionDataRecords[dataId] = PrecisionData({
+        precisionData[dataId] = PrecisionData({
             dataId: dataId,
+            farmer: msg.sender,
             fieldId: fieldId,
             dataType: dataType,
-            coordinates: coordinates,
-            sensorData: sensorData,
-            timestamp: timestamp,
-            recorder: msg.sender
+            dataHash: dataHash,
+            timestamp: block.timestamp
         });
-
-        recordsByRecorder[msg.sender].push(dataId);
-
+        dataByFarmer[msg.sender].push(dataId);
+        dataByField[fieldId].push(dataId);
         emit PrecisionDataRecorded(dataId, msg.sender, dataType);
         return dataId;
     }
 
-    function getData(uint256 dataId) public view returns (PrecisionData memory) {
-        return precisionDataRecords[dataId];
+    function getFieldDataCount(uint256 fieldId) public view returns (uint256) {
+        return dataByField[fieldId].length;
     }
 }
-
-

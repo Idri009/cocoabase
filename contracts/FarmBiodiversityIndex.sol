@@ -5,70 +5,56 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmBiodiversityIndex
- * @dev Onchain biodiversity index calculation and tracking
+ * @dev Biodiversity index calculation and tracking
  */
 contract FarmBiodiversityIndex is Ownable {
-    struct BiodiversityRecord {
-        uint256 recordId;
-        address farmer;
-        string speciesType;
+    struct BiodiversityIndex {
+        uint256 indexId;
+        uint256 farmId;
         uint256 speciesCount;
-        string habitat;
+        uint256 habitatScore;
+        uint256 ecosystemScore;
+        uint256 overallIndex;
         uint256 timestamp;
-        uint256 biodiversityScore;
     }
 
-    mapping(uint256 => BiodiversityRecord) public records;
-    mapping(address => uint256[]) public recordsByFarmer;
-    mapping(address => uint256) public biodiversityIndexByFarmer;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => BiodiversityIndex) public biodiversityIndices;
+    mapping(uint256 => uint256[]) public indicesByFarm;
+    uint256 private _indexIdCounter;
 
-    event BiodiversityRecorded(
-        uint256 indexed recordId,
-        address indexed farmer,
-        string speciesType,
-        uint256 biodiversityScore
+    event IndexCalculated(
+        uint256 indexed indexId,
+        uint256 farmId,
+        uint256 overallIndex
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordBiodiversity(
-        string memory speciesType,
+    function calculateIndex(
+        uint256 farmId,
         uint256 speciesCount,
-        string memory habitat
+        uint256 habitatScore,
+        uint256 ecosystemScore
     ) public returns (uint256) {
-        require(speciesCount > 0, "Species count must be greater than 0");
-
-        uint256 recordId = _recordIdCounter++;
-        uint256 biodiversityScore = calculateBiodiversityScore(speciesType, speciesCount);
-
-        records[recordId] = BiodiversityRecord({
-            recordId: recordId,
-            farmer: msg.sender,
-            speciesType: speciesType,
+        uint256 overallIndex = (speciesCount * 10 + habitatScore + ecosystemScore) / 3;
+        uint256 indexId = _indexIdCounter++;
+        biodiversityIndices[indexId] = BiodiversityIndex({
+            indexId: indexId,
+            farmId: farmId,
             speciesCount: speciesCount,
-            habitat: habitat,
-            timestamp: block.timestamp,
-            biodiversityScore: biodiversityScore
+            habitatScore: habitatScore,
+            ecosystemScore: ecosystemScore,
+            overallIndex: overallIndex,
+            timestamp: block.timestamp
         });
-
-        recordsByFarmer[msg.sender].push(recordId);
-        biodiversityIndexByFarmer[msg.sender] += biodiversityScore;
-
-        emit BiodiversityRecorded(recordId, msg.sender, speciesType, biodiversityScore);
-        return recordId;
+        indicesByFarm[farmId].push(indexId);
+        emit IndexCalculated(indexId, farmId, overallIndex);
+        return indexId;
     }
 
-    function calculateBiodiversityScore(string memory, uint256 speciesCount) internal pure returns (uint256) {
-        return speciesCount * 10;
-    }
-
-    function getRecord(uint256 recordId) public view returns (BiodiversityRecord memory) {
-        return records[recordId];
-    }
-
-    function getBiodiversityIndex(address farmer) public view returns (uint256) {
-        return biodiversityIndexByFarmer[farmer];
+    function getLatestIndex(uint256 farmId) public view returns (BiodiversityIndex memory) {
+        require(indicesByFarm[farmId].length > 0, "No indices found");
+        uint256 latestId = indicesByFarm[farmId][indicesByFarm[farmId].length - 1];
+        return biodiversityIndices[latestId];
     }
 }
-

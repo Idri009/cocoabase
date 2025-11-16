@@ -5,61 +5,58 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmWaterRecycling
- * @dev Water recycling and reuse tracking system
+ * @dev Onchain water recycling and reuse tracking system
  */
 contract FarmWaterRecycling is Ownable {
-    struct RecyclingSystem {
-        uint256 systemId;
+    struct RecyclingRecord {
+        uint256 recordId;
         address farmer;
-        string systemType;
+        string sourceType;
         uint256 waterRecycled;
-        uint256 efficiencyPercentage;
-        uint256 installationDate;
+        string treatmentMethod;
+        uint256 recordDate;
+        uint256 reuseEfficiency;
+        string reusePurpose;
     }
 
-    mapping(uint256 => RecyclingSystem) public systems;
-    mapping(address => uint256[]) public systemsByFarmer;
-    uint256 private _systemIdCounter;
+    mapping(uint256 => RecyclingRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
+    uint256 private _recordIdCounter;
 
-    event SystemInstalled(
-        uint256 indexed systemId,
+    event RecyclingRecorded(
+        uint256 indexed recordId,
         address indexed farmer,
-        string systemType
-    );
-
-    event WaterRecycled(
-        uint256 indexed systemId,
-        uint256 amount
+        string sourceType,
+        uint256 waterRecycled
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function installSystem(
-        string memory systemType,
-        uint256 efficiencyPercentage
+    function recordRecycling(
+        string memory sourceType,
+        uint256 waterRecycled,
+        string memory treatmentMethod,
+        uint256 reuseEfficiency,
+        string memory reusePurpose
     ) public returns (uint256) {
-        uint256 systemId = _systemIdCounter++;
-        systems[systemId] = RecyclingSystem({
-            systemId: systemId,
+        uint256 recordId = _recordIdCounter++;
+        records[recordId] = RecyclingRecord({
+            recordId: recordId,
             farmer: msg.sender,
-            systemType: systemType,
-            waterRecycled: 0,
-            efficiencyPercentage: efficiencyPercentage,
-            installationDate: block.timestamp
+            sourceType: sourceType,
+            waterRecycled: waterRecycled,
+            treatmentMethod: treatmentMethod,
+            recordDate: block.timestamp,
+            reuseEfficiency: reuseEfficiency,
+            reusePurpose: reusePurpose
         });
 
-        systemsByFarmer[msg.sender].push(systemId);
-        emit SystemInstalled(systemId, msg.sender, systemType);
-        return systemId;
+        recordsByFarmer[msg.sender].push(recordId);
+        emit RecyclingRecorded(recordId, msg.sender, sourceType, waterRecycled);
+        return recordId;
     }
 
-    function recordRecycling(uint256 systemId, uint256 amount) public {
-        require(systems[systemId].farmer == msg.sender, "Not authorized");
-        systems[systemId].waterRecycled += amount;
-        emit WaterRecycled(systemId, amount);
-    }
-
-    function getSystem(uint256 systemId) public view returns (RecyclingSystem memory) {
-        return systems[systemId];
+    function getRecord(uint256 recordId) public view returns (RecyclingRecord memory) {
+        return records[recordId];
     }
 }

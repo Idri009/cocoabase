@@ -5,59 +5,58 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropBiodiversityEnhancement
- * @dev Track biodiversity enhancement activities
+ * @dev Onchain biodiversity enhancement initiatives and impact tracking
  */
 contract FarmCropBiodiversityEnhancement is Ownable {
-    struct EnhancementActivity {
-        uint256 activityId;
-        uint256 plantationId;
-        string activityType;
-        string speciesAdded;
+    struct EnhancementInitiative {
+        uint256 initiativeId;
+        address farmer;
+        string fieldId;
+        string initiativeType;
+        string implementation;
         uint256 implementationDate;
-        address implementer;
+        uint256 biodiversityScore;
+        string impact;
     }
 
-    mapping(uint256 => EnhancementActivity) public activities;
-    mapping(address => uint256[]) public activitiesByOwner;
-    uint256 private _activityIdCounter;
+    mapping(uint256 => EnhancementInitiative) public initiatives;
+    mapping(address => uint256[]) public initiativesByFarmer;
+    uint256 private _initiativeIdCounter;
 
-    event ActivityCreated(
-        uint256 indexed activityId,
-        address indexed owner,
-        uint256 plantationId
+    event InitiativeRecorded(
+        uint256 indexed initiativeId,
+        address indexed farmer,
+        string fieldId,
+        string initiativeType
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function createActivity(
-        uint256 plantationId,
-        string memory activityType,
-        string memory speciesAdded
+    function recordInitiative(
+        string memory fieldId,
+        string memory initiativeType,
+        string memory implementation,
+        uint256 biodiversityScore,
+        string memory impact
     ) public returns (uint256) {
-        uint256 activityId = _activityIdCounter++;
-        activities[activityId] = EnhancementActivity({
-            activityId: activityId,
-            plantationId: plantationId,
-            activityType: activityType,
-            speciesAdded: speciesAdded,
+        uint256 initiativeId = _initiativeIdCounter++;
+        initiatives[initiativeId] = EnhancementInitiative({
+            initiativeId: initiativeId,
+            farmer: msg.sender,
+            fieldId: fieldId,
+            initiativeType: initiativeType,
+            implementation: implementation,
             implementationDate: block.timestamp,
-            implementer: msg.sender
+            biodiversityScore: biodiversityScore,
+            impact: impact
         });
 
-        activitiesByOwner[msg.sender].push(activityId);
-
-        emit ActivityCreated(activityId, msg.sender, plantationId);
-        return activityId;
+        initiativesByFarmer[msg.sender].push(initiativeId);
+        emit InitiativeRecorded(initiativeId, msg.sender, fieldId, initiativeType);
+        return initiativeId;
     }
 
-    function getActivity(uint256 activityId) public view returns (EnhancementActivity memory) {
-        return activities[activityId];
-    }
-
-    function getActivitiesByOwner(address owner) public view returns (uint256[] memory) {
-        return activitiesByOwner[owner];
+    function getInitiative(uint256 initiativeId) public view returns (EnhancementInitiative memory) {
+        return initiatives[initiativeId];
     }
 }
-
-
-

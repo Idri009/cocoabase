@@ -2,7 +2,7 @@
 
 > **Revolutionizing Agriculture Through Blockchain Technology**
 
-CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **250+ distinct onchain transaction types** through **303+ specialized smart contracts** that execute directly onchain without intermediaries.
+CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **250+ distinct onchain transaction types** through **333+ specialized smart contracts** that execute directly onchain without intermediaries.
 
 Every agricultural operation—from seed planting to harvest, certification issuance to financial transactions—is recorded as immutable, verifiable onchain state on a decentralized ledger, creating permanent audit trails that are cryptographically secured and trustless.
 
@@ -38,7 +38,7 @@ CocoaBase leverages blockchain technology to create an **immutable, transparent,
 
 CocoaBase is built with:
 
-- **Smart Contracts**: 303+ Solidity contracts covering every aspect of agricultural management
+- **Smart Contracts**: 333+ Solidity contracts covering every aspect of agricultural management
 - **Frontend**: Next.js 16 with React 19, TypeScript, and Tailwind CSS
 - **Wallet Integration**: Reown (WalletConnect) for seamless Web3 connectivity
 - **Blockchain**: Ethereum-compatible networks (Ethereum, Arbitrum, Sepolia testnet)
@@ -177,6 +177,16 @@ CocoaBase is built with:
 - `FarmCropCanopyManagement` - Manage crop canopy for optimal light penetration
 - `FarmPrecisionSeeding` - Precision seeding operations and seed placement tracking
 - `FarmCropThinningOptimization` - Optimize crop thinning operations for better yields
+- `FarmCropGerminationRateTracking` - Germination rate tracking and seed viability assessment
+- `FarmCropFloweringStageTracking` - Flowering stage tracking and bloom monitoring
+- `FarmCropFruitDevelopmentTracking` - Fruit development tracking and yield prediction
+- `FarmCropRipeningMonitoring` - Ripening process monitoring and harvest readiness
+- `FarmCropMaturityPrediction` - Crop maturity prediction using historical data
+- `FarmCropStressTolerance` - Crop stress tolerance monitoring and adaptation tracking
+- `FarmCropPollinationSuccessTracking` - Pollination success rates and fruit set tracking
+- `FarmHarvestTimingOptimization` - Harvest timing optimization based on multiple factors
+- `FarmPrecisionSeedingOperations` - Precision seeding operations and seed placement tracking
+- `FarmCropThinningOptimization` - Crop thinning optimization for better yields
 
 ### 🐄 **Livestock Management** (46 Features)
 
@@ -234,6 +244,11 @@ CocoaBase is built with:
 - `FarmLivestockHeatStress` - Track heat stress in livestock and mitigation measures
 - `FarmLivestockVaccinationSchedule` - Automated vaccination scheduling for livestock
 - `FarmLivestockBreedingProgram` - Manage breeding programs and genetic improvement
+- `FarmLivestockFeedConversionTracking` - Feed conversion ratio tracking for livestock efficiency
+- `FarmLivestockHeatStressMonitoring` - Heat stress monitoring and mitigation tracking
+- `FarmLivestockBreedingProgramManagement` - Breeding program management and genetic improvement tracking
+- `FarmLivestockVaccinationAutomation` - Automated vaccination scheduling for livestock
+- `FarmLivestockGrazingRotation` - Grazing rotation scheduling and pasture management
 
 ### 💧 **Water & Irrigation** (12 Features)
 
@@ -249,6 +264,10 @@ CocoaBase is built with:
 - `FarmWaterConservation` - Track water conservation efforts and efficiency
 - `FarmWaterFiltration` - Water filtration system tracking and efficiency monitoring
 - `FarmWaterSourceTracking` - Track water sources and usage patterns
+- `FarmWaterQualityMonitoring` - Continuous water quality monitoring and alerts
+- `FarmWaterUsageEfficiency` - Water usage efficiency metrics tracking
+- `FarmWaterFiltrationTracking` - Water filtration system tracking and efficiency monitoring
+- `FarmWaterSourceTracking` - Water sources and usage patterns tracking
 
 ### 🌦️ **Weather & Climate** (3 Features)
 
@@ -264,6 +283,7 @@ CocoaBase is built with:
 - `FarmEquipmentSharing` - Equipment sharing with deposits
 - `FarmEquipmentUsageTracking` - Equipment usage hours and efficiency tracking
 - `FarmEquipmentFuelTracking` - Track equipment fuel consumption and efficiency
+- `FarmEquipmentFuelTracking` - Equipment fuel consumption and efficiency tracking
 
 ### 👥 **Labor Management** (6 Features)
 
@@ -389,6 +409,12 @@ CocoaBase is built with:
 - `FarmEnergyAudit` - Energy audit tracking and efficiency recommendations
 - `FarmEnergyGenerationTracking` - Track energy generation from renewable sources
 - `FarmEnergyCostTracking` - Track energy costs and consumption patterns
+- `FarmRenewableEnergyCertification` - Renewable energy certification and validation
+- `FarmEnergyConsumptionTracking` - Energy consumption tracking and optimization system
+- `FarmEnergyStorageManagement` - Energy storage system management and capacity tracking
+- `FarmEnergyAuditTracking` - Energy audit tracking and efficiency recommendations
+- `FarmEnergyGenerationTracking` - Energy generation tracking from renewable sources
+- `FarmEnergyCostTracking` - Energy costs and consumption patterns tracking
 - `FarmRenewableEnergyCertification` - Renewable energy certification and validation
 - `FarmCarbonFootprintTracking` - Carbon footprint calculation and tracking
 - `FarmBiodiversityIndex` - Biodiversity index calculation and tracking

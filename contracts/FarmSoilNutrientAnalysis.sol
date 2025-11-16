@@ -5,64 +5,63 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmSoilNutrientAnalysis
- * @dev Onchain system for comprehensive soil nutrient analysis
+ * @dev Onchain comprehensive soil nutrient analysis
  */
 contract FarmSoilNutrientAnalysis is Ownable {
     struct NutrientAnalysis {
         uint256 analysisId;
-        uint256 fieldId;
+        address farmer;
+        string fieldId;
         uint256 nitrogen;
         uint256 phosphorus;
         uint256 potassium;
         uint256 calcium;
         uint256 magnesium;
         uint256 analysisDate;
-        address analyst;
+        string recommendations;
     }
 
-    mapping(uint256 => NutrientAnalysis) public nutrientAnalyses;
-    mapping(address => uint256[]) public analysesByAnalyst;
+    mapping(uint256 => NutrientAnalysis) public analyses;
+    mapping(address => uint256[]) public analysesByFarmer;
     uint256 private _analysisIdCounter;
 
-    event NutrientAnalysisRecorded(
+    event AnalysisRecorded(
         uint256 indexed analysisId,
-        address indexed analyst,
-        uint256 fieldId
+        address indexed farmer,
+        string fieldId
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordNutrientAnalysis(
-        uint256 fieldId,
+    function recordAnalysis(
+        string memory fieldId,
         uint256 nitrogen,
         uint256 phosphorus,
         uint256 potassium,
         uint256 calcium,
         uint256 magnesium,
-        uint256 analysisDate
+        string memory recommendations
     ) public returns (uint256) {
         uint256 analysisId = _analysisIdCounter++;
-        nutrientAnalyses[analysisId] = NutrientAnalysis({
+        analyses[analysisId] = NutrientAnalysis({
             analysisId: analysisId,
+            farmer: msg.sender,
             fieldId: fieldId,
             nitrogen: nitrogen,
             phosphorus: phosphorus,
             potassium: potassium,
             calcium: calcium,
             magnesium: magnesium,
-            analysisDate: analysisDate,
-            analyst: msg.sender
+            analysisDate: block.timestamp,
+            recommendations: recommendations
         });
 
-        analysesByAnalyst[msg.sender].push(analysisId);
-
-        emit NutrientAnalysisRecorded(analysisId, msg.sender, fieldId);
+        analysesByFarmer[msg.sender].push(analysisId);
+        emit AnalysisRecorded(analysisId, msg.sender, fieldId);
         return analysisId;
     }
 
     function getAnalysis(uint256 analysisId) public view returns (NutrientAnalysis memory) {
-        return nutrientAnalyses[analysisId];
+        return analyses[analysisId];
     }
 }
-
-

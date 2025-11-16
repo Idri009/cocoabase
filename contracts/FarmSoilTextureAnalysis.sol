@@ -5,62 +5,61 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmSoilTextureAnalysis
- * @dev Onchain system for analyzing soil texture composition
+ * @dev Onchain soil texture composition analysis
  */
 contract FarmSoilTextureAnalysis is Ownable {
     struct TextureAnalysis {
         uint256 analysisId;
-        uint256 fieldId;
+        address farmer;
+        string fieldId;
         uint256 sandPercentage;
         uint256 siltPercentage;
         uint256 clayPercentage;
         string textureClass;
         uint256 analysisDate;
-        address analyst;
+        string recommendations;
     }
 
-    mapping(uint256 => TextureAnalysis) public textureAnalyses;
-    mapping(address => uint256[]) public analysesByAnalyst;
+    mapping(uint256 => TextureAnalysis) public analyses;
+    mapping(address => uint256[]) public analysesByFarmer;
     uint256 private _analysisIdCounter;
 
-    event TextureAnalysisRecorded(
+    event AnalysisRecorded(
         uint256 indexed analysisId,
-        address indexed analyst,
+        address indexed farmer,
+        string fieldId,
         string textureClass
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordTextureAnalysis(
-        uint256 fieldId,
+    function recordAnalysis(
+        string memory fieldId,
         uint256 sandPercentage,
         uint256 siltPercentage,
         uint256 clayPercentage,
         string memory textureClass,
-        uint256 analysisDate
+        string memory recommendations
     ) public returns (uint256) {
-        require(sandPercentage + siltPercentage + clayPercentage == 100, "Percentages must sum to 100");
         uint256 analysisId = _analysisIdCounter++;
-        textureAnalyses[analysisId] = TextureAnalysis({
+        analyses[analysisId] = TextureAnalysis({
             analysisId: analysisId,
+            farmer: msg.sender,
             fieldId: fieldId,
             sandPercentage: sandPercentage,
             siltPercentage: siltPercentage,
             clayPercentage: clayPercentage,
             textureClass: textureClass,
-            analysisDate: analysisDate,
-            analyst: msg.sender
+            analysisDate: block.timestamp,
+            recommendations: recommendations
         });
 
-        analysesByAnalyst[msg.sender].push(analysisId);
-
-        emit TextureAnalysisRecorded(analysisId, msg.sender, textureClass);
+        analysesByFarmer[msg.sender].push(analysisId);
+        emit AnalysisRecorded(analysisId, msg.sender, fieldId, textureClass);
         return analysisId;
     }
 
     function getAnalysis(uint256 analysisId) public view returns (TextureAnalysis memory) {
-        return textureAnalyses[analysisId];
+        return analyses[analysisId];
     }
 }
-
-

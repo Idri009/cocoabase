@@ -5,70 +5,78 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropInsuranceClaims
- * @dev Automated insurance claim processing for crop losses and damages
+ * @dev Insurance claims processing system
  */
 contract FarmCropInsuranceClaims is Ownable {
-    struct InsuranceClaim {
+    struct Claim {
         uint256 claimId;
         address farmer;
         uint256 policyId;
-        string lossType;
-        uint256 lossAmount;
+        uint256 cropId;
         uint256 claimAmount;
-        uint256 submissionDate;
+        string reason;
         bool approved;
-        bool processed;
+        bool paid;
+        uint256 submissionDate;
     }
 
-    mapping(uint256 => InsuranceClaim) public claims;
+    mapping(uint256 => Claim) public claims;
     mapping(address => uint256[]) public claimsByFarmer;
+    mapping(uint256 => uint256[]) public claimsByPolicy;
+    mapping(address => bool) public isAdjuster;
     uint256 private _claimIdCounter;
 
-    event ClaimSubmitted(
-        uint256 indexed claimId,
-        address indexed farmer,
-        uint256 policyId
-    );
+    event ClaimSubmitted(uint256 indexed claimId, address indexed farmer, uint256 amount);
+    event ClaimApproved(uint256 indexed claimId, address indexed adjuster);
+    event ClaimPaid(uint256 indexed claimId, uint256 amount);
 
-    event ClaimApproved(
-        uint256 indexed claimId,
-        uint256 claimAmount
-    );
+    constructor() Ownable(msg.sender) {
+        isAdjuster[msg.sender] = true;
+    }
 
-    constructor() Ownable(msg.sender) {}
+    function addAdjuster(address adjuster) public onlyOwner {
+        isAdjuster[adjuster] = true;
+    }
 
     function submitClaim(
         uint256 policyId,
-        string memory lossType,
-        uint256 lossAmount,
-        uint256 claimAmount
+        uint256 cropId,
+        uint256 claimAmount,
+        string memory reason
     ) public returns (uint256) {
+        require(claimAmount > 0, "Invalid amount");
         uint256 claimId = _claimIdCounter++;
-        claims[claimId] = InsuranceClaim({
+        claims[claimId] = Claim({
             claimId: claimId,
             farmer: msg.sender,
             policyId: policyId,
-            lossType: lossType,
-            lossAmount: lossAmount,
+            cropId: cropId,
             claimAmount: claimAmount,
-            submissionDate: block.timestamp,
+            reason: reason,
             approved: false,
-            processed: false
+            paid: false,
+            submissionDate: block.timestamp
         });
-
         claimsByFarmer[msg.sender].push(claimId);
-        emit ClaimSubmitted(claimId, msg.sender, policyId);
+        claimsByPolicy[policyId].push(claimId);
+        emit ClaimSubmitted(claimId, msg.sender, claimAmount);
         return claimId;
     }
 
-    function approveClaim(uint256 claimId) public onlyOwner {
-        require(!claims[claimId].processed, "Claim already processed");
+    function approveClaim(uint256 claimId) public {
+        require(isAdjuster[msg.sender], "Not an adjuster");
+        require(!claims[claimId].approved, "Already approved");
         claims[claimId].approved = true;
-        claims[claimId].processed = true;
-        emit ClaimApproved(claimId, claims[claimId].claimAmount);
+        emit ClaimApproved(claimId, msg.sender);
     }
 
-    function getClaim(uint256 claimId) public view returns (InsuranceClaim memory) {
-        return claims[claimId];
+    function payClaim(uint256 claimId) public payable {
+        Claim storage claim = claims[claimId];
+        require(claim.approved, "Not approved");
+        require(!claim.paid, "Already paid");
+        require(msg.value >= claim.claimAmount, "Insufficient payment");
+        claim.paid = true;
+        payable(claim.farmer).transfer(claim.claimAmount);
+        emit ClaimPaid(claimId, claim.claimAmount);
     }
 }

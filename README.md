@@ -2,7 +2,7 @@
 
 > **Revolutionizing Agriculture Through Blockchain Technology**
 
-CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **250+ distinct onchain transaction types** through **333+ specialized smart contracts** that execute directly onchain without intermediaries.
+CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **280+ distinct onchain transaction types** through **363+ specialized smart contracts** that execute directly onchain without intermediaries.
 
 Every agricultural operation—from seed planting to harvest, certification issuance to financial transactions—is recorded as immutable, verifiable onchain state on a decentralized ledger, creating permanent audit trails that are cryptographically secured and trustless.
 
@@ -38,7 +38,7 @@ CocoaBase leverages blockchain technology to create an **immutable, transparent,
 
 CocoaBase is built with:
 
-- **Smart Contracts**: 333+ Solidity contracts covering every aspect of agricultural management
+- **Smart Contracts**: 363+ Solidity contracts covering every aspect of agricultural management
 - **Frontend**: Next.js 16 with React 19, TypeScript, and Tailwind CSS
 - **Wallet Integration**: Reown (WalletConnect) for seamless Web3 connectivity
 - **Blockchain**: Ethereum-compatible networks (Ethereum, Arbitrum, Sepolia testnet)
@@ -89,6 +89,7 @@ CocoaBase is built with:
 - `FarmSoilMoistureAlerts` - Soil moisture alert system for irrigation management
 - `FarmSoilNutrientAnalysis` - Comprehensive soil nutrient analysis
 - `FarmSoilTextureAnalysis` - Analyze soil texture composition
+- `FarmSoilOrganicMatterTracking` - Soil organic matter content tracking
 - `FarmSoilTextureMonitoring` - Monitor soil texture changes over time
 - `FarmSoilMicrobialActivity` - Track soil microbial activity and health indicators
 - `FarmSoilPhMonitoring` - Continuous soil pH monitoring and alerts
@@ -162,6 +163,11 @@ CocoaBase is built with:
 - `FarmCropQualityGrading` - Standardized quality grading system
 - `FarmCropTraceability` - Complete traceability from seed to consumer
 - `FarmCropOriginVerification` - Verify and certify crop geographic origin
+- `FarmCropHarvestLogistics` - Harvest logistics and transportation coordination
+- `FarmCropTraceabilitySystem` - Complete traceability system from seed to consumer
+- `FarmCropQualityGradingSystem` - Standardized quality grading system
+- `FarmCropYieldPrediction` - Crop yield prediction using historical data
+- `FarmCropPestManagement` - Pest management and control tracking
 
 #### Crop Development Tracking
 - `FarmCropGerminationTracking` - Track seed germination rates and success
@@ -187,6 +193,15 @@ CocoaBase is built with:
 - `FarmHarvestTimingOptimization` - Harvest timing optimization based on multiple factors
 - `FarmPrecisionSeedingOperations` - Precision seeding operations and seed placement tracking
 - `FarmCropThinningOptimization` - Crop thinning optimization for better yields
+- `FarmCropSeedQualityTracking` - Seed quality verification tracking
+- `FarmCropVarietyPerformance` - Crop variety performance tracking
+- `FarmCropBiodiversityEnhancementSystem` - Crop biodiversity enhancement system
+- `FarmCropClimateAdaptationSystem` - Climate adaptation strategies system
+- `FarmCropDroughtResistanceSystem` - Drought resistance tracking system
+- `FarmCropWaterEfficiencySystem` - Water usage optimization system
+- `FarmCropStressMonitoringAdvanced` - Advanced crop stress levels monitoring
+- `FarmPrecisionSeedingSystem` - Precision seeding operations system
+- `FarmCropThinningOptimizationAdvanced` - Advanced crop thinning optimization
 
 ### 🐄 **Livestock Management** (46 Features)
 
@@ -239,6 +254,14 @@ CocoaBase is built with:
 - `FarmLivestockEggProduction` - Track egg production and quality grading
 - `FarmLivestockWoolProduction` - Track wool production and fiber quality
 - `FarmLivestockMeatQuality` - Grade meat quality with certification
+- `FarmLivestockMilkQualityStandards` - Milk quality metrics and standards tracking
+- `FarmLivestockEggProductionTracking` - Egg production and quality grading tracking
+- `FarmLivestockWoolProductionTracking` - Wool production and fiber quality tracking
+- `FarmLivestockMeatQualityCertification` - Meat quality grading with certification
+- `FarmLivestockMilkQualitySystem` - Milk quality metrics and standards tracking system
+- `FarmLivestockEggProductionSystem` - Egg production and quality grading tracking system
+- `FarmLivestockWoolProductionSystem` - Wool production and fiber quality tracking system
+- `FarmLivestockMeatQualitySystem` - Meat quality grading with certification system
 - `FarmLivestockFeedConversion` - Track feed conversion ratios for livestock efficiency
 - `FarmLivestockGrazingRotation` - Grazing rotation scheduling and pasture management
 - `FarmLivestockHeatStress` - Track heat stress in livestock and mitigation measures
@@ -249,6 +272,16 @@ CocoaBase is built with:
 - `FarmLivestockBreedingProgramManagement` - Breeding program management and genetic improvement tracking
 - `FarmLivestockVaccinationAutomation` - Automated vaccination scheduling for livestock
 - `FarmLivestockGrazingRotation` - Grazing rotation scheduling and pasture management
+- `FarmLivestockFeedStorage` - Feed storage management and inventory tracking
+- `FarmLivestockPastureRotationSchedule` - Pasture rotation scheduling system
+- `FarmLivestockFeedConversionEfficiency` - Feed conversion ratios for efficiency tracking
+- `FarmLivestockHeatStressTracking` - Heat stress tracking and mitigation measures
+- `FarmLivestockVaccinationScheduleAutomated` - Automated vaccination scheduling system
+- `FarmLivestockBreedingProgramSystem` - Breeding programs and genetic improvement management
+- `FarmLivestockGrazingRotationSystem` - Grazing rotation scheduling system
+- `FarmLivestockPastureRotationSystem` - Pasture rotation scheduling system
+- `FarmLivestockHealthMonitoring` - Comprehensive livestock health monitoring
+- `FarmLivestockFeedQualityTracking` - Feed quality and nutrition tracking
 
 ### 💧 **Water & Irrigation** (12 Features)
 
@@ -268,6 +301,7 @@ CocoaBase is built with:
 - `FarmWaterUsageEfficiency` - Water usage efficiency metrics tracking
 - `FarmWaterFiltrationTracking` - Water filtration system tracking and efficiency monitoring
 - `FarmWaterSourceTracking` - Water sources and usage patterns tracking
+- `FarmWaterIrrigationEfficiency` - Irrigation efficiency tracking and optimization
 
 ### 🌦️ **Weather & Climate** (3 Features)
 

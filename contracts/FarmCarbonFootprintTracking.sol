@@ -5,64 +5,57 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCarbonFootprintTracking
- * @dev Onchain carbon footprint calculation and tracking
+ * @dev Carbon footprint calculation and tracking
  */
 contract FarmCarbonFootprintTracking is Ownable {
     struct CarbonFootprint {
         uint256 footprintId;
         address farmer;
-        string activityType;
-        uint256 emissions;
-        string unit;
+        uint256 farmId;
+        uint256 totalEmissions;
+        uint256 offsetAmount;
+        uint256 netEmissions;
         uint256 timestamp;
-        string offsetMethod;
     }
 
     mapping(uint256 => CarbonFootprint) public footprints;
     mapping(address => uint256[]) public footprintsByFarmer;
-    mapping(address => uint256) public totalEmissionsByFarmer;
+    mapping(uint256 => uint256) public totalEmissionsByFarm;
     uint256 private _footprintIdCounter;
 
-    event CarbonFootprintRecorded(
+    event FootprintCalculated(
         uint256 indexed footprintId,
         address indexed farmer,
-        string activityType,
-        uint256 emissions
+        uint256 netEmissions
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordFootprint(
-        string memory activityType,
-        uint256 emissions,
-        string memory unit,
-        string memory offsetMethod
+    function calculateFootprint(
+        uint256 farmId,
+        uint256 totalEmissions,
+        uint256 offsetAmount
     ) public returns (uint256) {
-        require(emissions > 0, "Emissions must be greater than 0");
-
+        uint256 netEmissions = totalEmissions > offsetAmount 
+            ? totalEmissions - offsetAmount 
+            : 0;
         uint256 footprintId = _footprintIdCounter++;
         footprints[footprintId] = CarbonFootprint({
             footprintId: footprintId,
             farmer: msg.sender,
-            activityType: activityType,
-            emissions: emissions,
-            unit: unit,
-            timestamp: block.timestamp,
-            offsetMethod: offsetMethod
+            farmId: farmId,
+            totalEmissions: totalEmissions,
+            offsetAmount: offsetAmount,
+            netEmissions: netEmissions,
+            timestamp: block.timestamp
         });
-
         footprintsByFarmer[msg.sender].push(footprintId);
-        totalEmissionsByFarmer[msg.sender] += emissions;
-
-        emit CarbonFootprintRecorded(footprintId, msg.sender, activityType, emissions);
+        totalEmissionsByFarm[farmId] += totalEmissions;
+        emit FootprintCalculated(footprintId, msg.sender, netEmissions);
         return footprintId;
     }
 
-    function getFootprint(uint256 footprintId) public view returns (CarbonFootprint memory) {
-        return footprints[footprintId];
-    }
-
-    function getTotalEmissions(address farmer) public view returns (uint256) {
-        return totalEmissionsByFarmer[farmer];
+    function getTotalEmissions(uint256 farmId) public view returns (uint256) {
+        return totalEmissionsByFarm[farmId];
     }
 }

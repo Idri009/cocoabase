@@ -5,67 +5,58 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropThinningOptimization
- * @dev Optimize crop thinning operations for better yields
+ * @dev Onchain crop thinning optimization for better yields
  */
 contract FarmCropThinningOptimization is Ownable {
-    struct ThinningPlan {
-        uint256 planId;
+    struct ThinningOptimization {
+        uint256 optimizationId;
         address farmer;
         string fieldId;
         uint256 plantsBefore;
         uint256 plantsAfter;
+        uint256 optimalSpacing;
         uint256 expectedYieldIncrease;
-        uint256 executionDate;
+        uint256 optimizationDate;
     }
 
-    mapping(uint256 => ThinningPlan) public plans;
-    mapping(address => uint256[]) public plansByFarmer;
-    uint256 private _planIdCounter;
+    mapping(uint256 => ThinningOptimization) public optimizations;
+    mapping(address => uint256[]) public optimizationsByFarmer;
+    uint256 private _optimizationIdCounter;
 
-    event PlanCreated(
-        uint256 indexed planId,
+    event OptimizationRecorded(
+        uint256 indexed optimizationId,
         address indexed farmer,
-        string fieldId
-    );
-
-    event PlanExecuted(
-        uint256 indexed planId,
-        uint256 plantsRemoved
+        string fieldId,
+        uint256 expectedYieldIncrease
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function createPlan(
+    function recordOptimization(
         string memory fieldId,
         uint256 plantsBefore,
         uint256 plantsAfter,
+        uint256 optimalSpacing,
         uint256 expectedYieldIncrease
     ) public returns (uint256) {
-        require(plantsAfter < plantsBefore, "Invalid thinning");
-        uint256 planId = _planIdCounter++;
-        plans[planId] = ThinningPlan({
-            planId: planId,
+        uint256 optimizationId = _optimizationIdCounter++;
+        optimizations[optimizationId] = ThinningOptimization({
+            optimizationId: optimizationId,
             farmer: msg.sender,
             fieldId: fieldId,
             plantsBefore: plantsBefore,
             plantsAfter: plantsAfter,
+            optimalSpacing: optimalSpacing,
             expectedYieldIncrease: expectedYieldIncrease,
-            executionDate: 0
+            optimizationDate: block.timestamp
         });
 
-        plansByFarmer[msg.sender].push(planId);
-        emit PlanCreated(planId, msg.sender, fieldId);
-        return planId;
+        optimizationsByFarmer[msg.sender].push(optimizationId);
+        emit OptimizationRecorded(optimizationId, msg.sender, fieldId, expectedYieldIncrease);
+        return optimizationId;
     }
 
-    function executePlan(uint256 planId) public {
-        require(plans[planId].farmer == msg.sender, "Not authorized");
-        require(plans[planId].executionDate == 0, "Already executed");
-        plans[planId].executionDate = block.timestamp;
-        emit PlanExecuted(planId, plans[planId].plantsBefore - plans[planId].plantsAfter);
-    }
-
-    function getPlan(uint256 planId) public view returns (ThinningPlan memory) {
-        return plans[planId];
+    function getOptimization(uint256 optimizationId) public view returns (ThinningOptimization memory) {
+        return optimizations[optimizationId];
     }
 }

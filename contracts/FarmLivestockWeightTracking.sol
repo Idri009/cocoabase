@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockWeightTracking
- * @dev Onchain weight tracking and growth monitoring for livestock
+ * @dev Weight tracking and growth monitoring for livestock
  */
 contract FarmLivestockWeightTracking is Ownable {
     struct WeightRecord {
@@ -14,19 +14,15 @@ contract FarmLivestockWeightTracking is Ownable {
         string livestockId;
         uint256 weight;
         uint256 measurementDate;
-        uint256 age;
-        string notes;
     }
 
     mapping(uint256 => WeightRecord) public records;
     mapping(address => uint256[]) public recordsByFarmer;
-    mapping(string => uint256[]) public recordsByLivestock;
     uint256 private _recordIdCounter;
 
     event WeightRecorded(
         uint256 indexed recordId,
         address indexed farmer,
-        string livestockId,
         uint256 weight
     );
 
@@ -34,9 +30,7 @@ contract FarmLivestockWeightTracking is Ownable {
 
     function recordWeight(
         string memory livestockId,
-        uint256 weight,
-        uint256 age,
-        string memory notes
+        uint256 weight
     ) public returns (uint256) {
         uint256 recordId = _recordIdCounter++;
         records[recordId] = WeightRecord({
@@ -44,15 +38,11 @@ contract FarmLivestockWeightTracking is Ownable {
             farmer: msg.sender,
             livestockId: livestockId,
             weight: weight,
-            measurementDate: block.timestamp,
-            age: age,
-            notes: notes
+            measurementDate: block.timestamp
         });
 
         recordsByFarmer[msg.sender].push(recordId);
-        recordsByLivestock[livestockId].push(recordId);
-
-        emit WeightRecorded(recordId, msg.sender, livestockId, weight);
+        emit WeightRecorded(recordId, msg.sender, weight);
         return recordId;
     }
 
@@ -60,4 +50,3 @@ contract FarmLivestockWeightTracking is Ownable {
         return records[recordId];
     }
 }
-

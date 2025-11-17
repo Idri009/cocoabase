@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropYieldAnalysis
- * @dev Yield analysis and comparative reporting
+ * @dev Onchain yield analysis and comparative reporting
  */
 contract FarmCropYieldAnalysis is Ownable {
     struct YieldAnalysis {
@@ -14,42 +14,48 @@ contract FarmCropYieldAnalysis is Ownable {
         string fieldId;
         uint256 actualYield;
         uint256 expectedYield;
-        uint256 yieldEfficiency;
+        uint256 yieldDifference;
         uint256 analysisDate;
+        string factors;
     }
 
     mapping(uint256 => YieldAnalysis) public analyses;
     mapping(address => uint256[]) public analysesByFarmer;
     uint256 private _analysisIdCounter;
 
-    event AnalysisCreated(
+    event AnalysisRecorded(
         uint256 indexed analysisId,
         address indexed farmer,
-        uint256 yieldEfficiency
+        string fieldId,
+        uint256 actualYield
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function createAnalysis(
+    function recordAnalysis(
         string memory fieldId,
         uint256 actualYield,
-        uint256 expectedYield
+        uint256 expectedYield,
+        string memory factors
     ) public returns (uint256) {
-        require(expectedYield > 0, "Invalid expected yield");
-        uint256 yieldEfficiency = (actualYield * 10000) / expectedYield;
         uint256 analysisId = _analysisIdCounter++;
+        uint256 yieldDifference = actualYield > expectedYield 
+            ? actualYield - expectedYield 
+            : expectedYield - actualYield;
+
         analyses[analysisId] = YieldAnalysis({
             analysisId: analysisId,
             farmer: msg.sender,
             fieldId: fieldId,
             actualYield: actualYield,
             expectedYield: expectedYield,
-            yieldEfficiency: yieldEfficiency,
-            analysisDate: block.timestamp
+            yieldDifference: yieldDifference,
+            analysisDate: block.timestamp,
+            factors: factors
         });
 
         analysesByFarmer[msg.sender].push(analysisId);
-        emit AnalysisCreated(analysisId, msg.sender, yieldEfficiency);
+        emit AnalysisRecorded(analysisId, msg.sender, fieldId, actualYield);
         return analysisId;
     }
 

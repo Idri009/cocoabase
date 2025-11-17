@@ -8,60 +8,57 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @dev Onchain pruning schedule and maintenance tracking
  */
 contract FarmCropPruningSchedule is Ownable {
-    struct PruningSchedule {
-        uint256 scheduleId;
+    struct PruningRecord {
+        uint256 recordId;
         address farmer;
         string fieldId;
-        string cropType;
         uint256 scheduledDate;
-        uint256 completedDate;
+        uint256 actualDate;
         string pruningType;
         bool isCompleted;
     }
 
-    mapping(uint256 => PruningSchedule) public schedules;
-    mapping(address => uint256[]) public schedulesByFarmer;
-    uint256 private _scheduleIdCounter;
+    mapping(uint256 => PruningRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
+    uint256 private _recordIdCounter;
 
-    event ScheduleCreated(
-        uint256 indexed scheduleId,
+    event PruningScheduled(
+        uint256 indexed recordId,
         address indexed farmer,
-        string fieldId
+        string fieldId,
+        uint256 scheduledDate
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function createSchedule(
+    function schedulePruning(
         string memory fieldId,
-        string memory cropType,
         uint256 scheduledDate,
         string memory pruningType
     ) public returns (uint256) {
-        uint256 scheduleId = _scheduleIdCounter++;
-        schedules[scheduleId] = PruningSchedule({
-            scheduleId: scheduleId,
+        uint256 recordId = _recordIdCounter++;
+        records[recordId] = PruningRecord({
+            recordId: recordId,
             farmer: msg.sender,
             fieldId: fieldId,
-            cropType: cropType,
             scheduledDate: scheduledDate,
-            completedDate: 0,
+            actualDate: 0,
             pruningType: pruningType,
             isCompleted: false
         });
 
-        schedulesByFarmer[msg.sender].push(scheduleId);
-        emit ScheduleCreated(scheduleId, msg.sender, fieldId);
-        return scheduleId;
+        recordsByFarmer[msg.sender].push(recordId);
+        emit PruningScheduled(recordId, msg.sender, fieldId, scheduledDate);
+        return recordId;
     }
 
-    function completePruning(uint256 scheduleId) public {
-        require(schedules[scheduleId].farmer == msg.sender, "Not schedule owner");
-        schedules[scheduleId].completedDate = block.timestamp;
-        schedules[scheduleId].isCompleted = true;
+    function completePruning(uint256 recordId) public {
+        require(records[recordId].farmer == msg.sender, "Not record owner");
+        records[recordId].actualDate = block.timestamp;
+        records[recordId].isCompleted = true;
     }
 
-    function getSchedule(uint256 scheduleId) public view returns (PruningSchedule memory) {
-        return schedules[scheduleId];
+    function getRecord(uint256 recordId) public view returns (PruningRecord memory) {
+        return records[recordId];
     }
 }
-

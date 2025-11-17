@@ -13,9 +13,8 @@ contract FarmLivestockSlaughterRecords is Ownable {
         address farmer;
         string livestockId;
         uint256 slaughterDate;
-        string processingFacility;
+        string processingMethod;
         string certification;
-        uint256 weight;
         bool isCertified;
     }
 
@@ -27,7 +26,7 @@ contract FarmLivestockSlaughterRecords is Ownable {
         uint256 indexed recordId,
         address indexed farmer,
         string livestockId,
-        string processingFacility
+        uint256 slaughterDate
     );
 
     constructor() Ownable(msg.sender) {}
@@ -35,9 +34,8 @@ contract FarmLivestockSlaughterRecords is Ownable {
     function recordSlaughter(
         string memory livestockId,
         uint256 slaughterDate,
-        string memory processingFacility,
-        string memory certification,
-        uint256 weight
+        string memory processingMethod,
+        string memory certification
     ) public returns (uint256) {
         uint256 recordId = _recordIdCounter++;
         records[recordId] = SlaughterRecord({
@@ -45,14 +43,13 @@ contract FarmLivestockSlaughterRecords is Ownable {
             farmer: msg.sender,
             livestockId: livestockId,
             slaughterDate: slaughterDate,
-            processingFacility: processingFacility,
+            processingMethod: processingMethod,
             certification: certification,
-            weight: weight,
             isCertified: bytes(certification).length > 0
         });
 
         recordsByFarmer[msg.sender].push(recordId);
-        emit SlaughterRecorded(recordId, msg.sender, livestockId, processingFacility);
+        emit SlaughterRecorded(recordId, msg.sender, livestockId, slaughterDate);
         return recordId;
     }
 
@@ -60,4 +57,3 @@ contract FarmLivestockSlaughterRecords is Ownable {
         return records[recordId];
     }
 }
-

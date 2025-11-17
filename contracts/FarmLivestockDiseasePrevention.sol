@@ -5,62 +5,59 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockDiseasePrevention
- * @dev Track disease prevention measures for livestock
+ * @dev Onchain disease prevention protocols for livestock
  */
 contract FarmLivestockDiseasePrevention is Ownable {
-    struct PreventionMeasure {
-        uint256 measureId;
-        uint256 livestockId;
-        string diseaseType;
+    struct PreventionRecord {
+        uint256 recordId;
+        address farmer;
+        string livestockId;
         string preventionMethod;
         uint256 applicationDate;
-        uint256 nextDueDate;
-        address applicator;
+        string diseaseTarget;
+        bool isEffective;
     }
 
-    mapping(uint256 => PreventionMeasure) public measures;
-    mapping(address => uint256[]) public measuresByOwner;
-    uint256 private _measureIdCounter;
+    mapping(uint256 => PreventionRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
+    uint256 private _recordIdCounter;
 
-    event MeasureApplied(
-        uint256 indexed measureId,
-        address indexed owner,
-        uint256 livestockId
+    event PreventionRecorded(
+        uint256 indexed recordId,
+        address indexed farmer,
+        string livestockId,
+        string preventionMethod
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function applyPrevention(
-        uint256 livestockId,
-        string memory diseaseType,
+    function recordPrevention(
+        string memory livestockId,
         string memory preventionMethod,
-        uint256 nextDueDate
+        string memory diseaseTarget
     ) public returns (uint256) {
-        uint256 measureId = _measureIdCounter++;
-        measures[measureId] = PreventionMeasure({
-            measureId: measureId,
+        uint256 recordId = _recordIdCounter++;
+        records[recordId] = PreventionRecord({
+            recordId: recordId,
+            farmer: msg.sender,
             livestockId: livestockId,
-            diseaseType: diseaseType,
             preventionMethod: preventionMethod,
             applicationDate: block.timestamp,
-            nextDueDate: nextDueDate,
-            applicator: msg.sender
+            diseaseTarget: diseaseTarget,
+            isEffective: false
         });
 
-        measuresByOwner[msg.sender].push(measureId);
-
-        emit MeasureApplied(measureId, msg.sender, livestockId);
-        return measureId;
+        recordsByFarmer[msg.sender].push(recordId);
+        emit PreventionRecorded(recordId, msg.sender, livestockId, preventionMethod);
+        return recordId;
     }
 
-    function getMeasure(uint256 measureId) public view returns (PreventionMeasure memory) {
-        return measures[measureId];
+    function markEffective(uint256 recordId) public {
+        require(records[recordId].farmer == msg.sender, "Not record owner");
+        records[recordId].isEffective = true;
     }
 
-    function getMeasuresByOwner(address owner) public view returns (uint256[] memory) {
-        return measuresByOwner[owner];
+    function getRecord(uint256 recordId) public view returns (PreventionRecord memory) {
+        return records[recordId];
     }
 }
-
-
-

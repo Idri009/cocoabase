@@ -8,55 +8,56 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @dev Onchain disease prevention protocols and compliance tracking
  */
 contract FarmCropDiseasePrevention is Ownable {
-    struct PreventionProtocol {
-        uint256 protocolId;
+    struct PreventionRecord {
+        uint256 recordId;
         address farmer;
-        string cropType;
-        string protocolType;
-        uint256 implementationDate;
-        string description;
-        bool isCompliant;
+        string fieldId;
+        string preventionMethod;
+        uint256 applicationDate;
+        string diseaseTarget;
+        bool isEffective;
     }
 
-    mapping(uint256 => PreventionProtocol) public protocols;
-    mapping(address => uint256[]) public protocolsByFarmer;
-    uint256 private _protocolIdCounter;
+    mapping(uint256 => PreventionRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
+    uint256 private _recordIdCounter;
 
-    event ProtocolRecorded(
-        uint256 indexed protocolId,
+    event PreventionRecorded(
+        uint256 indexed recordId,
         address indexed farmer,
-        string protocolType
+        string fieldId,
+        string preventionMethod
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordProtocol(
-        string memory cropType,
-        string memory protocolType,
-        string memory description
+    function recordPrevention(
+        string memory fieldId,
+        string memory preventionMethod,
+        string memory diseaseTarget
     ) public returns (uint256) {
-        uint256 protocolId = _protocolIdCounter++;
-        protocols[protocolId] = PreventionProtocol({
-            protocolId: protocolId,
+        uint256 recordId = _recordIdCounter++;
+        records[recordId] = PreventionRecord({
+            recordId: recordId,
             farmer: msg.sender,
-            cropType: cropType,
-            protocolType: protocolType,
-            implementationDate: block.timestamp,
-            description: description,
-            isCompliant: true
+            fieldId: fieldId,
+            preventionMethod: preventionMethod,
+            applicationDate: block.timestamp,
+            diseaseTarget: diseaseTarget,
+            isEffective: false
         });
 
-        protocolsByFarmer[msg.sender].push(protocolId);
-        emit ProtocolRecorded(protocolId, msg.sender, protocolType);
-        return protocolId;
+        recordsByFarmer[msg.sender].push(recordId);
+        emit PreventionRecorded(recordId, msg.sender, fieldId, preventionMethod);
+        return recordId;
     }
 
-    function verifyCompliance(uint256 protocolId, bool compliant) public onlyOwner {
-        protocols[protocolId].isCompliant = compliant;
+    function markEffective(uint256 recordId) public {
+        require(records[recordId].farmer == msg.sender, "Not record owner");
+        records[recordId].isEffective = true;
     }
 
-    function getProtocol(uint256 protocolId) public view returns (PreventionProtocol memory) {
-        return protocols[protocolId];
+    function getRecord(uint256 recordId) public view returns (PreventionRecord memory) {
+        return records[recordId];
     }
 }
-

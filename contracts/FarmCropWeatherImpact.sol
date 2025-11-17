@@ -5,60 +5,54 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropWeatherImpact
- * @dev Onchain weather impact assessment on crops
+ * @dev Weather impact assessment on crops
  */
 contract FarmCropWeatherImpact is Ownable {
-    struct WeatherImpact {
-        uint256 impactId;
+    struct ImpactAssessment {
+        uint256 assessmentId;
         address farmer;
         string fieldId;
         string weatherEvent;
-        uint256 impactDate;
-        uint256 severity;
-        string cropDamage;
-        uint256 estimatedLoss;
+        uint256 impactSeverity;
+        uint256 cropDamage;
+        uint256 assessmentDate;
     }
 
-    mapping(uint256 => WeatherImpact) public impacts;
-    mapping(address => uint256[]) public impactsByFarmer;
-    uint256 private _impactIdCounter;
+    mapping(uint256 => ImpactAssessment) public assessments;
+    mapping(address => uint256[]) public assessmentsByFarmer;
+    uint256 private _assessmentIdCounter;
 
-    event ImpactRecorded(
-        uint256 indexed impactId,
+    event AssessmentCreated(
+        uint256 indexed assessmentId,
         address indexed farmer,
-        string weatherEvent,
-        uint256 severity
+        string weatherEvent
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordImpact(
+    function createAssessment(
         string memory fieldId,
         string memory weatherEvent,
-        uint256 impactDate,
-        uint256 severity,
-        string memory cropDamage,
-        uint256 estimatedLoss
+        uint256 impactSeverity,
+        uint256 cropDamage
     ) public returns (uint256) {
-        uint256 impactId = _impactIdCounter++;
-        impacts[impactId] = WeatherImpact({
-            impactId: impactId,
+        uint256 assessmentId = _assessmentIdCounter++;
+        assessments[assessmentId] = ImpactAssessment({
+            assessmentId: assessmentId,
             farmer: msg.sender,
             fieldId: fieldId,
             weatherEvent: weatherEvent,
-            impactDate: impactDate,
-            severity: severity,
+            impactSeverity: impactSeverity,
             cropDamage: cropDamage,
-            estimatedLoss: estimatedLoss
+            assessmentDate: block.timestamp
         });
 
-        impactsByFarmer[msg.sender].push(impactId);
-        emit ImpactRecorded(impactId, msg.sender, weatherEvent, severity);
-        return impactId;
+        assessmentsByFarmer[msg.sender].push(assessmentId);
+        emit AssessmentCreated(assessmentId, msg.sender, weatherEvent);
+        return assessmentId;
     }
 
-    function getImpact(uint256 impactId) public view returns (WeatherImpact memory) {
-        return impacts[impactId];
+    function getAssessment(uint256 assessmentId) public view returns (ImpactAssessment memory) {
+        return assessments[assessmentId];
     }
 }
-

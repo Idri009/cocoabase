@@ -28,3 +28,29 @@ contract FarmLivestockFeedQualityTesting is Ownable {
     );
 
     constructor() Ownable(msg.sender) {}
+
+    function recordTest(
+        string memory feedBatch,
+        uint256 proteinContent,
+        uint256 moistureContent
+    ) public returns (uint256) {
+        bool passed = proteinContent >= 15 && moistureContent <= 14;
+        uint256 testId = _testIdCounter++;
+        tests[testId] = QualityTest({
+            testId: testId,
+            farmer: msg.sender,
+            feedBatch: feedBatch,
+            proteinContent: proteinContent,
+            moistureContent: moistureContent,
+            testDate: block.timestamp,
+            passed: passed
+        });
+
+        emit TestRecorded(testId, msg.sender, passed);
+        return testId;
+    }
+
+    function getTest(uint256 testId) public view returns (QualityTest memory) {
+        return tests[testId];
+    }
+}

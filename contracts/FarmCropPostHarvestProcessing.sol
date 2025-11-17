@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropPostHarvestProcessing
- * @dev Onchain post-harvest processing and quality preservation tracking
+ * @dev Onchain post-harvest processing and treatment tracking
  */
 contract FarmCropPostHarvestProcessing is Ownable {
     struct ProcessingRecord {
@@ -14,9 +14,9 @@ contract FarmCropPostHarvestProcessing is Ownable {
         string harvestBatchId;
         string processingType;
         uint256 processingDate;
-        string processingMethod;
-        uint256 qualityScore;
-        string storageConditions;
+        string treatmentMethod;
+        uint256 quantity;
+        string quality;
     }
 
     mapping(uint256 => ProcessingRecord) public records;
@@ -35,9 +35,9 @@ contract FarmCropPostHarvestProcessing is Ownable {
     function recordProcessing(
         string memory harvestBatchId,
         string memory processingType,
-        string memory processingMethod,
-        uint256 qualityScore,
-        string memory storageConditions
+        string memory treatmentMethod,
+        uint256 quantity,
+        string memory quality
     ) public returns (uint256) {
         uint256 recordId = _recordIdCounter++;
         records[recordId] = ProcessingRecord({
@@ -46,9 +46,9 @@ contract FarmCropPostHarvestProcessing is Ownable {
             harvestBatchId: harvestBatchId,
             processingType: processingType,
             processingDate: block.timestamp,
-            processingMethod: processingMethod,
-            qualityScore: qualityScore,
-            storageConditions: storageConditions
+            treatmentMethod: treatmentMethod,
+            quantity: quantity,
+            quality: quality
         });
 
         recordsByFarmer[msg.sender].push(recordId);
@@ -60,4 +60,3 @@ contract FarmCropPostHarvestProcessing is Ownable {
         return records[recordId];
     }
 }
-

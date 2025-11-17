@@ -5,58 +5,48 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmSoilNutrientBalance
- * @dev Onchain soil nutrient balance tracking and recommendations
+ * @dev Soil nutrient balance tracking and optimization
  */
 contract FarmSoilNutrientBalance is Ownable {
     struct NutrientBalance {
         uint256 balanceId;
-        address farmer;
-        string fieldId;
+        uint256 fieldId;
         uint256 nitrogen;
         uint256 phosphorus;
         uint256 potassium;
         uint256 timestamp;
-        string recommendation;
+        bool optimal;
     }
 
     mapping(uint256 => NutrientBalance) public balances;
-    mapping(address => uint256[]) public balancesByFarmer;
+    mapping(uint256 => uint256[]) public balancesByField;
     uint256 private _balanceIdCounter;
 
-    event BalanceRecorded(
-        uint256 indexed balanceId,
-        address indexed farmer,
-        string fieldId
-    );
+    event BalanceRecorded(uint256 indexed balanceId, uint256 fieldId, bool optimal);
 
     constructor() Ownable(msg.sender) {}
 
     function recordBalance(
-        string memory fieldId,
+        uint256 fieldId,
         uint256 nitrogen,
         uint256 phosphorus,
-        uint256 potassium,
-        string memory recommendation
+        uint256 potassium
     ) public returns (uint256) {
+        bool optimal = nitrogen >= 20 && nitrogen <= 40 &&
+                      phosphorus >= 10 && phosphorus <= 30 &&
+                      potassium >= 15 && potassium <= 35;
         uint256 balanceId = _balanceIdCounter++;
         balances[balanceId] = NutrientBalance({
             balanceId: balanceId,
-            farmer: msg.sender,
             fieldId: fieldId,
             nitrogen: nitrogen,
             phosphorus: phosphorus,
             potassium: potassium,
             timestamp: block.timestamp,
-            recommendation: recommendation
+            optimal: optimal
         });
-
-        balancesByFarmer[msg.sender].push(balanceId);
-        emit BalanceRecorded(balanceId, msg.sender, fieldId);
+        balancesByField[fieldId].push(balanceId);
+        emit BalanceRecorded(balanceId, fieldId, optimal);
         return balanceId;
     }
-
-    function getBalance(uint256 balanceId) public view returns (NutrientBalance memory) {
-        return balances[balanceId];
-    }
 }
-

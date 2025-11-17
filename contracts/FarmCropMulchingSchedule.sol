@@ -8,60 +8,52 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @dev Onchain mulching schedule and material tracking
  */
 contract FarmCropMulchingSchedule is Ownable {
-    struct MulchingSchedule {
-        uint256 scheduleId;
+    struct MulchingRecord {
+        uint256 recordId;
         address farmer;
         string fieldId;
-        string mulchType;
+        string materialType;
         uint256 quantity;
-        uint256 scheduledDate;
-        uint256 appliedDate;
-        bool isApplied;
+        uint256 applicationDate;
+        string benefits;
     }
 
-    mapping(uint256 => MulchingSchedule) public schedules;
-    mapping(address => uint256[]) public schedulesByFarmer;
-    uint256 private _scheduleIdCounter;
+    mapping(uint256 => MulchingRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
+    uint256 private _recordIdCounter;
 
-    event ScheduleCreated(
-        uint256 indexed scheduleId,
+    event MulchingRecorded(
+        uint256 indexed recordId,
         address indexed farmer,
-        string fieldId
+        string fieldId,
+        string materialType
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function createSchedule(
+    function recordMulching(
         string memory fieldId,
-        string memory mulchType,
+        string memory materialType,
         uint256 quantity,
-        uint256 scheduledDate
+        string memory benefits
     ) public returns (uint256) {
-        uint256 scheduleId = _scheduleIdCounter++;
-        schedules[scheduleId] = MulchingSchedule({
-            scheduleId: scheduleId,
+        uint256 recordId = _recordIdCounter++;
+        records[recordId] = MulchingRecord({
+            recordId: recordId,
             farmer: msg.sender,
             fieldId: fieldId,
-            mulchType: mulchType,
+            materialType: materialType,
             quantity: quantity,
-            scheduledDate: scheduledDate,
-            appliedDate: 0,
-            isApplied: false
+            applicationDate: block.timestamp,
+            benefits: benefits
         });
 
-        schedulesByFarmer[msg.sender].push(scheduleId);
-        emit ScheduleCreated(scheduleId, msg.sender, fieldId);
-        return scheduleId;
+        recordsByFarmer[msg.sender].push(recordId);
+        emit MulchingRecorded(recordId, msg.sender, fieldId, materialType);
+        return recordId;
     }
 
-    function recordApplication(uint256 scheduleId) public {
-        require(schedules[scheduleId].farmer == msg.sender, "Not schedule owner");
-        schedules[scheduleId].appliedDate = block.timestamp;
-        schedules[scheduleId].isApplied = true;
-    }
-
-    function getSchedule(uint256 scheduleId) public view returns (MulchingSchedule memory) {
-        return schedules[scheduleId];
+    function getRecord(uint256 recordId) public view returns (MulchingRecord memory) {
+        return records[recordId];
     }
 }
-

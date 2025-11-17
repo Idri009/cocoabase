@@ -5,60 +5,48 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropTraceabilitySystem
- * @dev Onchain complete traceability from seed to consumer
+ * @dev Enhanced traceability system
  */
 contract FarmCropTraceabilitySystem is Ownable {
-    struct TraceabilityRecord {
-        uint256 recordId;
+    struct Trace {
+        uint256 traceId;
         address farmer;
-        string productId;
-        string stage;
-        string location;
+        uint256 productId;
+        bytes32 originHash;
+        bytes32[] chainHashes;
         uint256 timestamp;
-        string data;
-        address handler;
     }
 
-    mapping(uint256 => TraceabilityRecord) public records;
-    mapping(string => uint256[]) public recordsByProductId;
-    mapping(address => uint256[]) public recordsByFarmer;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => Trace) public traces;
+    mapping(uint256 => uint256) public tracesByProduct;
+    uint256 private _traceIdCounter;
 
-    event TraceabilityRecorded(
-        uint256 indexed recordId,
-        string indexed productId,
-        string stage,
-        address indexed handler
-    );
+    event TraceCreated(uint256 indexed traceId, uint256 productId);
+    event ChainLinkAdded(uint256 indexed traceId, bytes32 chainHash);
 
     constructor() Ownable(msg.sender) {}
 
-    function recordTraceability(
-        string memory productId,
-        string memory stage,
-        string memory location,
-        string memory data
+    function createTrace(
+        uint256 productId,
+        bytes32 originHash
     ) public returns (uint256) {
-        uint256 recordId = _recordIdCounter++;
-        records[recordId] = TraceabilityRecord({
-            recordId: recordId,
+        uint256 traceId = _traceIdCounter++;
+        traces[traceId] = Trace({
+            traceId: traceId,
             farmer: msg.sender,
             productId: productId,
-            stage: stage,
-            location: location,
-            timestamp: block.timestamp,
-            data: data,
-            handler: msg.sender
+            originHash: originHash,
+            chainHashes: new bytes32[](0),
+            timestamp: block.timestamp
         });
-
-        recordsByProductId[productId].push(recordId);
-        recordsByFarmer[msg.sender].push(recordId);
-        emit TraceabilityRecorded(recordId, productId, stage, msg.sender);
-        return recordId;
+        tracesByProduct[productId] = traceId;
+        emit TraceCreated(traceId, productId);
+        return traceId;
     }
 
-    function getRecord(uint256 recordId) public view returns (TraceabilityRecord memory) {
-        return records[recordId];
+    function addChainLink(uint256 traceId, bytes32 chainHash) public {
+        require(traces[traceId].farmer == msg.sender, "Not the owner");
+        traces[traceId].chainHashes.push(chainHash);
+        emit ChainLinkAdded(traceId, chainHash);
     }
 }
-

@@ -5,49 +5,53 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropSeedViability
- * @dev Seed viability testing and tracking
+ * @dev Seed viability testing system
  */
 contract FarmCropSeedViability is Ownable {
     struct ViabilityTest {
         uint256 testId;
-        address farmer;
-        string seedBatch;
-        uint256 germinationRate;
-        uint256 testDate;
+        address tester;
+        string seedVariety;
+        uint256 viabilityRate;
         bool viable;
+        uint256 timestamp;
     }
 
     mapping(uint256 => ViabilityTest) public tests;
+    mapping(address => uint256[]) public testsByTester;
+    mapping(address => bool) public isTester;
     uint256 private _testIdCounter;
 
-    event TestRecorded(
-        uint256 indexed testId,
-        address indexed farmer,
-        uint256 germinationRate
-    );
+    event TestPerformed(uint256 indexed testId, bool viable);
+    event TesterAdded(address indexed tester);
 
-    constructor() Ownable(msg.sender) {}
+    constructor() Ownable(msg.sender) {
+        isTester[msg.sender] = true;
+    }
 
-    function recordTest(
-        string memory seedBatch,
-        uint256 germinationRate
+    function addTester(address tester) public onlyOwner {
+        isTester[tester] = true;
+        emit TesterAdded(tester);
+    }
+
+    function performTest(
+        string memory seedVariety,
+        uint256 viabilityRate
     ) public returns (uint256) {
-        bool viable = germinationRate >= 80;
+        require(isTester[msg.sender], "Not a tester");
+        require(viabilityRate <= 100, "Invalid rate");
+        bool viable = viabilityRate >= 80;
         uint256 testId = _testIdCounter++;
         tests[testId] = ViabilityTest({
             testId: testId,
-            farmer: msg.sender,
-            seedBatch: seedBatch,
-            germinationRate: germinationRate,
-            testDate: block.timestamp,
-            viable: viable
+            tester: msg.sender,
+            seedVariety: seedVariety,
+            viabilityRate: viabilityRate,
+            viable: viable,
+            timestamp: block.timestamp
         });
-
-        emit TestRecorded(testId, msg.sender, germinationRate);
+        testsByTester[msg.sender].push(testId);
+        emit TestPerformed(testId, viable);
         return testId;
-    }
-
-    function getTest(uint256 testId) public view returns (ViabilityTest memory) {
-        return tests[testId];
     }
 }

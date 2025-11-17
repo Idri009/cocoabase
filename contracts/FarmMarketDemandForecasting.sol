@@ -5,55 +5,51 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmMarketDemandForecasting
- * @dev Market demand prediction and forecasting system
+ * @dev Market demand forecasting system
  */
 contract FarmMarketDemandForecasting is Ownable {
     struct DemandForecast {
         uint256 forecastId;
-        string cropType;
+        address analyst;
+        string commodity;
         uint256 predictedDemand;
-        uint256 forecastDate;
-        uint256 targetDate;
-        uint256 confidenceLevel;
-        string marketRegion;
+        uint256 confidence;
+        uint256 timestamp;
     }
 
     mapping(uint256 => DemandForecast) public forecasts;
-    mapping(string => uint256[]) public forecastsByCrop;
+    mapping(string => uint256[]) public forecastsByCommodity;
+    mapping(address => bool) public isAnalyst;
     uint256 private _forecastIdCounter;
 
-    event ForecastCreated(
-        uint256 indexed forecastId,
-        string cropType,
-        uint256 predictedDemand
-    );
+    event ForecastCreated(uint256 indexed forecastId, string commodity);
 
-    constructor() Ownable(msg.sender) {}
+    constructor() Ownable(msg.sender) {
+        isAnalyst[msg.sender] = true;
+    }
+
+    function addAnalyst(address analyst) public onlyOwner {
+        isAnalyst[analyst] = true;
+    }
 
     function createForecast(
-        string memory cropType,
+        string memory commodity,
         uint256 predictedDemand,
-        uint256 targetDate,
-        uint256 confidenceLevel,
-        string memory marketRegion
+        uint256 confidence
     ) public returns (uint256) {
+        require(isAnalyst[msg.sender], "Not an analyst");
+        require(confidence <= 100, "Invalid confidence");
         uint256 forecastId = _forecastIdCounter++;
         forecasts[forecastId] = DemandForecast({
             forecastId: forecastId,
-            cropType: cropType,
+            analyst: msg.sender,
+            commodity: commodity,
             predictedDemand: predictedDemand,
-            forecastDate: block.timestamp,
-            targetDate: targetDate,
-            confidenceLevel: confidenceLevel,
-            marketRegion: marketRegion
+            confidence: confidence,
+            timestamp: block.timestamp
         });
-
-        forecastsByCrop[cropType].push(forecastId);
-        emit ForecastCreated(forecastId, cropType, predictedDemand);
+        forecastsByCommodity[commodity].push(forecastId);
+        emit ForecastCreated(forecastId, commodity);
         return forecastId;
-    }
-
-    function getForecast(uint256 forecastId) public view returns (DemandForecast memory) {
-        return forecasts[forecastId];
     }
 }

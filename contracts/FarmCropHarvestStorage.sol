@@ -5,59 +5,57 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropHarvestStorage
- * @dev Onchain harvest storage management and inventory tracking
+ * @dev Harvest storage management and inventory tracking
  */
 contract FarmCropHarvestStorage is Ownable {
-    struct StorageRecord {
-        uint256 recordId;
+    struct StorageUnit {
+        uint256 unitId;
         address farmer;
-        string harvestBatchId;
+        string harvestId;
         string storageLocation;
         uint256 quantity;
         uint256 storageDate;
-        uint256 expectedExpiry;
-        string storageConditions;
+        uint256 expiryDate;
     }
 
-    mapping(uint256 => StorageRecord) public records;
-    mapping(address => uint256[]) public recordsByFarmer;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => StorageUnit) public storageUnits;
+    uint256 private _unitIdCounter;
 
-    event StorageRecorded(
-        uint256 indexed recordId,
+    event UnitCreated(
+        uint256 indexed unitId,
         address indexed farmer,
-        string harvestBatchId,
         string storageLocation
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordStorage(
-        string memory harvestBatchId,
+    function createStorage(
+        string memory harvestId,
         string memory storageLocation,
         uint256 quantity,
-        uint256 expectedExpiry,
-        string memory storageConditions
+        uint256 expiryDate
     ) public returns (uint256) {
-        uint256 recordId = _recordIdCounter++;
-        records[recordId] = StorageRecord({
-            recordId: recordId,
+        uint256 unitId = _unitIdCounter++;
+        storageUnits[unitId] = StorageUnit({
+            unitId: unitId,
             farmer: msg.sender,
-            harvestBatchId: harvestBatchId,
+            harvestId: harvestId,
             storageLocation: storageLocation,
             quantity: quantity,
             storageDate: block.timestamp,
-            expectedExpiry: expectedExpiry,
-            storageConditions: storageConditions
+            expiryDate: expiryDate
         });
 
-        recordsByFarmer[msg.sender].push(recordId);
-        emit StorageRecorded(recordId, msg.sender, harvestBatchId, storageLocation);
-        return recordId;
+        emit UnitCreated(unitId, msg.sender, storageLocation);
+        return unitId;
     }
 
-    function getRecord(uint256 recordId) public view returns (StorageRecord memory) {
-        return records[recordId];
+    function updateQuantity(uint256 unitId, uint256 newQuantity) public {
+        require(storageUnits[unitId].farmer == msg.sender, "Not authorized");
+        storageUnits[unitId].quantity = newQuantity;
+    }
+
+    function getStorage(uint256 unitId) public view returns (StorageUnit memory) {
+        return storageUnits[unitId];
     }
 }
-

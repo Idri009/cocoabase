@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockFeedSchedule
- * @dev Feed scheduling and ration management
+ * @dev Onchain feed scheduling and ration management
  */
 contract FarmLivestockFeedSchedule is Ownable {
     struct FeedSchedule {
@@ -13,9 +13,10 @@ contract FarmLivestockFeedSchedule is Ownable {
         address farmer;
         string livestockId;
         string feedType;
-        uint256 rationAmount;
+        uint256 quantity;
         uint256 feedingTime;
-        bool fed;
+        uint256 frequency;
+        bool isActive;
     }
 
     mapping(uint256 => FeedSchedule) public schedules;
@@ -25,12 +26,8 @@ contract FarmLivestockFeedSchedule is Ownable {
     event ScheduleCreated(
         uint256 indexed scheduleId,
         address indexed farmer,
-        uint256 feedingTime
-    );
-
-    event FeedingCompleted(
-        uint256 indexed scheduleId,
-        uint256 feedTime
+        string livestockId,
+        string feedType
     );
 
     constructor() Ownable(msg.sender) {}
@@ -38,8 +35,9 @@ contract FarmLivestockFeedSchedule is Ownable {
     function createSchedule(
         string memory livestockId,
         string memory feedType,
-        uint256 rationAmount,
-        uint256 feedingTime
+        uint256 quantity,
+        uint256 feedingTime,
+        uint256 frequency
     ) public returns (uint256) {
         uint256 scheduleId = _scheduleIdCounter++;
         schedules[scheduleId] = FeedSchedule({
@@ -47,20 +45,15 @@ contract FarmLivestockFeedSchedule is Ownable {
             farmer: msg.sender,
             livestockId: livestockId,
             feedType: feedType,
-            rationAmount: rationAmount,
+            quantity: quantity,
             feedingTime: feedingTime,
-            fed: false
+            frequency: frequency,
+            isActive: true
         });
 
         schedulesByFarmer[msg.sender].push(scheduleId);
-        emit ScheduleCreated(scheduleId, msg.sender, feedingTime);
+        emit ScheduleCreated(scheduleId, msg.sender, livestockId, feedType);
         return scheduleId;
-    }
-
-    function completeFeeding(uint256 scheduleId) public {
-        require(schedules[scheduleId].farmer == msg.sender, "Not authorized");
-        schedules[scheduleId].fed = true;
-        emit FeedingCompleted(scheduleId, block.timestamp);
     }
 
     function getSchedule(uint256 scheduleId) public view returns (FeedSchedule memory) {

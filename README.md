@@ -38,7 +38,7 @@ CocoaBase leverages blockchain technology to create an **immutable, transparent,
 
 CocoaBase is built with:
 
-- **Smart Contracts**: 263+ Solidity contracts covering every aspect of agricultural management
+- **Smart Contracts**: 363+ Solidity contracts covering every aspect of agricultural management
 - **Frontend**: Next.js 16 with React 19, TypeScript, and Tailwind CSS
 - **Wallet Integration**: Reown (WalletConnect) for seamless Web3 connectivity
 - **Blockchain**: Ethereum-compatible networks (Ethereum, Arbitrum, Sepolia testnet)

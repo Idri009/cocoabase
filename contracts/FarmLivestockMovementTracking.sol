@@ -20,7 +20,6 @@ contract FarmLivestockMovementTracking is Ownable {
 
     mapping(uint256 => MovementRecord) public records;
     mapping(address => uint256[]) public recordsByFarmer;
-    mapping(string => uint256[]) public recordsByLivestock;
     uint256 private _recordIdCounter;
 
     event MovementRecorded(
@@ -50,8 +49,6 @@ contract FarmLivestockMovementTracking is Ownable {
         });
 
         recordsByFarmer[msg.sender].push(recordId);
-        recordsByLivestock[livestockId].push(recordId);
-
         emit MovementRecorded(recordId, msg.sender, livestockId, toLocation);
         return recordId;
     }
@@ -60,4 +57,3 @@ contract FarmLivestockMovementTracking is Ownable {
         return records[recordId];
     }
 }
-

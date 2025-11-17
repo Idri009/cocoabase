@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropPestMonitoring
- * @dev Onchain pest monitoring and early warning system
+ * @dev Pest monitoring and early warning system
  */
 contract FarmCropPestMonitoring is Ownable {
     struct PestObservation {
@@ -13,20 +13,19 @@ contract FarmCropPestMonitoring is Ownable {
         address farmer;
         string fieldId;
         string pestType;
-        uint256 severity;
+        uint256 populationLevel;
         uint256 observationDate;
-        string treatment;
+        bool actionRequired;
     }
 
     mapping(uint256 => PestObservation) public observations;
     mapping(address => uint256[]) public observationsByFarmer;
     uint256 private _observationIdCounter;
 
-    event PestObserved(
+    event ObservationRecorded(
         uint256 indexed observationId,
         address indexed farmer,
-        string pestType,
-        uint256 severity
+        string pestType
     );
 
     constructor() Ownable(msg.sender) {}
@@ -34,22 +33,22 @@ contract FarmCropPestMonitoring is Ownable {
     function recordObservation(
         string memory fieldId,
         string memory pestType,
-        uint256 severity,
-        string memory treatment
+        uint256 populationLevel
     ) public returns (uint256) {
+        bool actionRequired = populationLevel > 50;
         uint256 observationId = _observationIdCounter++;
         observations[observationId] = PestObservation({
             observationId: observationId,
             farmer: msg.sender,
             fieldId: fieldId,
             pestType: pestType,
-            severity: severity,
+            populationLevel: populationLevel,
             observationDate: block.timestamp,
-            treatment: treatment
+            actionRequired: actionRequired
         });
 
         observationsByFarmer[msg.sender].push(observationId);
-        emit PestObserved(observationId, msg.sender, pestType, severity);
+        emit ObservationRecorded(observationId, msg.sender, pestType);
         return observationId;
     }
 
@@ -57,4 +56,3 @@ contract FarmCropPestMonitoring is Ownable {
         return observations[observationId];
     }
 }
-
